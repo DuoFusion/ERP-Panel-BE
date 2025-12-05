@@ -1,8 +1,8 @@
 // ================ All Find Services ================
 
-export const getData = async (modalName, criteria, projection, options) => {
+export const getData = async (modelName, criteria, projection, options) => {
   options.lean = true;
-  return modalName.find(criteria, projection, options);
+  return modelName.find(criteria, projection, options);
 };
 
 export const getFirstMatch = async (modelName, criteria, projection, options) => {
@@ -12,7 +12,7 @@ export const getFirstMatch = async (modelName, criteria, projection, options) =>
 
 export const getDataWithSorting = async (modelName, criteria, projection, options) => {
   options.lean = true;
-  return await modelName.findOne(criteria, projection, options)({ locale: "en" });
+  return await modelName.find(criteria, projection, options).collation({ locale: "en" });
 };
 
 export const findOneAndPopulate = async (modelName, criteria, projection, options, populateModel) => {

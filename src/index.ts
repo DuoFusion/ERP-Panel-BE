@@ -1,18 +1,24 @@
+require("dotenv").config();
 import express from "express";
 import cors from "cors";
 import http from "http";
 import bodyParser from "body-parser";
 import * as packageInfo from "../package.json";
-import { ConnectDb } from "./database/connection";
+import { connectDb } from "./database/connection";
 import { router } from "./routes";
-
+import path from "path";
 
 const app = express();
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/images", express.static(path.join(__dirname, "..", "..", "images")));
+app.use("/pdf", express.static(path.join(__dirname, "..", "..", "pdf")));
 
-ConnectDb();
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
+connectDb();
 
 const health = (req, res) => {
   return res.status(200).json({
