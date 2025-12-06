@@ -54,7 +54,7 @@ export const responseMessage = {
     return `${message[0].toUpperCase() + message.slice(1).toLowerCase()}`;
   },
   invalidId: (message: string): any => {
-    return `invalid ${message}!`;
+    return `Invalid ${message}!`;
   },
   dataAlreadyExist: (message: any): any => {
     return `Please change ${message}, ${message} is already exists!`;
