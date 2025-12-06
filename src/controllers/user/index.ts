@@ -1,8 +1,8 @@
 import { apiResponse, generateHash, HTTP_STATUS, isValidObjectId, USER_ROLES } from "../../common";
 import { userModel } from "../../database/model";
 import { countData, createOne, findAllAndPopulate, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
-import { createUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
 import { userAccountDeletionModel } from "../../database/model/userAccountDeletion";
+import { createUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
 
 const ObjectId = require("mongoose").Types.ObjectId;
 
