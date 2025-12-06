@@ -3,6 +3,9 @@ import { companyController } from "../controllers";
 
 const router = express.Router();
 
+router.get("/", companyController.getCompanyList);
 router.post("/add", companyController.addCompany);
+router.put("/", companyController.updateCompanyDetails);
+router.delete("/", companyController.deleteCompany);
 
-export const userRoute = router;
+export const companyRouter = router;
