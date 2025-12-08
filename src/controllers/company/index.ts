@@ -115,9 +115,9 @@ export const getCompanyList = async (req, res) => {
 export const deleteCompany = async (req, res) => {
   reqInfo(req);
   try {
-    const { companyId } = req.params;
-    
-    if (!companyId) {
+    const { id } = req.params;
+
+    if (!id) {
       return res
         .status(HTTP_STATUS.NOT_FOUND)
         .json(
@@ -130,7 +130,7 @@ export const deleteCompany = async (req, res) => {
         );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(companyId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
         .json(
@@ -143,9 +143,21 @@ export const deleteCompany = async (req, res) => {
         );
     }
 
+    const existingCompany = await getFirstMatch(
+      companyModel,
+      { isDeleted: false, _id: id },
+      {},
+      {}
+    );
+
+
+    if(!existingCompany){
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company details"), {}, {}));
+    }
+
     let companyDetails = await updateData(
       companyModel,
-      { _id: companyId },
+      { _id: id },
       {
         isDeleted: true,
       },
@@ -186,7 +198,9 @@ export const updateCompanyDetails = async (req, res) => {
           )
         );
 
-    if (!mongoose.Types.ObjectId.isValid(value.companyId || objCompany.companyId)) {
+    if (
+      !mongoose.Types.ObjectId.isValid(value.companyId || objCompany.companyId)
+    ) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
         .json(

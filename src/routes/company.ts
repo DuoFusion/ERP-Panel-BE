@@ -5,6 +5,6 @@ const router = express.Router();
 router.get("/", companyController.getCompanyList);
 router.post("/add", companyController.addCompany);
 router.put("/", companyController.updateCompanyDetails);
-router.delete("/:companyId", companyController.deleteCompany);
+router.delete("/:id", companyController.deleteCompany);
 
 export const companyRouter = router;
