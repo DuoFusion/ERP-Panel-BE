@@ -115,9 +115,9 @@ export const getCompanyList = async (req, res) => {
 export const deleteCompany = async (req, res) => {
   reqInfo(req);
   try {
-    const { companyId } = req.params;
+    const { id } = req.params;
 
-    if (!companyId) {
+    if (!id) {
       return res
         .status(HTTP_STATUS.NOT_FOUND)
         .json(
@@ -130,7 +130,7 @@ export const deleteCompany = async (req, res) => {
         );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(companyId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
         .json(
@@ -145,7 +145,7 @@ export const deleteCompany = async (req, res) => {
 
     const existingCompany = await getFirstMatch(
       companyModel,
-      { isDeleted: false, _id: companyId },
+      { isDeleted: false, _id: id },
       {},
       {}
     );
@@ -157,7 +157,7 @@ export const deleteCompany = async (req, res) => {
 
     let companyDetails = await updateData(
       companyModel,
-      { _id: companyId },
+      { _id: id },
       {
         isDeleted: true,
       },
