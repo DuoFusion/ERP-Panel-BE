@@ -1,16 +1,14 @@
 import { apiResponse, generateHash, HTTP_STATUS, isValidObjectId, USER_ROLES } from "../../common";
 import { userModel } from "../../database/model";
 import { countData, createOne, findAllAndPopulate, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
-import { createUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
-import { userAccountDeletionModel } from "../../database/model/userAccountDeletion";
+import { addUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
 
 const ObjectId = require("mongoose").Types.ObjectId;
 
 export const addUser = async (req, res) => {
   reqInfo(req);
   try {
-    console.log("user: ", req.body);
-    const { error, value } = createUserSchema.validate(req.body);
+    const { error, value } = addUserSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
 
@@ -18,7 +16,6 @@ export const addUser = async (req, res) => {
     if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Email"), {}, {}));
 
     existingUser = await getFirstMatch(userModel, { phoneNumber: value?.phoneNumber, isDeleted: false }, {}, {});
-    // console.log("existingUser : ->", existingUser);
     if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
 
     let payload = {
@@ -28,16 +25,13 @@ export const addUser = async (req, res) => {
     };
     payload.password = await generateHash(value?.password);
 
-    console.log("req?.headers?.user?._id", req?.headers?.user?._id);
-
     const response = await createOne(userModel, payload);
-    console.log("response : ->", response);
 
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage?.addDataSuccess("user"), response, {}));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
   }
 };
@@ -76,15 +70,13 @@ export const editUserById = async (req, res) => {
       payload.password = await generateHash(value?.password);
     }
 
-    console.log("req?.headers?.user?._id", req?.headers?.user?._id);
-
     const response = await updateData(userModel, { _id: new ObjectId(value?.userId), isDeleted: false }, payload, {});
 
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("user"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("user"), response, {}));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
   }
 };
@@ -104,34 +96,30 @@ export const deleteUserById = async (req, res) => {
     if (!isUserExist) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("user"), {}, {}));
 
     const response = await updateData(userModel, { _id: new ObjectId(value?.id) }, { isDeleted: true }, {});
-    if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("user"), {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("user"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("user"), response, {}));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.internalServerError, {}, error));
   }
 };
 
 export const getAllUser = async (req, res) => {
   reqInfo(req);
-  console.log("get all called");
   try {
     let { page, limit, search, startDate, endDate, activeFilter, deleteFilter } = req.query;
-    console.log("req.query ", req.query, page, limit);
 
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false, role: USER_ROLES.USER };
 
-    console.log("criteria", criteria);
-
     if (search) {
       criteria.$or = [{ fullName: { $regex: search, $options: "i" } }];
     }
 
-    if (activeFilter !== undefined) criteria.isBlocked = activeFilter === "true";
+    if (activeFilter !== undefined) criteria.isActive = activeFilter === "true";
 
     if (deleteFilter !== undefined) criteria.isDeleted = deleteFilter === "true";
 
@@ -159,7 +147,6 @@ export const getAllUser = async (req, res) => {
       options.page = (parseInt(page) + 1) * parseInt(limit);
       options.limit = parseInt(limit);
     }
-    console.log("criteria", criteria, options);
 
     const response = await getDataWithSorting(userModel, criteria, {}, options);
     const countTotal = await countData(userModel, criteria);
@@ -178,7 +165,7 @@ export const getAllUser = async (req, res) => {
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("user"), { user_data: response, totalData: countTotal, state: stateObj }, {}));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.internalServerError, {}, error));
   }
 };
@@ -196,56 +183,7 @@ export const getUserById = async (req, res) => {
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("user"), response, {}));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).status(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, {}));
-  }
-};
-
-export const getAllDeletedUser = async (req, res) => {
-  reqInfo(req);
-  try {
-    const { page, limit, search, startDate, endDate } = req.query;
-    let criteria: any = { isDeleted: false },
-      options: any = { lean: true };
-
-    if (search) {
-      criteria.$or = [{ fullName: { $regex: search, $options: "si" } }];
-    }
-
-    if (startDate && endDate) criteria.createdAt = { $gte: new Date(startDate), $lte: new Date(endDate) };
-
-    options.sort = { createdAt: -1 };
-
-    if (page && limit) {
-      options.skip = (parseInt(page) - 1) * parseInt(limit);
-      options.limit = parseInt(limit);
-    }
-
-    let populateModel = [{ path: "userId" }];
-
-    const response = await findAllAndPopulate(userAccountDeletionModel, criteria, {}, options, populateModel);
-    const countTotal = await countData(userAccountDeletionModel, criteria);
-
-    const stateObj = {
-      page: parseInt(page) || 1,
-      limit: parseInt(limit) || countTotal,
-      page_limit: Math.ceil(countTotal / (parseInt(limit) || countTotal)) || 1,
-    };
-
-    return res.status(HTTP_STATUS.OK).json(
-      new apiResponse(
-        HTTP_STATUS.OK,
-        responseMessage?.getDataSuccess("user"),
-        {
-          deletedUser_data: response,
-          totalData: countTotal,
-          state: stateObj,
-        },
-        {}
-      )
-    );
-  } catch (error) {
-    console.log(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
   }
 };

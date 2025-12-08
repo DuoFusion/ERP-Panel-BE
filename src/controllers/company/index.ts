@@ -108,7 +108,7 @@ export const getCompanyList = async (req, res) => {
           )
         );
   } catch (error) {
-    console.log("error : ", error);
+    console.error("error : ", error);
   }
 };
 
@@ -176,7 +176,7 @@ export const deleteCompany = async (req, res) => {
           )
         );
   } catch (error) {
-    console.log("error : ", error);
+    console.error("error : ", error);
   }
 };
 
@@ -232,6 +232,6 @@ export const updateCompanyDetails = async (req, res) => {
           )
         );
   } catch (error) {
-    console.log("error : ", error);
+    console.error("error : ", error);
   }
 };
