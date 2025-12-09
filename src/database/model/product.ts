@@ -7,11 +7,9 @@ const productSchema = new Schema<IProduct>(
   {
     ...baseSchemaFields,
     itemCode: { type: String, required: true, index: true },
-    barcode: { type: String, index: true },
     name: { type: String, required: true, index: true },
     printName: { type: String },
     slug: { type: String, index: true },
-
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: "category",

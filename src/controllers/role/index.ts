@@ -161,7 +161,6 @@ export const getRoleById = async (req, res) => {
     }
 
     const response = await getFirstMatch(roleModel, { _id: id }, {}, {});
-    console.log("response message --> ", response);
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Role"), {}, {}));
 

@@ -33,7 +33,7 @@ export const register = async (req, res) => {
     const token = await generateToken({ _id: response?._id, status: "Register", generatedOn: new Date().getTime() }, { expiresIn: "24h" });
 
     response = {
-      ...response._doc,
+      data: response,
       token,
     };
 
@@ -67,7 +67,7 @@ export const login = async (req, res) => {
     const { password, ...rest } = response;
 
     response = {
-      ...rest,
+      data: rest,
       token,
     };
 

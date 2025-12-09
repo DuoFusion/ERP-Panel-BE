@@ -11,7 +11,7 @@ import { HTTP_STATUS } from "./common";
 
 const app = express();
 
-app.use("/public", express.static(path.join(__dirname, "..", "..", "public")));
+app.use("/public", express.static(path.join(__dirname, "..", ".." , "public")));
 
 app.use(cors());
 app.use(express.json());
