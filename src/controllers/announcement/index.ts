@@ -28,7 +28,6 @@ export const addAnnouncement = async (req, res) => {
       return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.invalidId("comapny Id"), {}, {}));
     }
 
-<<<<<<< HEAD
     if (error)
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
@@ -40,9 +39,6 @@ export const addAnnouncement = async (req, res) => {
             {}
           )
         );
-=======
-    if (error) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, error?.details[0].message, {}, {}));
->>>>>>> 271fcd60350219e50baf5fa563c461c7fd325aaa
 
     let existingCompany = await getFirstMatch(companyModel, { _id: value?.companyId, isDeleted: false }, {}, {});
 
