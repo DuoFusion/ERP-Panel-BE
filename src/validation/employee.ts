@@ -1,7 +1,8 @@
 import Joi from "joi";
+import { objectId } from "./common";
 
 export const addEmployeeSchema = Joi.object().keys({
-    id: Joi.string().required(),
+    id: objectId().required(),
     name: Joi.string().required(),
     companyId: Joi.string().optional(),
     branch: Joi.string().optional(),
@@ -30,9 +31,9 @@ export const addEmployeeSchema = Joi.object().keys({
 });
 
 export const editEmployeeSchema = Joi.object().keys({
-    id: Joi.string().required(),
+    id: objectId().required(),
     name: Joi.string().optional(),
-    companyId:Joi.string().optional(),
+    companyId:objectId().optional(),
     email: Joi.string().optional(),
     mobileNo: Joi.string().optional(),
     address: {
@@ -59,10 +60,10 @@ export const editEmployeeSchema = Joi.object().keys({
 });
 
 export const deleteEmployeeSchema = Joi.object().keys({
-    id: Joi.string().required(),
+    id: objectId().required(),
 });
 
 export const getEmployeeSchema = Joi.object().keys({
-    id: Joi.string().required(),
+    id: objectId().required(),
 });
 
