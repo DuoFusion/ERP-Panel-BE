@@ -125,9 +125,9 @@ export const deleteAnnouncementById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).status(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
 
-    if (!isValidObjectId(value?.id)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Announcement Id"), {}, {}));
-    }
+    // if (!isValidObjectId(value?.id)) {
+    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Announcement Id"), {}, {}));
+    // }
 
     const isAnnouncementExist = await getFirstMatch(announcementModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
 

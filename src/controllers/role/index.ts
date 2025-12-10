@@ -70,9 +70,9 @@ export const deleteRole = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    if (!isValidObjectId(value?.id)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Role Id"), {}, {}));
-    }
+    // if (!isValidObjectId(value?.id)) {
+    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Role Id"), {}, {}));
+    // }
 
     const existingRole = await getFirstMatch(roleModel, { _id: value?.id, isDeleted: false }, {}, {});
 

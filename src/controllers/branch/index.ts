@@ -102,9 +102,9 @@ export const deleteBranchById = async (req, res) => {
 
         if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).status(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
 
-        if (!isValidObjectId(value?.id)) {
-            return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Branch Id"), {}, {}));
-        }
+        // if (!isValidObjectId(value?.id)) {
+        //     return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Branch Id"), {}, {}));
+        // }
 
         const isBranchExist = await getFirstMatch(branchModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
 
@@ -148,9 +148,9 @@ export const editBranchById = async (req, res) => {
 
         if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
 
-        if (!isValidObjectId(value?.id)) {
-            return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Branch Id"), {}, {}));
-        }
+        // if (!isValidObjectId(value?.id)) {
+        //     return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Branch Id"), {}, {}));
+        // }
 
         let existingAnnouncemnet = await getFirstMatch(branchModel, { name: value?.name, isDeleted: false }, {}, {});
         if (existingAnnouncemnet) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Name"), {}, {}));

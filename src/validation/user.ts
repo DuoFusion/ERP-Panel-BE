@@ -2,7 +2,7 @@ import Joi from "joi";
 import { objectId } from "./common";
 
 export const addUserSchema = Joi.object().keys({
-  companyId: Joi.string().optional(),
+  companyId: objectId().optional(),
   fullName: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
