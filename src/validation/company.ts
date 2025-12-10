@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { objectId } from "./common";
 
 export const addCompanySchema = Joi.object().keys({
   // ******************* Basic Details *******************
@@ -59,7 +60,7 @@ export const addCompanySchema = Joi.object().keys({
 });
 
 export const editCompanySchema = Joi.object().keys({
-  companyId: Joi.string().required(),
+  companyId: objectId().required(),
   // ******************* Basic Details *******************
   name: Joi.string().optional(),
   displayName: Joi.string().optional(),
@@ -118,10 +119,10 @@ export const editCompanySchema = Joi.object().keys({
 });
 
 export const deleteCompanySchema = Joi.object().keys({
-  id: Joi.string().required(),
+  id: objectId().required(),
 });
 
 export const getCompanySchema = Joi.object().keys({
-  id: Joi.string().required(),
+  id: objectId().required(),
 });
 

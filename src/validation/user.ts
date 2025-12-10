@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { objectId } from "./common";
 
 export const addUserSchema = Joi.object().keys({
   companyId: Joi.string().optional(),
@@ -12,7 +13,7 @@ export const addUserSchema = Joi.object().keys({
 });
 
 export const editUserSchema = Joi.object().keys({
-  userId: Joi.string().required(),
+  userId: objectId().required(),
   companyId: Joi.string().optional(),
   fullName: Joi.string().optional(),
   email: Joi.string().email().optional(),
@@ -24,9 +25,9 @@ export const editUserSchema = Joi.object().keys({
 });
 
 export const deleteUserSchema = Joi.object().keys({
-  id: Joi.string().required(),
+  id: objectId().required(),
 });
 
 export const getUserSchema = Joi.object().keys({
-  id: Joi.string().required(),
+  id: objectId().required(),
 });
