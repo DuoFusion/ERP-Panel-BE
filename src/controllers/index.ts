@@ -5,6 +5,7 @@ export * as announcementController from "./announcement";
 export * as uploadController from "./upload";
 export * as roleController from "./role";
 export * as branchController from "./branch";
+export * as employeeController from "./employee";
 export * as productController from "./product";
 
 
