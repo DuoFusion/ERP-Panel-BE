@@ -24,9 +24,9 @@ export const addAnnouncement = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, error?.details[0].message, {}, {}));
 
-    if (!isValidObjectId(value?.companyId)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.invalidId("comapny Id"), {}, {}));
-    }
+    // if (!isValidObjectId(value?.companyId)) {
+    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.invalidId("comapny Id"), {}, {}));
+    // }
 
     if (error)
       return res
@@ -171,13 +171,13 @@ export const editAnnouncementById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
 
-    if (!isValidObjectId(value?.companyId)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Company Id"), {}, {}));
-    }
+    // if (!isValidObjectId(value?.companyId)) {
+    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Company Id"), {}, {}));
+    // }
 
-    if (!isValidObjectId(value?._id)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Announcement Id"), {}, {}));
-    }
+    // if (!isValidObjectId(value?._id)) {
+    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Announcement Id"), {}, {}));
+    // }
 
    let existingAnnouncemnet = await getFirstMatch(announcementModel, { version: value?.version, isDeleted: false }, {}, {});
     if (existingAnnouncemnet) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Version"), {}, {}));
