@@ -4,6 +4,11 @@ export const USER_ROLES = {
   USER: "user",
 } as const;
 
+export const USER_TYPES = {
+  SUPER_ADMIN: "superAdmin",
+  ADMIN: "admin",
+} as const;
+
 export const PRODUCT_TYPE = ['finished', 'raw_material', 'semi_finished', 'service', 'non_inventory'] as const;
 
 export const PRODUCT_STATUS = ["active", "inactive"] as const;

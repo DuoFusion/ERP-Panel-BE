@@ -8,7 +8,7 @@ export const addEmployeeSchema = Joi.object({
     email: Joi.string().email().optional(),
     mobileNo: Joi.string().required(),
     username: Joi.string().required(),
-
+    role: objectId().optional(),
     address: Joi.object({
         address: Joi.string().optional(),
         country: Joi.string().required(),

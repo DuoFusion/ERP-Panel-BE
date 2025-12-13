@@ -6,6 +6,7 @@ export const addCompanySchema = Joi.object().keys({
   name: Joi.string().optional(),
   displayName: Joi.string().optional(),
   contactName: Joi.string().optional(),
+  userIds: Joi.array().items(Joi.string()),
   ownerNo: Joi.string().optional(),
   email: Joi.string().optional(),
   supportEmail: Joi.string().optional(),

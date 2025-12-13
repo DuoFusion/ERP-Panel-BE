@@ -1,4 +1,4 @@
-import { apiResponse, generateHash, HTTP_STATUS, isValidObjectId, USER_ROLES } from "../../common";
+import { apiResponse, generateHash, HTTP_STATUS, isValidObjectId, USER_ROLES, USER_TYPES } from "../../common";
 import { userModel } from "../../database/model";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
@@ -8,7 +8,8 @@ const ObjectId = require("mongoose").Types.ObjectId;
 export const addUser = async (req, res) => {
   reqInfo(req);
   try {
-    const { error, value } = addUserSchema.validate(req.body);
+    const user = req?.headers;
+    let { error, value } = addUserSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
@@ -18,14 +19,11 @@ export const addUser = async (req, res) => {
     existingUser = await getFirstMatch(userModel, { phoneNumber: value?.phoneNumber, isDeleted: false }, {}, {});
     if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
 
-    let payload = {
-      ...value,
-      createdBy: req?.headers?.user?._id || null,
-      updatedBy: req?.headers?.user?._id || null,
-    };
-    payload.password = await generateHash(value?.password);
+    value.createdBy = user?._id;
+    value.updatedBy = user?._id;
+    value.password = await generateHash(value?.password);
 
-    const response = await createOne(userModel, payload);
+    const response = await createOne(userModel, value);
 
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
@@ -113,7 +111,8 @@ export const getAllUser = async (req, res) => {
     page = Number(page);
     limit = Number(limit);
 
-    let criteria: any = { isDeleted: false, role: USER_ROLES.USER };
+    // let criteria: any = { isDeleted: false, role: USER_ROLES.USER };
+    let criteria: any = { isDeleted: false };
 
     if (search) {
       criteria.$or = [{ fullName: { $regex: search, $options: "s  i" } }];
@@ -145,6 +144,8 @@ export const getAllUser = async (req, res) => {
     }
 
     const response = await getDataWithSorting(userModel, criteria, { password: 0 }, options);
+
+
     const totalData = await countData(userModel, criteria);
 
     const totalPages = Math.ceil(totalData / limit) || 1;
@@ -180,6 +181,39 @@ export const getUserById = async (req, res) => {
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("User"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("User"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).status(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, {}));
+  }
+};
+
+export const superAdminOverridePermissions = async (req, res) => {
+  try {
+    const superAdmin = { role: 'superAdmin' };
+    const adminId = req.params.id;
+    const newPermissions = req.body.permissions;
+
+    if (superAdmin.role !== USER_TYPES.SUPER_ADMIN) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, "Only Super Admin can change admin permissions.", {}, {}));
+    }
+
+    const adminUser: any = await getFirstMatch(userModel, { _id: adminId, isDeleted: false }, { password: 0 }, {});
+
+    if (!adminUser) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Admin"), {}, {}));
+    }
+
+    if (adminUser.role !== USER_TYPES.ADMIN) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, "Target user is not an Admin.", {}, {}));
+    }
+
+
+    adminUser.permissions = newPermissions;
+    await updateData(userModel, { _id: adminId }, adminUser, {})
+
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, "Admin permissions updated by Super Admin.", adminUser, {}));
+
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).status(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, {}));

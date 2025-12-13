@@ -3,8 +3,7 @@ import { baseCommonFields, baseSchemaOptions } from "./base";
 
 const roleSchema = new mongoose.Schema(
   {
-    role: { type: String },
-    
+    name: { type: String },
     ...baseCommonFields,
   },
   baseSchemaOptions

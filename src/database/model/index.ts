@@ -31,3 +31,5 @@ export * from "./voucher";
 export * from "./announcement";
 export * from "./branch";
 export * from "./employee";
+export * from "./permissions";
+export * from "./operation";

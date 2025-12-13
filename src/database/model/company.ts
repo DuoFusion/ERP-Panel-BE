@@ -58,7 +58,14 @@ const companySchema: any = new mongoose.Schema(
     waterMark: { type: String },
     reportFormatLogo: { type: String },
     authorizedSignature: { type: String },
-
+    userIds: [{ type: mongoose.Types.ObjectId, ref: 'user', required: true }],
+    roles: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "role",
+        default: []
+      }
+    ],
     // ******************* Common *******************
     // isDeleted: { type: Boolean, default: false },
     // isActive: { type: Boolean, default: false },

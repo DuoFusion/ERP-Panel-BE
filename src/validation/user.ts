@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { objectId } from "./common";
+import { permissionsSchema } from "./permission";
 
 export const addUserSchema = Joi.object().keys({
   companyId: objectId().optional(),
@@ -9,7 +10,8 @@ export const addUserSchema = Joi.object().keys({
   role: Joi.string().required(),
   profileImage: Joi.string().optional(),
   phoneNumber: Joi.string().optional(),
-  isActive: Joi.boolean().optional().default(false),
+  isActive: Joi.boolean().optional().default(true),
+  permissions: permissionsSchema
 });
 
 export const editUserSchema = Joi.object().keys({
