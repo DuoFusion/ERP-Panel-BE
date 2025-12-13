@@ -66,6 +66,13 @@ const companySchema: any = new mongoose.Schema(
         default: []
       }
     ],
+    employees: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "employee",
+        default: []
+      }
+    ],
     // ******************* Common *******************
     // isDeleted: { type: Boolean, default: false },
     // isActive: { type: Boolean, default: false },

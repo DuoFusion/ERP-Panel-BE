@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { EMPLOYEE_STATUS } from "../../common";
 import { IEmployee } from "../../types";
 import { baseSchemaFields, baseSchemaOptions } from "./base";
+import permissionsSchema from "./permissions";
 
 const employeeSchema = new Schema<IEmployee>({
     ...baseSchemaFields,
@@ -30,7 +31,7 @@ const employeeSchema = new Schema<IEmployee>({
         postalCode: { type: String },
     },
 
-    bankDetails: {   
+    bankDetails: {
         bankHolderName: { type: String },
         bankName: { type: String },
         branch: { type: String },
@@ -38,7 +39,7 @@ const employeeSchema = new Schema<IEmployee>({
         IFSCCode: { type: String },
         swiftCode: { type: String },
     },
-
+    permissions: { type: permissionsSchema, default: {} },
     wages: { type: Number },
     commission: { type: Number },
     extraWages: { type: Number },

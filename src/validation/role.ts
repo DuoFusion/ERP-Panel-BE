@@ -3,13 +3,13 @@ import { objectId } from "./common";
 
 export const addRoleSchema = Joi.object().keys({
   companyId: objectId().optional(),
-  role: Joi.string().required(),
+  name: Joi.string().required(),
 });
 
 export const editRoleSchema = Joi.object().keys({
   roleId: objectId().required(),
   companyId: objectId().optional(),
-  role: Joi.string().optional(),
+  name: Joi.string().optional(),
 });
 
 export const deleteRoleSchema = Joi.object().keys({

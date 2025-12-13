@@ -26,11 +26,11 @@ export const addEmployee = async (req, res) => {
     existingEmployee = await getFirstMatch(employeeModel, { panNumber: value?.panNumber, isDeleted: false }, {}, {});
     if (existingEmployee) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("PAN Number"), {}, {}));
 
-    value.createdBy =  user?._id || null;
+    value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
 
     const response = await createOne(employeeModel, value);
-    
+
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage?.addDataSuccess("Employee"), response, {}));
@@ -176,7 +176,8 @@ export const getEmployeeById = async (req, res) => {
 
 export const updateEmployeePermissions = async (req, res) => {
   try {
-    const admin = req.user;
+    const admin = req.headers.user;
+    // const admin = { role: 'admin', companyId:"693d24b2dc55f48922660275" }
     const employeeId = req.params.id;
     const newPermissions = req.body.permissions;
 
@@ -202,7 +203,7 @@ export const updateEmployeePermissions = async (req, res) => {
 
 
     employee.permissions = newPermissions;
-    await employee.save();
+    await updateData(employeeModel, { _id: employeeId }, employee, {})
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, "Permissions updated.", employee, {}));
   } catch (error) {

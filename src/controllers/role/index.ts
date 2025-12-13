@@ -13,7 +13,7 @@ export const addRole = async (req, res) => {
 
     const existingRole = await getFirstMatch(roleModel, { role: value?.role, isDeleted: false }, {}, {});
 
-    if (existingRole) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Role"), {}, {}));
+    if (existingRole) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Name"), {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
