@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 export const baseCommonFields = {
   isDeleted: { type: Boolean, default: false },
-  isActive: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true },
   createdBy: { type: Schema.Types.ObjectId, ref: "user", default: null },
   updatedBy: { type: Schema.Types.ObjectId, ref: "user", default: null },
 };

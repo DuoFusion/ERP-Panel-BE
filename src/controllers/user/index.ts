@@ -8,7 +8,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 export const addUser = async (req, res) => {
   reqInfo(req);
   try {
-    const user = req?.headers;
+    const { user } = req?.headers;
     let { error, value } = addUserSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
@@ -18,7 +18,6 @@ export const addUser = async (req, res) => {
 
     existingUser = await getFirstMatch(userModel, { phoneNumber: value?.phoneNumber, isDeleted: false }, {}, {});
     if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
-
     value.createdBy = user?._id;
     value.updatedBy = user?._id;
     value.password = await generateHash(value?.password);
@@ -169,10 +168,6 @@ export const getUserById = async (req, res) => {
     const { error, value } = getUserSchema.validate(req.params);
     const { id } = value;
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-
-    // if (!isValidObjectId(id)) {
-    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("User Id"), {}, {}));
-    // }
 
     const response = await getFirstMatch(userModel, { _id: id, isDeleted: false }, { password: 0 }, {});
 
