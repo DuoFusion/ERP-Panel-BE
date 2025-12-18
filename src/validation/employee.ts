@@ -48,6 +48,7 @@ export const addEmployeeSchema = Joi.object({
   commission: Joi.number().min(0).optional(),
   extraWages: Joi.number().min(0).optional(),
   target: Joi.number().min(0).optional(),
+  isActive: Joi.boolean().optional(),
 });
 
 export const editEmployeeSchema = Joi.object({
@@ -71,6 +72,7 @@ export const editEmployeeSchema = Joi.object({
   commission: Joi.number().min(0).optional(),
   extraWages: Joi.number().min(0).optional(),
   target: Joi.number().min(0).optional(),
+  isActive: Joi.boolean().optional(),
 });
 
 export const deleteEmployeeSchema = Joi.object({

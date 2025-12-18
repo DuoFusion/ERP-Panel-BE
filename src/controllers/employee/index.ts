@@ -9,7 +9,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 export const addEmployee = async (req, res) => {
   reqInfo(req);
   try {
-    const user = req.headers;
+    const { user } = req.headers;
     let { error, value } = addEmployeeSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
@@ -145,9 +145,9 @@ export const editEmployeeById = async (req, res) => {
 
     value.updatedBy = user?._id || null;
 
-    const response = await updateData(employeeModel, { _id: new ObjectId(value?.id), isDeleted: false }, value, {});
+    const response = await updateData(employeeModel, { _id: new ObjectId(value?.employeeId), isDeleted: false }, value, {});
 
-    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Employee details"), {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Empsddloyee details"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("Employee details"), response, {}));
   } catch (error) {
@@ -181,7 +181,6 @@ export const updateEmployeePermissions = async (req, res) => {
     const employeeId = req.params.id;
     const newPermissions = req.body.permissions;
 
-
     if (admin.role !== USER_TYPES.ADMIN) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, "Only admin can update permissions.", {}, {}));
     }
@@ -191,19 +190,16 @@ export const updateEmployeePermissions = async (req, res) => {
       return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Employee"), {}, {}));
     }
 
-
     if (employee.companyId.toString() !== admin.companyId.toString()) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, "Unauthorized: Different company.", {}, {}));
     }
-
 
     if (employee.role === USER_TYPES.SUPER_ADMIN) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, "Cannot modify Super Admin.", {}, {}));
     }
 
-
     employee.permissions = newPermissions;
-    await updateData(employeeModel, { _id: employeeId }, employee, {})
+    await updateData(employeeModel, { _id: employeeId }, employee, {});
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, "Permissions updated.", employee, {}));
   } catch (error) {
