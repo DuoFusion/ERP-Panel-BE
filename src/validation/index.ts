@@ -7,3 +7,5 @@ export * from "./role";
 export * from "./branch";
 export * from "./common";
 export * from "./callRequest";
+export * from "./contact";
+export * from "./recipe";

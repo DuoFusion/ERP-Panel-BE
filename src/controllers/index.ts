@@ -8,3 +8,5 @@ export * as branchController from "./branch";
 export * as employeeController from "./employee";
 export * as productController from "./product";
 export * as callRequestController from "./callRequest";
+export * as contactController from "./contacts";
+export * as recipeController from "./recipe";
