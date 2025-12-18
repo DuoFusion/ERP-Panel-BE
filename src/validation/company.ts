@@ -56,10 +56,10 @@ export const addCompanySchema = Joi.object().keys({
   decimalPoint: Joi.string().optional(),
 
   // ******************* Logo *******************
-  logo: Joi.string().optional(),
-  waterMark: Joi.string().optional(),
-  reportFormatLogo: Joi.string().optional(),
-  authorizedSignature: Joi.string().optional(),
+  logo: Joi.string().optional().allow(""),
+  waterMark: Joi.string().optional().allow(""),
+  reportFormatLogo: Joi.string().optional().allow(""),
+  authorizedSignature: Joi.string().optional().allow(""),
 });
 
 export const editCompanySchema = Joi.object().keys({
@@ -118,10 +118,10 @@ export const editCompanySchema = Joi.object().keys({
   decimalPoint: Joi.string().optional(),
 
   // ******************* Logo *******************
-  logo: Joi.string().optional(),
-  waterMark: Joi.string().optional(),
-  reportFormatLogo: Joi.string().optional(),
-  authorizedSignature: Joi.string().optional(),
+  logo: Joi.string().optional().allow(""),
+  waterMark: Joi.string().optional().allow(""),
+  reportFormatLogo: Joi.string().optional().allow(""),
+  authorizedSignature: Joi.string().optional().allow(""),
 });
 
 export const deleteCompanySchema = Joi.object().keys({
@@ -131,4 +131,3 @@ export const deleteCompanySchema = Joi.object().keys({
 export const getCompanySchema = Joi.object().keys({
   id: objectId().required(),
 });
-

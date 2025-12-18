@@ -73,11 +73,7 @@ const companySchema: any = new mongoose.Schema(
         default: []
       }
     ],
-    // ******************* Common *******************
-    // isDeleted: { type: Boolean, default: false },
-    // isActive: { type: Boolean, default: false },
-    // createdBy: { type: mongoose.Schema.Types.ObjectId, default: null },
-    // updatedBy: { type: mongoose.Schema.Types.ObjectId, default: null },
+
     ...baseCommonFields,
   },
   { timestamps: true, versionKey: false }

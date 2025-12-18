@@ -8,7 +8,7 @@ export const addUserSchema = Joi.object().keys({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   role: Joi.string().required(),
-  profileImage: Joi.string().optional(),
+  profileImage: Joi.string().optional().allow(""),
   phoneNumber: Joi.string().optional(),
   isActive: Joi.boolean().optional().default(true),
   permissions: permissionsSchema
@@ -20,10 +20,10 @@ export const editUserSchema = Joi.object().keys({
   fullName: Joi.string().optional(),
   email: Joi.string().email().optional(),
   password: Joi.string().optional(),
-  profileImage: Joi.string().optional(),
+  profileImage: Joi.string().optional().allow(""),
   role: Joi.string().optional(),
   phoneNumber: Joi.string().optional(),
-  isActive: Joi.boolean().optional().default(false),
+  isActive: Joi.boolean().optional().default(true),
 });
 
 export const deleteUserSchema = Joi.object().keys({

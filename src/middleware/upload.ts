@@ -5,7 +5,7 @@ import fs from "fs";
 export const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
-      const companyName = req?.headers?.user?.companyId?.name;
+      const companyName = req?.headers?.user?.companyId?._id.toString();
       let folderName = companyName || "default";
       folderName = folderName.replace(/[^a-zA-Z0-9_-]/g, "_");
 

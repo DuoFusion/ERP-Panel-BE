@@ -43,7 +43,6 @@ const userSchema = new mongoose.Schema<IUser>(
     password: { type: String },
     companyId: { type: mongoose.Types.ObjectId, ref: "company", default: null },
     profileImage: { type: String },
-    isActive: { type: Boolean, default: true },
     role: {
       type: String,
       enum: Object.values(USER_TYPES),
