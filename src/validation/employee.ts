@@ -27,22 +27,16 @@ const bankDetailsSchema = Joi.object({
 });
 
 export const addEmployeeSchema = Joi.object({
-  companyId: objectId().optional(),
-  branch: objectId().optional(),
-  username: Joi.string().trim().required(),
   name: Joi.string().trim().required(),
-  mobileNo: Joi.string().trim().required(),
+  companyId: objectId().required(),
+  branch: objectId().required(),
   email: Joi.string().email().optional(),
-
-  role: Joi.string().required(),
-  // role: objectId().optional(),
-
-  address: addressSchema.optional(),
-
+  phoneNo: Joi.string().trim().required(),
+  username: Joi.string().trim().required(),
+  role: objectId().optional(),
+  address: addressSchema.required(),
   bankDetails: bankDetailsSchema.optional(),
-
   panNumber: Joi.string().uppercase().optional(),
-
   wages: Joi.number().min(0).optional(),
   commission: Joi.number().min(0).optional(),
   extraWages: Joi.number().min(0).optional(),
@@ -52,22 +46,15 @@ export const addEmployeeSchema = Joi.object({
 
 export const editEmployeeSchema = Joi.object({
   employeeId: objectId().required(),
-
   name: Joi.string().trim().optional(),
   companyId: objectId().optional(),
   branch: objectId().optional(),
-
   email: Joi.string().email().optional(),
-  mobileNo: Joi.string().trim().optional(),
-  // role: objectId().optional(),
-  role: Joi.string().optional(),
-
+  phoneNo: Joi.string().trim().optional(),
+  role: objectId().optional(),
   address: addressSchemaOptional.optional(),
-
   bankDetails: bankDetailsSchema.optional(),
-
   panNumber: Joi.string().uppercase().optional(),
-
   wages: Joi.number().min(0).optional(),
   commission: Joi.number().min(0).optional(),
   extraWages: Joi.number().min(0).optional(),
