@@ -1,4 +1,5 @@
-import { apiResponse, HTTP_STATUS, isValidObjectId } from "../../common";
+import { apiResponse, HTTP_STATUS, isValidObjectId, USER_ROLES } from "../../common";
+import { companyModel, userModel } from "../../database";
 import { roleModel } from "../../database/model/role";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addRoleSchema, deleteRoleSchema, editRoleSchema, getRoleSchema } from "../../validation";
@@ -7,29 +8,41 @@ export const addRole = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req?.headers;
-    const companyId = user?.companyId?._id;
     let { error, value } = addRoleSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
-    let existingRole = null;
+    if (user?.role !== USER_ROLES.ADMIN && user?.role !== USER_ROLES.SUPER_ADMIN) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accessDenied, {}, {}));
 
+    let companyId = null;
+    if (user?.role === USER_ROLES.SUPER_ADMIN) {
+      companyId = value?.companyId;
+    } else {
+      companyId = user?.companyId?._id;
+    }
+
+    if (companyId) {
+      const isCompanyExist = await getFirstMatch(companyModel, { _id: companyId, isDeleted: false }, {}, {});
+      if (!isCompanyExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
+    }
+
+    let existingRole = null;
+    value.name = value.name.trim().toLowerCase();
     if (companyId) {
       existingRole = await getFirstMatch(roleModel, { companyId, name: value?.name, isDeleted: false }, {}, {});
     } else {
-      existingRole = await getFirstMatch(roleModel, { name: value?.name, isDeleted: false }, {}, {});
+      existingRole = await getFirstMatch(roleModel, { name: value?.name, isDeleted: false, companyId: null }, {}, {});
     }
 
     if (existingRole) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Role"), {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
-
-    if (companyId) value.companyId = companyId;
+    value.companyId = companyId ?? null;
 
     const response = await createOne(roleModel, value);
 
-    if (!response) res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage?.addDataSuccess("Role"), response, {}));
   } catch (error) {
@@ -42,22 +55,40 @@ export const editRole = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req?.headers;
+
     let { error, value } = editRoleSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    // if (!isValidObjectId(value?.roleId)) {
-    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Role Id"), {}, {}));
-    // }
+    if (user?.role !== USER_ROLES.ADMIN && user?.role !== USER_ROLES.SUPER_ADMIN) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accessDenied, {}, {}));
 
-    let existingRole = await getFirstMatch(roleModel, { _id: value?.roleId, isDeleted: false }, {}, {});
+    let companyId = null;
+    if (user?.role === USER_ROLES.SUPER_ADMIN) {
+      companyId = value?.companyId;
+    } else {
+      companyId = user?.companyId?._id;
+    }
 
+    if (companyId) {
+      const isCompanyExist = await getFirstMatch(companyModel, { _id: companyId, isDeleted: false }, {}, {});
+      if (!isCompanyExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
+    }
+
+    let existingRole;
+    value.name = value.name.trim().toLowerCase();
+
+    existingRole = await getFirstMatch(roleModel, { _id: value?.roleId, isDeleted: false }, {}, {});
     if (!existingRole) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Role"), {}, {}));
 
-    existingRole = await getFirstMatch(roleModel, { role: value?.role, isDeleted: false, _id: { $ne: value?.roleId } }, {}, {});
+    if (companyId) {
+      existingRole = await getFirstMatch(roleModel, { companyId, name: value?.name, isDeleted: false, _id: { $ne: value?.roleId } }, {}, {});
+    } else {
+      existingRole = await getFirstMatch(roleModel, { name: value?.name, isDeleted: false, companyId: null, _id: { $ne: value?.roleId } }, {}, {});
+    }
     if (existingRole) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Role"), {}, {}));
 
     value.updatedBy = user?._id;
+    value.companyId = companyId ?? null;
     const response = await updateData(roleModel, { _id: value?.roleId, isDeleted: false }, value, {});
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("Role"), response, {}));
@@ -76,19 +107,26 @@ export const deleteRole = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
+    if (user?.role !== USER_ROLES.ADMIN && user?.role !== USER_ROLES.SUPER_ADMIN) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accessDenied, {}, {}));
+
     const existingRole = await getFirstMatch(roleModel, { _id: value?.id, isDeleted: false }, {}, {});
 
     if (!existingRole) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Role"), {}, {}));
+
+    const isRoleUsed = await getFirstMatch(userModel, { role: value?.id, isDeleted: false }, {}, {});
+
+    if (isRoleUsed) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.roleInUse, {}, {}));
 
     const payload = {
       isDeleted: true,
       updatedBy: user?._id || null,
     };
+
     const response = await updateData(roleModel, { _id: value?.id }, payload, {});
 
-    if (!response) return res.status(HTTP_STATUS?.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Role"), {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Role"), {}, {}));
 
-    return res.status(HTTP_STATUS?.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("Role"), response, {}));
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("Role"), response, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
@@ -98,12 +136,19 @@ export const deleteRole = async (req, res) => {
 export const getAllRole = async (req, res) => {
   reqInfo(req);
   try {
-    let { page, limit, search, startDate, endDate, activeFilter, filterDate } = req.query;
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
+
+    let { page, limit, search, startDate, endDate, activeFilter } = req.query;
 
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
+
+    if (companyId) {
+      criteria.companyId = companyId;
+    }
 
     if (search) {
       criteria.$or = [{ role: { $regex: search, $options: "si" } }];
@@ -160,10 +205,6 @@ export const getRoleById = async (req, res) => {
     const { id } = value;
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-
-    // if (!isValidObjectId(id)) {
-    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Role Id"), {}, {}));
-    // }
 
     const response = await getFirstMatch(roleModel, { _id: id }, {}, {});
 

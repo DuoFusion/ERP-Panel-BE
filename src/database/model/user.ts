@@ -26,7 +26,6 @@ import { IUser } from "../../types/user";
 //   baseSchemaOptions
 // );
 
-
 // export const userModel = mongoose.model("user", userSchema);
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -35,14 +34,38 @@ const userSchema = new mongoose.Schema<IUser>(
     email: { type: String },
     phoneNo: { type: String },
     password: { type: String },
-    companyId: { type: mongoose.Types.ObjectId, ref: "company", default: null },
     profileImage: { type: String },
     role: {
-      type: String,
-      enum: Object.values(USER_TYPES),
-      default: USER_TYPES.ADMIN,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "role",
+      default: null,
     },
     permissions: { type: permissionsSchema, default: {} },
+
+    designation: { type: String },
+    username: { type: String },
+
+    panNumber: { type: String },
+    address: {
+      address: { type: String },
+      country: { type: String },
+      state: { type: String },
+      city: { type: String },
+      postalCode: { type: Number },
+    },
+    bankDetails: {
+      bankHolderName: { type: String },
+      bankName: { type: String },
+      branchName: { type: String },
+      accountNumber: { type: String },
+      IFSCCode: { type: String },
+      swiftCode: { type: String },
+    },
+    wages: { type: Number },
+    commission: { type: Number },
+    extraWages: { type: Number },
+    target: { type: Number },
+
     ...baseSchemaFields,
   },
   baseSchemaOptions

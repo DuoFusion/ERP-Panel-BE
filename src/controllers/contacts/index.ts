@@ -29,7 +29,6 @@ export const addContact = async (req, res) => {
     existingContactDetails = await getFirstMatch(contactModel, { panNo: value?.panNo, isDeleted: false }, {}, {});
     if (existingContactDetails) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("PAN Number"), {}, {}));
 
-
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
 
@@ -56,7 +55,7 @@ export const deleteContactById = async (req, res) => {
     if (!isContactExist) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Contact"), {}, {}));
 
     value.isDeleted = true;
-    value.updatedBy = user?._id || null
+    value.updatedBy = user?._id || null;
 
     const response = await updateData(contactModel, { _id: new ObjectId(value?.id) }, value, {});
 
@@ -69,17 +68,21 @@ export const deleteContactById = async (req, res) => {
   }
 };
 
-
-
 export const getAllContact = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     let { page, limit, search, startDate, endDate } = req.query;
 
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
+
+    if (companyId) {
+      criteria.companyId = companyId;
+    }
 
     if (search) {
       criteria.$or = [{ email: { $regex: search, $options: "i" } }, { panNo: { $regex: search, $options: "i" } }, { phoneNo: { $regex: search, $options: "i" } }, { companyName: { $regex: search, $options: "i" } }, { whatsappNo: { $regex: search, $options: "i" } }];
@@ -110,7 +113,7 @@ export const getAllContact = async (req, res) => {
 
     const totalPages = Math.ceil(totalData / limit) || 1;
 
-    const stateObj = { page, limit, totalPages};
+    const stateObj = { page, limit, totalPages };
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Contact"), { contact_data: response, totalData, state: stateObj }, {}));
   } catch (error) {
@@ -139,7 +142,6 @@ export const editContactById = async (req, res) => {
       context: { type: existingContact.type },
       stripUnknown: true,
     });
-
 
     if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
 

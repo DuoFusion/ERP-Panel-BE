@@ -71,7 +71,7 @@ export const deleteCallRequest = async (req, res) => {
 
     const response = await updateData(callRequestModel, { _id: value?.id }, payload, {});
 
-    if (!response) return res.status(HTTP_STATUS?.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Call Request"), {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Call Request"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("Call Request"), response, {}));
   } catch (error) {
@@ -83,12 +83,18 @@ export const deleteCallRequest = async (req, res) => {
 export const getAllCallRequest = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
+
     let { page, limit, search, startDate, endDate, activeFilter } = req.query;
 
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
+    if (companyId) {
+      criteria.companyId = companyId;
+    }
 
     if (search) {
       criteria.$or = [{ businessName: { $regex: search, $options: "si" } }];
@@ -128,7 +134,6 @@ export const getAllCallRequest = async (req, res) => {
       page,
       limit,
       totalPages,
-      
     };
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.getDataSuccess("Call Request"), { call_Request_data: response, totalData, state: stateObj }, {}));

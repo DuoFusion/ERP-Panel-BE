@@ -1,5 +1,6 @@
 import { apiResponse, generateHash, HTTP_STATUS, isValidObjectId, USER_ROLES, USER_TYPES } from "../../common";
-import { userModel } from "../../database/model";
+import { branchModel, companyModel, userModel } from "../../database/model";
+import { roleModel } from "../../database/model/role";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
 
@@ -13,13 +14,41 @@ export const addUser = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    let existingUser = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
-    if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Email"), {}, {}));
+    if (value?.companyId) {
+      const isCompanyExist = await getFirstMatch(companyModel, { _id: value?.companyId, isDeleted: false }, {}, {});
+      if (!isCompanyExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
+    }
 
-    existingUser = await getFirstMatch(userModel, { phoneNo: value?.phoneNo, isDeleted: false }, {}, {});
-    if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
-    value.createdBy = user?._id;
-    value.updatedBy = user?._id;
+    if (value?.branchId) {
+      const isBranchExist = await getFirstMatch(branchModel, { _id: value?.branchId, isDeleted: false }, {}, {});
+      if (!isBranchExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Branch"), {}, {}));
+    }
+
+    if (value?.role) {
+      const isRoleExist = await getFirstMatch(roleModel, { _id: value?.role, isDeleted: false }, {}, {});
+      if (!isRoleExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Role"), {}, {}));
+    }
+
+    const orCondition = [];
+    if (value?.email) orCondition.push({ email: value?.email });
+    if (value?.phoneNo) orCondition.push({ phoneNo: value?.phoneNo });
+    if (value?.username) orCondition.push({ username: value?.username });
+    if (value?.panNumber) orCondition.push({ panNumber: value?.panNumber });
+    let existingUser = null;
+
+    if (orCondition.length) {
+      existingUser = await getFirstMatch(userModel, { $or: orCondition, isDeleted: false }, {}, {});
+
+      if (existingUser) {
+        if (existingUser?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+        if (existingUser?.phoneNo === value?.phoneNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        if (existingUser?.username === value?.username) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Username"), {}, {}));
+        if (existingUser?.panNumber === value?.panNumber) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("PAN Number"), {}, {}));
+      }
+    }
+
+    value.createdBy = user?._id || null;
+    value.updatedBy = user?._id || null;
     value.password = await generateHash(value?.password);
 
     const response = await createOne(userModel, value);
@@ -40,25 +69,41 @@ export const editUserById = async (req, res) => {
     const { error, value } = editUserSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
+    console.log("Userid", value?.userId);
+    const isUserExist = await getFirstMatch(userModel, { _id: value?.userId, isDeleted: false }, {}, {});
+    if (!isUserExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("User"), {}, {}));
 
-    // if (!isValidObjectId(value?.userId)) {
-    //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("User Id"), {}, {}));
-    // }
+    const isCompanyExist = await getFirstMatch(companyModel, { _id: value?.companyId, isDeleted: false }, {}, {});
+    if (!isCompanyExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
 
-    // check user exist
-    let existingUser = await getFirstMatch(userModel, { _id: new ObjectId(value?.userId), isDeleted: false }, {}, {});
-    if (!existingUser) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("User"), {}, {}));
-
-    // check email exist
-    existingUser = await getFirstMatch(userModel, { email: value?.email, _id: { $ne: new ObjectId(value?.userId) }, isDeleted: false }, {}, {});
-    if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Email"), {}, {}));
-
-    // check phone number exist
-    if (value?.phoneNo) {
-      existingUser = await getFirstMatch(userModel, { phoneNo: value?.phoneNo, _id: { $ne: new ObjectId(value?.userId) }, isDeleted: false }, {}, {});
-      if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
+    if (value?.branchId) {
+      const isBranchExist = await getFirstMatch(branchModel, { _id: value?.branchId, isDeleted: false }, {}, {});
+      if (!isBranchExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Branch"), {}, {}));
     }
 
+    if (value?.role) {
+      const isRoleExist = await getFirstMatch(roleModel, { _id: value?.role, isDeleted: false }, {}, {});
+      if (!isRoleExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Role"), {}, {}));
+    }
+
+    const orCondition = [];
+    if (value?.email) orCondition.push({ email: value?.email });
+    if (value?.phoneNo) orCondition.push({ phoneNo: value?.phoneNo });
+    if (value?.username) orCondition.push({ username: value?.username });
+    if (value?.panNumber) orCondition.push({ panNumber: value?.panNumber });
+
+    let existingUser = null;
+
+    if (orCondition.length) {
+      existingUser = await getFirstMatch(userModel, { $or: orCondition, _id: { $ne: value?.userId }, isDeleted: false }, {}, {});
+
+      if (existingUser) {
+        if (existingUser?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+        if (existingUser?.phoneNo === value?.phoneNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        if (existingUser?.username === value?.username) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Username"), {}, {}));
+        if (existingUser?.panNumber === value?.panNumber) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("PAN Number"), {}, {}));
+      }
+    }
     value.updatedBy = user?._id || null;
 
     if (value?.password) {
@@ -104,6 +149,8 @@ export const deleteUserById = async (req, res) => {
 export const getAllUser = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     let { page, limit, search, startDate, endDate, activeFilter } = req.query;
 
     page = Number(page);
@@ -111,6 +158,10 @@ export const getAllUser = async (req, res) => {
 
     // let criteria: any = { isDeleted: false, role: USER_ROLES.USER };
     let criteria: any = { isDeleted: false };
+
+    if (companyId) {
+      criteria.companyId = companyId;
+    }
 
     if (search) {
       criteria.$or = [{ fullName: { $regex: search, $options: "s  i" } }];

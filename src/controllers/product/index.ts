@@ -60,7 +60,7 @@ export const editProduct = async (req, res) => {
 
     const response = await updateData(productModel, { _id: value?.productId }, value, {});
 
-    if (!response) return res.status(HTTP_STATUS?.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Product"), {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Product"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("Product"), response, {}));
   } catch (error) {
@@ -88,7 +88,7 @@ export const deleteProduct = async (req, res) => {
 
     const response = await updateData(productModel, { _id: value?.id }, payload, {});
 
-    if (!response) return res.status(HTTP_STATUS?.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS?.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Product"), {}, {}));
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Product"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("Product"), response, {}));
   } catch (error) {
@@ -100,9 +100,15 @@ export const deleteProduct = async (req, res) => {
 export const getAllProduct = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     const { page, limit, search, startDate, endDate, activeFilter } = req.query;
 
     let criteria: any = { isDeleted: false };
+
+    if (companyId) {
+      criteria.companyId = companyId;
+    }
 
     if (search) {
       criteria.$or = [{ name: { $regex: search, $options: "si" } }, { itemCode: { $regex: search, $options: "si" } }];

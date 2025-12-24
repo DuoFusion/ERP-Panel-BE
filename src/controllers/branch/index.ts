@@ -87,12 +87,19 @@ export const deleteBranchById = async (req, res) => {
 export const getAllBranch = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
+
     let { page, limit, search, startDate, endDate } = req.query;
 
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
+
+    if (companyId) {
+      criteria.companyId = companyId;
+    }
 
     if (search) {
       criteria.$or = [{ name: { $regex: search, $options: "i" } }, { address: { $regex: search, $options: "i" } }];
@@ -123,7 +130,7 @@ export const getAllBranch = async (req, res) => {
 
     const totalPages = Math.ceil(totalData / limit) || 1;
 
-    const stateObj = { page, limit, totalPages};
+    const stateObj = { page, limit, totalPages };
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Branch"), { branch_data: response, totalData, state: stateObj }, {}));
   } catch (error) {

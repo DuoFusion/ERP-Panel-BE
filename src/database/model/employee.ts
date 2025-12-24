@@ -8,7 +8,7 @@ const employeeSchema = new Schema<IEmployee>(
     name: { type: String, required: true },
     phoneNo: { type: String, required: true },
     email: { type: String, default: null }, // removed unique
-    designation: { type: String },
+    // designation: { type: String },
     role: { type: Schema.Types.ObjectId, ref: "role", default: null },
     username: { type: String },
     password: { type: String },
