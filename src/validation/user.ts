@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { baseApiSchema, objectId } from "./common";
+import { baseApiSchema, commonContactSchema, objectId } from "./common";
 import { permissionsSchema } from "./permission";
 
 const addAddressSchema = Joi.object({
@@ -31,7 +31,7 @@ export const addUserSchema = Joi.object().keys({
   fullName: Joi.string().trim().required(),
   username: Joi.string().trim().required(),
   email: Joi.string().email().optional(),
-  phoneNo: Joi.string().trim().required(),
+  phoneNo: commonContactSchema.required(),
   password: Joi.string().required(),
   role: objectId().required(),
   address: addAddressSchema.optional(),
@@ -51,7 +51,7 @@ export const editUserSchema = Joi.object().keys({
   fullName: Joi.string().trim().optional().allow("", null),
   username: Joi.string().trim().optional(),
   email: Joi.string().email().optional(),
-  phoneNo: Joi.string().trim().optional(),
+  phoneNo: commonContactSchema.optional(),
   password: Joi.string().optional(),
   designation: Joi.string().optional().allow("", null),
   role: objectId().optional(),

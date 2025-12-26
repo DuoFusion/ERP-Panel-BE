@@ -6,7 +6,10 @@ const callRequestSchema = new Schema(
     ...baseSchemaFields,
     businessName: { type: String },
     contactName: { type: String },
-    contactNo: { type: String },
+    contactNo: {
+      countryCode: { type: String },
+      phoneNo: { type: Number },
+    },
     note: { type: String },
   },
   baseSchemaOptions

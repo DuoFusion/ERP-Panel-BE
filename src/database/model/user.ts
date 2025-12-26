@@ -32,7 +32,10 @@ const userSchema = new mongoose.Schema<IUser>(
   {
     fullName: { type: String },
     email: { type: String },
-    phoneNo: { type: String },
+    phoneNo: {
+      countryCode: { type: String },
+      phoneNo: { type: Number },
+    },
     password: { type: String },
     profileImage: { type: String },
     role: {

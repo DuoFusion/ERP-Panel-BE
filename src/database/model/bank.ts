@@ -5,7 +5,6 @@ const bankSchema = new mongoose.Schema(
   {
     bankName: { type: String },
     bankIFSC: { type: String },
-    upiId: { type: String },
     branchName: { type: String },
     accountHolderName: { type: String },
     bankAccountNumber: { type: String },

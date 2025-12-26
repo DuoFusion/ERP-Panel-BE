@@ -1,10 +1,10 @@
 import Joi from "joi";
-import { objectId } from "./common";
+import { commonContactSchema, objectId } from "./common";
 
 export const addCallRequestSchema = Joi.object().keys({
   businessName: Joi.string().required(),
   contactName: Joi.string().required(),
-  contactNo: Joi.string().required(),
+  contactNo: commonContactSchema.required(),
   note: Joi.string().optional(),
 });
 
@@ -12,7 +12,7 @@ export const editCallRequestSchema = Joi.object().keys({
   callRequestId: objectId().required(),
   businessName: Joi.string().optional(),
   contactName: Joi.string().optional(),
-  contactNo: Joi.string().optional(),
+  contactNo: commonContactSchema.optional(),
   note: Joi.string().optional(),
 });
 

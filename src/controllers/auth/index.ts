@@ -1,7 +1,8 @@
 import { HTTP_STATUS } from "../../common";
 import { apiResponse, generateHash, generateToken } from "../../common/utils";
+import { roleModel } from "../../database/model/role";
 import { userModel } from "../../database/model/user";
-import { createOne, findOneAndPopulate, getFirstMatch, reqInfo, responseMessage } from "../../helper";
+import { checkIdExist, createOne, findOneAndPopulate, getFirstMatch, reqInfo, responseMessage } from "../../helper";
 import { loginSchema, registerSchema } from "../../validation/auth";
 import bcryptjs from "bcryptjs";
 
@@ -14,14 +15,26 @@ export const register = async (req, res) => {
     if (error) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
     }
+    if (!(await checkIdExist(roleModel, value?.role, "Role", res))) return;
 
-    let existingUser = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
+    const phoneNo = value?.phoneNo?.phoneNo;
 
-    if (existingUser?.isActive === false) return res.status(HTTP_STATUS.CONFLICT).json(HTTP_STATUS.CONFLICT, responseMessage.accountBlock, {}, {});
+    const orCondition = [];
+    if (value?.email) orCondition.push({ email: value?.email });
+    if (phoneNo) orCondition.push({ "phoneNo.phoneNo": phoneNo });
+    let existingUser = null;
 
-    if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Email"), {}, {}));
+    if (orCondition.length) {
+      existingUser = await getFirstMatch(userModel, { $or: orCondition, isDeleted: false }, {}, {});
 
-    existingUser = await getFirstMatch(userModel, { phoneNo: value?.phoneNo, isDeleted: false }, {}, {});
+      if (existingUser) {
+        if (existingUser?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+        if (Number(existingUser?.phoneNo?.phoneNo) === Number(phoneNo)) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("User"), {}, {}));
+      }
+    }
+
+    existingUser = await getFirstMatch(userModel, { "phoneNo.phoneNo": phoneNo, isDeleted: false }, {}, {});
     if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
 
     value.password = await generateHash(value.password);
@@ -54,7 +67,7 @@ export const login = async (req, res) => {
     }
 
     let response = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
-   
+
     if (!response) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidUserPasswordEmail, {}, {}));
     if (response.isActive === false) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accountBlock, {}, {}));
 

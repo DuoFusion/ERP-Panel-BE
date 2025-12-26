@@ -1,5 +1,5 @@
 import { HTTP_STATUS, USER_ROLES } from "../../common";
-import { apiResponse, isValidObjectId } from "../../common/utils";
+import { apiResponse } from "../../common/utils";
 import { branchModel, companyModel } from "../../database";
 import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addBranchSchema, deleteBranchSchema, editBranchSchema, getBranchSchema } from "../../validation";

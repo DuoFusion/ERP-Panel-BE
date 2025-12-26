@@ -28,11 +28,11 @@ export const addCompanySchema = Joi.object().keys({
 
   // ******************* Bank Details *******************
   bankId: objectId().optional(),
+  upiId: Joi.string().optional(), 
   // accountHolderName: Joi.string().required(),
   // bankAccountNumber: Joi.string().required(),
   // bankName: Joi.string().required(),
   // bankIFSC: Joi.string().required(),
-  // upiId: Joi.string().optional(),
   // branchName: Joi.string().optional().allow("", null),
 
   // ******************* Additional Details *******************
@@ -41,7 +41,7 @@ export const addCompanySchema = Joi.object().keys({
   gstRegistrationType: Joi.string().optional(),
   gstIdentificationNumber: Joi.string().optional(),
   financialMonthInterval: Joi.string().optional(),
-  defaultFinancialYear: Joi.string().optional(),
+  // defaultFinancialYear: Joi.string().optional(),
 
   // *******************  Other Details *******************
   corporateIdentificationNumber: Joi.string().optional(),
@@ -98,11 +98,11 @@ export const editCompanySchema = Joi.object().keys({
 
   // ******************* Bank Details *******************
   bankId: objectId().optional(),
+  upiId: Joi.string().optional(),
   // accountHolderName: Joi.string().optional(),
   // bankAccountNumber: Joi.string().optional(),
   // bankName: Joi.string().optional(),
   // bankIFSC: Joi.string().optional(),
-  // upiId: Joi.string().optional(),
   // branchName: Joi.string().optional().allow("", null),
 
   // ******************* Additional Details *******************
@@ -111,7 +111,7 @@ export const editCompanySchema = Joi.object().keys({
   gstRegistrationType: Joi.string().optional().allow("", null),
   gstIdentificationNumber: Joi.string().optional().allow("", null),
   financialMonthInterval: Joi.string().optional().allow("", null),
-  defaultFinancialYear: Joi.string().optional(),
+  // defaultFinancialYear: Joi.string().optional(),
 
   // *******************  Other Details *******************
   corporateIdentificationNumber: Joi.string().optional().allow("", null),

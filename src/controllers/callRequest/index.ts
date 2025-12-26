@@ -7,12 +7,14 @@ export const addCallRequest = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     let { error, value } = addCallRequestSchema.validate(req.body);
 
     if (error) res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
+    value.companyId = companyId;
 
     const response = await createOne(callRequestModel, value);
 

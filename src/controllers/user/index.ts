@@ -1,7 +1,7 @@
-import { apiResponse, generateHash, HTTP_STATUS, isValidObjectId, USER_ROLES, USER_TYPES } from "../../common";
+import { apiResponse, generateHash, HTTP_STATUS, USER_TYPES } from "../../common";
 import { branchModel, companyModel, userModel } from "../../database/model";
 import { roleModel } from "../../database/model/role";
-import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
+import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
 
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -14,24 +14,15 @@ export const addUser = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    if (value?.companyId) {
-      const isCompanyExist = await getFirstMatch(companyModel, { _id: value?.companyId, isDeleted: false }, {}, {});
-      if (!isCompanyExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
-    }
+    if (!(await checkIdExist(companyModel, value?.companyId, "Company", res))) return;
+    if (!(await checkIdExist(branchModel, value?.branchId, "Branch", res))) return;
+    if (!(await checkIdExist(roleModel, value?.role, "Role", res))) return;
 
-    if (value?.branchId) {
-      const isBranchExist = await getFirstMatch(branchModel, { _id: value?.branchId, isDeleted: false }, {}, {});
-      if (!isBranchExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Branch"), {}, {}));
-    }
-
-    if (value?.role) {
-      const isRoleExist = await getFirstMatch(roleModel, { _id: value?.role, isDeleted: false }, {}, {});
-      if (!isRoleExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Role"), {}, {}));
-    }
+    const phoneNo = value?.phoneNo?.phoneNo;
 
     const orCondition = [];
     if (value?.email) orCondition.push({ email: value?.email });
-    if (value?.phoneNo) orCondition.push({ phoneNo: value?.phoneNo });
+    if (phoneNo) orCondition.push({ "phoneNo.phoneNo": phoneNo });
     if (value?.username) orCondition.push({ username: value?.username });
     if (value?.panNumber) orCondition.push({ panNumber: value?.panNumber });
     let existingUser = null;
@@ -41,9 +32,10 @@ export const addUser = async (req, res) => {
 
       if (existingUser) {
         if (existingUser?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
-        if (existingUser?.phoneNo === value?.phoneNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        if (Number(existingUser?.phoneNo?.phoneNo) === Number(phoneNo)) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
         if (existingUser?.username === value?.username) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Username"), {}, {}));
         if (existingUser?.panNumber === value?.panNumber) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("PAN Number"), {}, {}));
+        return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("User"), {}, {}));
       }
     }
 

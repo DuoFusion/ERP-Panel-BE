@@ -33,9 +33,9 @@ const companySchema: any = new mongoose.Schema(
 
     // ******************* Bank Details *******************
     bankId: { type: mongoose.Schema.Types.ObjectId, ref: "bank" },
+    upiId: { type: String },
     // bankName: { type: String },
     // bankIFSC: { type: String },
-    // upiId: { type: String },
     // branchName: { type: String },
     // accountHolderName: { type: String },
     // bankAccountNumber: { type: String },
@@ -46,7 +46,7 @@ const companySchema: any = new mongoose.Schema(
     gstRegistrationType: { type: String },
     gstIdentificationNumber: { type: String },
     financialMonthInterval: { type: String },
-    defaultFinancialYear: { type: String },
+    // defaultFinancialYear: { type: String },
 
     corporateIdentificationNumber: { type: String },
     letterOfUndertaking: { type: String }, 

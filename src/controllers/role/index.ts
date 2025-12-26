@@ -1,4 +1,4 @@
-import { apiResponse, HTTP_STATUS, isValidObjectId, USER_ROLES } from "../../common";
+import { apiResponse, HTTP_STATUS, USER_ROLES } from "../../common";
 import { companyModel, userModel } from "../../database";
 import { roleModel } from "../../database/model/role";
 import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
