@@ -13,9 +13,7 @@ export const addCategory = async (req, res) => {
     const companyId = user?.companyId?._id;
     const { error, value } = addCategorySchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const existingCategory = await getFirstMatch(categoryModel, { code: value.code, isDeleted: false }, {}, {});
 
@@ -88,9 +86,7 @@ export const getCategoryById = async (req, res) => {
   try {
     const { error, value } = getCategorySchema.validate(req.params);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const response = await getFirstMatch(categoryModel, { _id: value.id, isDeleted: false }, {}, {});
 
@@ -111,9 +107,7 @@ export const editCategoryById = async (req, res) => {
     const user = req.headers;
     const { error, value } = editCategorySchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const existingCategory = await getFirstMatch(categoryModel, { code: value.code, _id: { $ne: value.id }, isDeleted: false }, {}, {});
 
@@ -142,9 +136,7 @@ export const deleteCategoryById = async (req, res) => {
     const user = req.headers;
     const { error, value } = deleteCategorySchema.validate(req.params);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const category = await getFirstMatch(categoryModel, { _id: value.id, isDeleted: false }, {}, {});
 

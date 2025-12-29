@@ -102,6 +102,8 @@ export const editRole = async (req, res) => {
     value.companyId = companyId ?? null;
     const response = await updateData(roleModel, { _id: value?.roleId, isDeleted: false }, value, {});
 
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Role"), {}, {}));
+
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("Role"), response, {}));
   } catch (error) {
     console.error(error);

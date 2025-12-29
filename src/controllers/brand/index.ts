@@ -13,9 +13,7 @@ export const addBrand = async (req, res) => {
     const companyId = user?.companyId?._id;
     const { error, value } = addBrandSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const existingBrand = await getFirstMatch(brandModel, { code: value.code, isDeleted: false }, {}, {});
 
@@ -44,9 +42,7 @@ export const editBrandById = async (req, res) => {
     const user = req.headers;
     const { error, value } = editBrandSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const existingBrand = await getFirstMatch(brandModel, { code: value.code, _id: { $ne: value.brandId }, isDeleted: false }, {}, {});
 
@@ -75,9 +71,7 @@ export const deleteBrandById = async (req, res) => {
     const user = req.headers;
     const { error, value } = deleteBrandSchema.validate(req.params);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const brand = await getFirstMatch(brandModel, { _id: value.id, isDeleted: false }, {}, {});
 
@@ -143,9 +137,7 @@ export const getBrandById = async (req, res) => {
   try {
     const { error, value } = getBrandSchema.validate(req.params);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
     const response = await getFirstMatch(brandModel, { _id: value.id, isDeleted: false }, {}, {});
 

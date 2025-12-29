@@ -14,6 +14,7 @@ import { userRoute } from "./user";
 import { recipeRouter } from "./recipe";
 import { brandRouter } from "./brand";
 import { categoryRouter } from "./category";
+import { bankRouter } from "./bank";
 
 const router = Router();
 
@@ -21,7 +22,6 @@ router.use("/auth", authRoute);
 
 // router.use(userJwt);
 router.use(adminJwt);
-
 
 router.use("/upload", adminJwt, uploadRoute);
 
@@ -38,6 +38,8 @@ router.use("/category", categoryRouter);
 
 router.use("/recipe", recipeRouter);
 router.use("/contacts", contactRouter);
+router.use("/bank", bankRouter);
+
 // router.use("/stockVerification", stockVerificationRouter);
 // router.use("/employee", employeeRouter);
 

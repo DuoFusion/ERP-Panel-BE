@@ -10,7 +10,7 @@ export const addCallRequest = async (req, res) => {
     const companyId = user?.companyId?._id;
     let { error, value } = addCallRequestSchema.validate(req.body);
 
-    if (error) res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
@@ -34,7 +34,7 @@ export const editCallRequest = async (req, res) => {
     const { user } = req?.headers;
     let { error, value } = editCallRequestSchema.validate(req.body);
 
-    if (error) res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     let isExist = await getFirstMatch(callRequestModel, { _id: value?.callRequestId, isDeleted: false }, {}, {});
 

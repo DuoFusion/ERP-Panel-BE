@@ -162,7 +162,7 @@ export const getAllUser = async (req, res) => {
     }
 
     if (search) {
-      criteria.$or = [{ fullName: { $regex: search, $options: "s  i" } }];
+      criteria.$or = [{ fullName: { $regex: search, $options: "si" } }];
     }
 
     if (activeFilter !== undefined) criteria.isActive = activeFilter == "true";

@@ -12,8 +12,6 @@ export const addAnnouncement = async (req, res) => {
     const { user } = req?.headers;
     let { error, value } = addAnnouncementSchema.validate(req.body);
 
-    if (error) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, error?.details[0].message, {}, {}));
-
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
     let existingCompany = await getFirstMatch(companyModel, { _id: value?.companyId, isDeleted: false }, {}, {});
@@ -53,7 +51,7 @@ export const editAnnouncementById = async (req, res) => {
     const { user } = req?.headers;
     let { error, value } = editAnnouncementSchema.validate(req.body);
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
     // if (!isValidObjectId(value?.companyId)) {
     //   return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Company Id"), {}, {}));
@@ -95,7 +93,7 @@ export const deleteAnnouncementById = async (req, res) => {
 
     const { error, value } = deleteAnnouncementSchema.validate(req.params);
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).status(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     const isAnnouncementExist = await getFirstMatch(announcementModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
 
@@ -170,7 +168,7 @@ export const getAnnouncementById = async (req, res) => {
   try {
     const { error, value } = getAnnouncementSchema.validate(req.params);
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     const response = await getFirstMatch(announcementModel, { _id: value?.id, isDeleted: false }, {}, {});
 

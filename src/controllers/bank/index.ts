@@ -1,0 +1,182 @@
+import { skip } from "node:test";
+import { apiResponse, HTTP_STATUS, USER_ROLES } from "../../common";
+import { branchModel, companyModel } from "../../database";
+import { bankModel } from "../../database/model/bank";
+import { checkIdExist, countData, createOne, findOneAndPopulate, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
+import { addBankSchema, deleteBankSchema, editBankSchema, getBankSchema } from "../../validation";
+
+export const addBank = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { user } = req.headers;
+    let companyId = user?.companyId?._id;
+
+    const { error, value } = addBankSchema.validate(req.body);
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+
+    if (user.role?.name === USER_ROLES.SUPER_ADMIN) {
+      companyId = value?.companyId;
+    }
+
+    if (!(await checkIdExist(companyModel, companyId, "Company", res))) return;
+
+    if (value?.branchIds?.length) {
+      for (const branch of value?.branchIds) {
+        if (!(await checkIdExist(branchModel, branch, "Branch", res))) return;
+      }
+    }
+
+    const isExist = await getFirstMatch(bankModel, { bankAccountNumber: value?.bankAccountNumber, isDeleted: false }, {}, {});
+    if (isExist) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Bank Account Number"), {}, {}));
+
+    value.createdBy = user?._id;
+    value.updatedBy = user?._id;
+    value.companyId = companyId;
+
+    const response = await createOne(bankModel, value);
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.addDataError, {}, {}));
+
+    return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage.addDataSuccess("Bank"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const editBank = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { user } = req.headers;
+    let companyId = user?.companyId?._id;
+
+    const { error, value } = editBankSchema.validate(req.body);
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+
+    if (user.role === USER_ROLES.SUPER_ADMIN) {
+      companyId = value?.companyId;
+    }
+    if (!(await checkIdExist(bankModel, value?.bankId, "Bank", res))) return;
+
+    if (!(await checkIdExist(companyModel, companyId, "Company", res))) return;
+
+    if (value?.branchIds?.length) {
+      for (const branch of value?.branchIds) {
+        if (!(await checkIdExist(branchModel, branch, "Branch", res))) return;
+      }
+    }
+
+    const isExist = await getFirstMatch(bankModel, { bankAccountNumber: value?.bankAccountNumber, isDeleted: false, _id: { $ne: value?.bankId } }, {}, {});
+    if (isExist) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Bank Account Number"), {}, {}));
+
+    value.updatedBy = user?._id;
+
+    const response = await updateData(bankModel, { _id: value?.bankId, isDeleted: false }, value, {});
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.addDataError, {}, {}));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.updateDataSuccess("Bank"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const deleteBankById = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { user } = req.headers;
+    const { error, value } = deleteBankSchema.validate(req.params);
+
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+
+    if (!(await checkIdExist(bankModel, value?.id, "Bank", res))) return;
+
+    value.updatedBy = user?._id;
+    value.isDeleted = true;
+
+    const response = await updateData(bankModel, { _id: value?.id, isDeleted: false }, value, {});
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.deleteDataError("Bank"), {}, {}));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.deleteDataSuccess("Bank"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const getAllBank = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
+    let { page, limit, search, startDate, endDate, activeFilter } = req.query;
+
+    page = Number(page);
+    limit = Number(limit);
+
+    let criteria: any = { isDeleted: false };
+
+    if (companyId) criteria.companyId = companyId;
+
+    if (search) criteria.$or = [{ accountHolderName: { $regex: search, $options: "si" }, bankAccountNumber: { $regex: search, $options: "si" } }];
+
+    if (activeFilter !== undefined) criteria.isActive = activeFilter === "true";
+
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      if (!isNaN(start.getTime()) && isNaN(end.getTime())) {
+        criteria.createdAt = {
+          $gte: start,
+          $lte: end,
+        };
+      }
+    }
+
+    const options: any = {
+      sort: { createdAt: -1 },
+      skip: (page - 1) * limit,
+      limit,
+    };
+
+    if (page && limit) {
+      options.page = (parseInt(page) + 1) * parseInt(limit);
+      options.limit = parseInt(limit);
+    }
+
+    const response = await getDataWithSorting(bankModel, criteria, {}, options);
+
+    const totalData = await countData(bankModel, criteria);
+
+    const totalPages = Math.ceil(totalData / limit) || 1;
+
+    const stateObj = {
+      page,
+      limit,
+      totalPages,
+    };
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.getDataSuccess("Bank"), { bank_data: response, totalData, state: stateObj }, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const getBankById = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { error, value } = getBankSchema.validate(req.params);
+    const { id } = value;
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
+    const response = await getFirstMatch(bankModel, { _id: id, isDeleted: false }, { password: 0 }, {});
+
+    if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Bank"), {}, {}));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Bank"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};

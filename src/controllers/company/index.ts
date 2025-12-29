@@ -1,7 +1,6 @@
 import { HTTP_STATUS } from "../../common";
 import { apiResponse } from "../../common/utils";
 import { companyModel } from "../../database/model";
-import { bankModel } from "../../database/model/bank";
 import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addCompanySchema, deleteCompanySchema, editCompanySchema, getCompanySchema } from "../../validation";
 
@@ -63,7 +62,7 @@ export const editCompanyById = async (req, res) => {
     const { user } = req?.headers;
     let { error, value } = editCompanySchema.validate(req.body);
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
     if (!(await checkIdExist(companyModel, value?.companyId, "Company", res))) return;
 
@@ -114,7 +113,7 @@ export const deleteCompanyById = async (req, res) => {
     const { user } = req?.headers;
     let { error, value } = deleteCompanySchema.validate(req.params);
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).status(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     const isCompanyExist = await getFirstMatch(companyModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
 

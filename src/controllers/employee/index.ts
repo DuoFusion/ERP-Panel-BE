@@ -71,7 +71,7 @@ export const editEmployeeById = async (req, res) => {
 
     // let { error, value } = editEmployeeSchema.validate(req.body);
 
-    // if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
+    // if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
     // const isEmployeeExist = await getFirstMatch(userModel, { _id: value?.employeeId, isDeleted: false }, {}, {});
     // if (!isEmployeeExist) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Employee"), {}, {}));
@@ -129,7 +129,7 @@ export const deleteEmployeeById = async (req, res) => {
 
     // const { error, value } = deleteEmployeeSchema.validate(req.params);
 
-    // if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+    // if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     // const isEmployeeExist = await getFirstMatch(userModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
 

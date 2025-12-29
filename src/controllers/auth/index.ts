@@ -12,9 +12,8 @@ export const register = async (req, res) => {
   try {
     let { error, value } = registerSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
     if (!(await checkIdExist(roleModel, value?.role, "Role", res))) return;
 
     const phoneNo = value?.phoneNo?.phoneNo;
@@ -62,9 +61,7 @@ export const login = async (req, res) => {
   try {
     const { error, value } = loginSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     let response = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
 

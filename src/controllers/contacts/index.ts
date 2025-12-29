@@ -48,7 +48,7 @@ export const deleteContactById = async (req, res) => {
     const { user } = req?.headers;
     let { error, value } = deleteContactSchema.validate(req.params);
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).status(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     const isContactExist = await getFirstMatch(contactModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
 
@@ -143,7 +143,7 @@ export const editContactById = async (req, res) => {
       stripUnknown: true,
     });
 
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
     if (value.email) {
       existingContact = await getFirstMatch(contactModel, { email: value?.email, isDeleted: false }, {}, {});
