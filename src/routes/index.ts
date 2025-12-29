@@ -22,21 +22,23 @@ router.use("/auth", authRoute);
 // router.use(userJwt);
 router.use(adminJwt);
 
-router.use("/branch", branchRouter);
-router.use("/role", roleRoute);
-router.use("/product", productRouter);
-router.use("/call-request", callRequestRouter);
-router.use("/contacts", contactRouter);
-router.use("/recipe", recipeRouter);
-router.use("/brand", brandRouter);
-router.use("/category", categoryRouter);
-// router.use("/stockVerification", stockVerificationRouter);
-// router.use("/employee", employeeRouter);
 
 router.use("/upload", adminJwt, uploadRoute);
 
 router.use("/user", userRoute);
 router.use("/company", companyRouter);
 router.use("/announcement", announcementRouter);
+router.use("/role", roleRoute);
+router.use("/branch", branchRouter);
+router.use("/product", productRouter);
+router.use("/call-request", callRequestRouter);
+
+router.use("/brand", brandRouter);
+router.use("/category", categoryRouter);
+
+router.use("/recipe", recipeRouter);
+router.use("/contacts", contactRouter);
+// router.use("/stockVerification", stockVerificationRouter);
+// router.use("/employee", employeeRouter);
 
 export { router };

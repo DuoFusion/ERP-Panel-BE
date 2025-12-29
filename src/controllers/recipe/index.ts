@@ -9,15 +9,19 @@ export const addRecipe = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     let { error, value } = addRecipeSchema.validate(req.body);
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
-    const existingRecipe = await getFirstMatch(recipeModel, { recipeNo: value.recipeNo, isDeleted: false }, {}, {});
+    if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.getDataNotFound("Company"), {}, {}));
+
+    const existingRecipe = await getFirstMatch(recipeModel, { companyId, recipeNo: value.recipeNo, isDeleted: false }, {}, {});
 
     if (existingRecipe) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Recipe No"), {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
+    value.companyId = companyId;
 
     const response = await createOne(recipeModel, value);
 

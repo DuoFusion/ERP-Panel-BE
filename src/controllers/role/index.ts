@@ -12,6 +12,7 @@ export const addRole = async (req, res) => {
     let { error, value } = addRoleSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
+    if (value?.name) value.name = value.name.trim().toLowerCase();
 
     if (userRole !== USER_ROLES.ADMIN && userRole !== USER_ROLES.SUPER_ADMIN) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accessDenied, {}, {}));
 
@@ -25,6 +26,10 @@ export const addRole = async (req, res) => {
     if (companyId) {
       if (!(await checkIdExist(companyModel, companyId, "Company", res))) return;
     }
+
+    const isAdminRole = value?.name === USER_ROLES.ADMIN || value?.name === USER_ROLES.SUPER_ADMIN;
+
+    if (isAdminRole && userRole !== USER_ROLES.SUPER_ADMIN) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.accessDenied, {}, {}));
 
     let existingRole = null;
 
@@ -44,6 +49,8 @@ export const addRole = async (req, res) => {
 
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
+    if (value?.companyId) await updateData(companyModel, { _id: value?.companyId, isDeleted: false }, { $push: { roles: response?._id } }, {});
+
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage?.addDataSuccess("Role"), response, {}));
   } catch (error) {
     console.error(error);
@@ -61,6 +68,8 @@ export const editRole = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
+    if (value?.name) value.name = value.name.trim().toLowerCase();
+
     if (userRole !== USER_ROLES.ADMIN && userRole !== USER_ROLES.SUPER_ADMIN) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accessDenied, {}, {}));
 
     let companyId = null;
@@ -76,7 +85,6 @@ export const editRole = async (req, res) => {
     }
 
     let existingRole;
-    if (value?.name) value.name = value.name.trim().toLowerCase();
 
     existingRole = await getFirstMatch(roleModel, { _id: value?.roleId, isDeleted: false }, {}, {});
     if (!existingRole) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Role"), {}, {}));
