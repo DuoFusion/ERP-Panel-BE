@@ -10,6 +10,7 @@ export const addCategory = async (req, res) => {
   reqInfo(req);
   try {
     const user = req.headers;
+    const companyId = user?.companyId?._id;
     const { error, value } = addCategorySchema.validate(req.body);
 
     if (error) {
@@ -18,12 +19,11 @@ export const addCategory = async (req, res) => {
 
     const existingCategory = await getFirstMatch(categoryModel, { code: value.code, isDeleted: false }, {}, {});
 
-    if (existingCategory) {
-      return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Category code"), {}, {}));
-    }
+    if (existingCategory) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Category code"), {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
+    if (companyId) value.companyId = companyId;
 
     const response = await createOne(categoryModel, value);
 
@@ -50,6 +50,7 @@ export const getAllCategory = async (req, res) => {
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
+
     if (companyId) {
       criteria.companyId = companyId;
     }

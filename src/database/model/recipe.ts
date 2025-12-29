@@ -9,7 +9,7 @@ const recipeSchema = new Schema<IRecipe>(
 
     recipeName: { type: String, required: true, index: true },
     recipeDate: { type: Date, required: true },
-    recipeNo: { type: String, required: true, unique: true, index: true },
+    recipeNo: { type: String, required: true },
 
     recipeType: {
       type: String,

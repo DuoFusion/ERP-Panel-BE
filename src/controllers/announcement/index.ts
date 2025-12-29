@@ -28,10 +28,10 @@ export const addAnnouncement = async (req, res) => {
       if (existAnnouncement) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Version"), {}, {}));
     }
 
-    if(value?.link){
-      existAnnouncement = await getFirstMatch(announcementModel, { link: value?.link, isDeleted: false }, {}, {});
-      if (existAnnouncement) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Link"), {}, {}));
-    }
+    // if(value?.link){
+    //   existAnnouncement = await getFirstMatch(announcementModel, { link: value?.link, isDeleted: false }, {}, {});
+    //   if (existAnnouncement) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Link"), {}, {}));
+    // }
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;

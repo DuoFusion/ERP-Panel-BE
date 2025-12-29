@@ -49,7 +49,7 @@ const companySchema: any = new mongoose.Schema(
     // defaultFinancialYear: { type: String },
 
     corporateIdentificationNumber: { type: String },
-    letterOfUndertaking: { type: String }, 
+    letterOfUndertaking: { type: String },
     taxDeductionAndCollectionAccountNumber: { type: String },
     importerExporterCode: { type: String },
     outletSize: { type: String },
@@ -69,7 +69,8 @@ const companySchema: any = new mongoose.Schema(
     waterMark: { type: String },
     reportFormatLogo: { type: String },
     authorizedSignature: { type: String },
-    userIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }],
+
+    userIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "user", default: [] }],
     roles: [{ type: mongoose.Schema.Types.ObjectId, ref: "role", default: [] }],
     employees: [{ type: mongoose.Schema.Types.ObjectId, ref: "employee", default: [] }],
 

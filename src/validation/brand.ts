@@ -10,7 +10,7 @@ export const addBrandSchema = Joi.object({
 });
 
 export const editBrandSchema = Joi.object({
-  id: objectId().required(),
+  brandId: objectId().required(),
   name: Joi.string().trim().optional(),
   code: Joi.string().trim().uppercase().optional(),
   description: Joi.string().allow("").optional(),

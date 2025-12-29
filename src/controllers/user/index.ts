@@ -47,6 +47,8 @@ export const addUser = async (req, res) => {
 
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
+    if (value?.companyId) await updateData(companyModel, { _id: value?.companyId, isDeleted: false }, { $push: { userIds: response?._id } }, {});
+
     const { password, ...rest } = response?._doc;
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage?.addDataSuccess("User"), rest, {}));

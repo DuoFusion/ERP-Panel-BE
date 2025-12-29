@@ -9,7 +9,8 @@ const ObjectId = require("mongoose").Types.ObjectId;
 export const addBrand = async (req, res) => {
   reqInfo(req);
   try {
-    const user = req.headers;
+    const { user } = req.headers;
+    const companyId = user?.companyId?._id;
     const { error, value } = addBrandSchema.validate(req.body);
 
     if (error) {
@@ -18,12 +19,11 @@ export const addBrand = async (req, res) => {
 
     const existingBrand = await getFirstMatch(brandModel, { code: value.code, isDeleted: false }, {}, {});
 
-    if (existingBrand) {
-      return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Brand code"), {}, {}));
-    }
+    if (existingBrand) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Brand code"), {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
+    if (companyId) value.companyId = companyId;
 
     const response = await createOne(brandModel, value);
 
@@ -32,6 +32,62 @@ export const addBrand = async (req, res) => {
     }
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage.addDataSuccess("Brand"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const editBrandById = async (req, res) => {
+  reqInfo(req);
+  try {
+    const user = req.headers;
+    const { error, value } = editBrandSchema.validate(req.body);
+
+    if (error) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
+    }
+
+    const existingBrand = await getFirstMatch(brandModel, { code: value.code, _id: { $ne: value.brandId }, isDeleted: false }, {}, {});
+
+    if (existingBrand) {
+      return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Brand code"), {}, {}));
+    }
+
+    value.updatedBy = user?._id || null;
+
+    const response = await updateData(brandModel, { _id: new ObjectId(value.brandId), isDeleted: false }, value, {});
+
+    if (!response) {
+      return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.updateDataError("Brand"), {}, {}));
+    }
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.updateDataSuccess("Brand"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const deleteBrandById = async (req, res) => {
+  reqInfo(req);
+  try {
+    const user = req.headers;
+    const { error, value } = deleteBrandSchema.validate(req.params);
+
+    if (error) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
+    }
+
+    const brand = await getFirstMatch(brandModel, { _id: value.id, isDeleted: false }, {}, {});
+
+    if (!brand) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Brand"), {}, {}));
+    }
+
+    const response = await updateData(brandModel, { _id: value.id }, { isDeleted: true, updatedBy: user?._id || null }, {});
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.deleteDataSuccess("Brand"), response, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
@@ -104,62 +160,6 @@ export const getBrandById = async (req, res) => {
   }
 };
 
-export const editBrandById = async (req, res) => {
-  reqInfo(req);
-  try {
-    const user = req.headers;
-    const { error, value } = editBrandSchema.validate(req.body);
-
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
-
-    const existingBrand = await getFirstMatch(brandModel, { code: value.code, _id: { $ne: value.id }, isDeleted: false }, {}, {});
-
-    if (existingBrand) {
-      return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Brand code"), {}, {}));
-    }
-
-    value.updatedBy = user?._id || null;
-
-    const response = await updateData(brandModel, { _id: new ObjectId(value.id), isDeleted: false }, value, {});
-
-    if (!response) {
-      return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.updateDataError("Brand"), {}, {}));
-    }
-
-    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.updateDataSuccess("Brand"), response, {}));
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
-  }
-};
-
-export const deleteBrandById = async (req, res) => {
-  reqInfo(req);
-  try {
-    const user = req.headers;
-    const { error, value } = deleteBrandSchema.validate(req.params);
-
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-    }
-
-    const brand = await getFirstMatch(brandModel, { _id: value.id, isDeleted: false }, {}, {});
-
-    if (!brand) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Brand"), {}, {}));
-    }
-
-    const response = await updateData(brandModel, { _id: value.id }, { isDeleted: true, updatedBy: user?._id || null }, {});
-
-    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.deleteDataSuccess("Brand"), response, {}));
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
-  }
-};
-
 export const getBrandTree = async (req, res) => {
   reqInfo(req);
   try {
@@ -183,6 +183,8 @@ export const getBrandTree = async (req, res) => {
       },
     ]);
 
+    console.log("Brands", brands);
+
     const buildTree = (root) => {
       const map = {};
 
@@ -205,7 +207,10 @@ export const getBrandTree = async (req, res) => {
         }
       });
 
+      console.log("buildTree", buildTree);
+
       const children = Object.values(map).filter((brand: any) => brand.parentBrandId?.toString() === root._id.toString());
+      console.log("children", children);
 
       return {
         _id: root._id,
@@ -216,6 +221,7 @@ export const getBrandTree = async (req, res) => {
     };
 
     const response = brands.map(buildTree);
+    console.log("response", response);
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.getDataSuccess("Brand tree"), response, {}));
   } catch (error) {
