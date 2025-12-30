@@ -1,7 +1,8 @@
 import { HTTP_STATUS } from "../../common";
-import { apiResponse, generateHash, generateToken} from "../../common/utils";
+import { apiResponse, generateHash, generateToken } from "../../common/utils";
+import { roleModel } from "../../database/model/role";
 import { userModel } from "../../database/model/user";
-import { createOne, getFirstMatch, reqInfo, responseMessage } from "../../helper";
+import { checkIdExist, createOne, findOneAndPopulate, getFirstMatch, reqInfo, responseMessage } from "../../helper";
 import { loginSchema, registerSchema } from "../../validation/auth";
 import bcryptjs from "bcryptjs";
 
@@ -11,23 +12,35 @@ export const register = async (req, res) => {
   try {
     let { error, value } = registerSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
+    if (!(await checkIdExist(roleModel, value?.role, "Role", res))) return;
+
+    const phoneNo = value?.phoneNo?.phoneNo;
+
+    const orCondition = [];
+    if (value?.email) orCondition.push({ email: value?.email });
+    if (phoneNo) orCondition.push({ "phoneNo.phoneNo": phoneNo });
+    let existingUser = null;
+
+    if (orCondition.length) {
+      existingUser = await getFirstMatch(userModel, { $or: orCondition, isDeleted: false }, {}, {});
+
+      if (existingUser) {
+        if (existingUser?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+        if (Number(existingUser?.phoneNo?.phoneNo) === Number(phoneNo)) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("User"), {}, {}));
+      }
     }
 
-    let existingUser = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
-
-    if (existingUser?.isActive === true) return res.status(HTTP_STATUS.CONFLICT).json(HTTP_STATUS.CONFLICT, responseMessage.accountBlock, {}, {});
-
-    if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Email"), {}, {}));
-
-    existingUser = await getFirstMatch(userModel, { phoneNumber: value?.phoneNumber, isDeleted: false }, {}, {});
+    existingUser = await getFirstMatch(userModel, { "phoneNo.phoneNo": phoneNo, isDeleted: false }, {}, {});
     if (existingUser) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist("Phone Number"), {}, {}));
 
     value.password = await generateHash(value.password);
 
     let response = await createOne(userModel, value);
 
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
     const token = await generateToken({ _id: response?._id, status: "Register", generatedOn: new Date().getTime() }, { expiresIn: "24h" });
 
     const { password, ...rest } = response?._doc || {};
@@ -39,7 +52,7 @@ export const register = async (req, res) => {
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage.signupSuccess, response, {}));
   } catch (error) {
     console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
   }
 };
 
@@ -48,14 +61,12 @@ export const login = async (req, res) => {
   try {
     const { error, value } = loginSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-    }
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     let response = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
 
     if (!response) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidUserPasswordEmail, {}, {}));
-    if (response.isActive === true) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accountBlock, {}, {}));
+    if (response.isActive === false) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accountBlock, {}, {}));
 
     const comparePassword = await bcryptjs.compare(value?.password, response?.password);
 

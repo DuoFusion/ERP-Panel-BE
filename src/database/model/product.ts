@@ -7,19 +7,17 @@ const productSchema = new Schema<IProduct>(
   {
     ...baseSchemaFields,
     itemCode: { type: String, required: true, index: true },
-    barcode: { type: String },
     name: { type: String, required: true, index: true },
     printName: { type: String },
-    slug: { type: String, index: true },
-    categoryId: {
-      type: Schema.Types.ObjectId,
-      ref: "category",
-      required: true,
-    },
+    
+    categoryId: { type: Schema.Types.ObjectId, ref: "category" },
     subCategoryId: { type: Schema.Types.ObjectId, ref: "category" },
     brandId: { type: Schema.Types.ObjectId, ref: "brand" },
     subBrandId: { type: Schema.Types.ObjectId, ref: "brand" },
+
     departmentId: { type: Schema.Types.ObjectId, ref: "department" },
+    
+    slug: { type: String, index: true },
 
     productType: { type: String, enum: PRODUCT_TYPE, default: "finished" },
 
@@ -47,6 +45,7 @@ const productSchema = new Schema<IProduct>(
     hsnCode: { type: String },
     purchaseTaxId: { type: Schema.Types.ObjectId, ref: "tax" },
     salesTaxId: { type: Schema.Types.ObjectId, ref: "tax" },
+
     isPurchaseTaxInclusive: { type: Boolean, default: false },
     isSalesTaxInclusive: { type: Boolean, default: false },
     cessPercentage: { type: Number, default: 0 },
@@ -60,13 +59,13 @@ const productSchema = new Schema<IProduct>(
 
     description: { type: String },
     shortDescription: { type: String },
-    netWeight: { type: Number },
+    netWeight: { type: Number },        
     nutritionInfo: { type: String },
     ingredients: { type: String },
     images: [{ type: String }],
     additionalInfo: { type: String },
 
-    status: { type: String, enum: PRODUCT_STATUS, default: "active" },
+    status: { type: String, enum: PRODUCT_STATUS, default: PRODUCT_STATUS[0] },
   },
   baseSchemaOptions
 );

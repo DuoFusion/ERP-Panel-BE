@@ -1,9 +1,10 @@
 import { Schema } from "mongoose";
 import { IBase } from "./base";
+import { IPermissions } from "./permission";
 
 export interface IEmployee extends IBase {
     name: string;
-    mobileNo: string;
+    phoneNo: string;
     email?: string;
     designation?: string;
     role: Schema.Types.ObjectId;
@@ -16,18 +17,19 @@ export interface IEmployee extends IBase {
         country: string;
         state: string;
         city: string;
-        postalCode:string;
+        postalCode: string;
     };
-    bankDetails:{
-        bankHolderName:string;
-        bankName:string;
-        branch:string;
-        accountNumber:string;
-        IFSCCode:string;
-        swiftCode:string;
+    permissions: IPermissions
+    bankDetails: {
+        bankHolderName: string;
+        bankName: string;
+        branch: string;
+        accountNumber: string;
+        IFSCCode: string;
+        swiftCode: string;
     };
-    wages:number;
-    commission:number;
-    extraWages:number;
-    target:number;
+    wages: number;
+    commission: number;
+    extraWages: number;
+    target: number;
 }

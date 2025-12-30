@@ -77,13 +77,13 @@ export const deleteUploadedFile = async (req, res) => {
 export const getAllImages = async (req, res) => {
   reqInfo(req);
   try {
-    let folderName = req.headers.user?.companyId?.name || "default";
+    let folderName = req.headers.user?.companyId?._id?.toString() || "default";
     folderName = folderName?.replace(/[^a-zA-Z0-9_-]/g, "_");
 
     const dir = path.join("public/images", folderName);
 
     if (!fs.existsSync(dir)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.getDataNotFound("Images"), {}, {}));
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.noFileUploaded, {}, {}));
     }
 
     const images = fs.readdirSync(dir).map((file) => `${process.env.BACKEND_URL}/public/images/${folderName}/${file}`);
@@ -98,13 +98,13 @@ export const getAllImages = async (req, res) => {
 export const getAllPdf = async (req, res) => {
   reqInfo(req);
   try {
-    let folderName = req?.headers?.user?.companyId?.name || "default";
+    let folderName = req?.headers?.user?.companyId?._id?.toString() || "default";
     folderName = folderName?.replace(/[^a-zA-Z0-9_-]/g, "_");
-    
+
     const dir = path.join("public/pdfs", folderName);
 
     if (!fs.existsSync(dir)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.getDataNotFound("PDF"), {}, {}));
+      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.noFileUploaded, {}, {}));
     }
 
     const pdfs = fs.readdirSync(dir).map((file) => `${process.env.BACKEND_URL}/public/pdfs/${folderName}/${file}`);

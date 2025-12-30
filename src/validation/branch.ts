@@ -1,15 +1,19 @@
 import Joi from "joi";
-import { objectId } from "./common";
+import { baseApiSchema, objectId } from "./common";
 
 export const addBranchSchema = Joi.object().keys({
+  companyId: objectId().optional(),
   name: Joi.string().required(),
   address: Joi.string().optional(),
+  isActive: Joi.boolean().optional(),
 });
 
 export const editBranchSchema = Joi.object().keys({
-  id: objectId().required(),
+  branchId: objectId().required(),
+  companyId: objectId().optional(),
   name: Joi.string().optional(),
   address: Joi.string().optional(),
+  isActive: Joi.boolean().optional(),
 });
 
 export const deleteBranchSchema = Joi.object().keys({
@@ -19,4 +23,3 @@ export const deleteBranchSchema = Joi.object().keys({
 export const getBranchSchema = Joi.object().keys({
   id: objectId().required(),
 });
-

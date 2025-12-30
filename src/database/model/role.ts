@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import { baseCommonFields, baseSchemaOptions } from "./base";
+import { baseSchemaFields, baseSchemaOptions } from "./base";
 
 const roleSchema = new mongoose.Schema(
   {
-    role: { type: String },
-    
-    ...baseCommonFields,
+    name: { type: String },
+    ...baseSchemaFields,
   },
   baseSchemaOptions
 );

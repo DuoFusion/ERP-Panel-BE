@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from "../../common";
-import { apiResponse, isValidObjectId } from "../../common/utils";
+import { apiResponse } from "../../common/utils";
 import { companyModel } from "../../database/model";
-import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
+import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addCompanySchema, deleteCompanySchema, editCompanySchema, getCompanySchema } from "../../validation";
 
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -9,36 +9,124 @@ const ObjectId = require("mongoose").Types.ObjectId;
 export const addCompany = async (req, res) => {
   reqInfo(req);
   try {
-    const user = req.headers;
-    const { error, value } = addCompanySchema.validate(req.body);
+    const { user } = req?.headers;
+    let { error, value } = addCompanySchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
-    let existingCompany = await getFirstMatch(companyModel, { email: value?.email, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+    // if (!(await checkIdExist(bankModel, value?.bankId, "Bank", res))) return;
 
-    existingCompany = await getFirstMatch(companyModel, { phoneNumber: value?.phoneNumber, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+    const phoneNo = value?.phoneNo?.phoneNo;
+    // const ownerNo = value?.ownerNo?.phoneNo;
 
-    existingCompany = await getFirstMatch(companyModel, { displayName: value?.displayName, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Display name"), {}, {}));
+    const orCondition = [];
+    if (value?.email) orCondition.push({ email: value?.email });
+    if (phoneNo) orCondition.push({ "phoneNo.phoneNo": phoneNo });
+    // if (ownerNo) orCondition.push({ "owner.phoneNo": ownerNo });
+    if (value?.displayName) orCondition.push({ displayName: value?.displayName });
+    if (value?.contactName) orCondition.push({ contactName: value?.contactName });
+    if (value?.supportEmail) orCondition.push({ supportEmail: value?.supportEmail });
 
-    existingCompany = await getFirstMatch(companyModel, { contactName: value?.contactName, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Contact name"), {}, {}));
+    let existingCompany = null;
 
-    existingCompany = await getFirstMatch(companyModel, { supportEmail: value?.supportEmail, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Support email"), {}, {}));
+    if (orCondition.length) {
+      existingCompany = await getFirstMatch(companyModel, { $or: orCondition, isDeleted: false }, {}, {});
 
-    let payload = {
-      ...value,
-      createdBy: user?._id || null,
-      updatedBy: user?._id || null,
-    };
+      if (existingCompany) {
+        if (existingCompany?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+        if (existingCompany?.phoneNo?.phoneNo === phoneNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        // if (existingCompany?.ownerNo?.phoneNo === ownerNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Owner number"), {}, {}));
+        if (existingCompany?.displayName === value?.displayName) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Display Name"), {}, {}));
+        if (existingCompany?.contactName === value?.contactName) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Contact Name"), {}, {}));
+        if (existingCompany?.supportEmail === value?.supportEmail) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Support Email"), {}, {}));
+      }
+    }
 
-    const response = await createOne(companyModel, payload);
+    value.createdBy = user?._id || null;
+    value.updatedBy = user?._id || null;
+
+    const response = await createOne(companyModel, value);
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage?.addDataSuccess("Company"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
+  }
+};
+
+export const editCompanyById = async (req, res) => {
+  reqInfo(req);
+
+  try {
+    const { user } = req?.headers;
+    let { error, value } = editCompanySchema.validate(req.body);
+
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
+
+    if (!(await checkIdExist(companyModel, value?.companyId, "Company", res))) return;
+
+    // if (!(await checkIdExist(bankModel, value?.bankId, "Bank", res))) return;
+
+    const phoneNo = value?.phoneNo?.phoneNo;
+    // const ownerNo = value?.ownerNo?.phoneNo;
+
+    const orCondition = [];
+    if (value?.email) orCondition.push({ email: value?.email });
+    if (phoneNo) orCondition.push({ "phoneNo.phoneNo": phoneNo });
+    // if (ownerNo) orCondition.push({ "owner.phoneNo": ownerNo });
+    if (value?.displayName) orCondition.push({ displayName: value?.displayName });
+    if (value?.contactName) orCondition.push({ contactName: value?.contactName });
+    if (value?.supportEmail) orCondition.push({ supportEmail: value?.supportEmail });
+
+    let existingCompany = null;
+
+    if (orCondition.length) {
+      existingCompany = await getFirstMatch(companyModel, { $or: orCondition, _id: { $ne: value?.companyId }, isDeleted: false }, {}, {});
+
+      if (existingCompany) {
+        if (existingCompany?.email === value?.email) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
+        if (existingCompany?.phoneNo?.phoneNo === phoneNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
+        // if (existingCompany?.ownerNo?.phoneNo === ownerNo) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Owner number"), {}, {}));
+        if (existingCompany?.displayName === value?.displayName) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Display Name"), {}, {}));
+        if (existingCompany?.contactName === value?.contactName) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Contact Name"), {}, {}));
+        if (existingCompany?.supportEmail === value?.supportEmail) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Support Email"), {}, {}));
+      }
+    }
+
+    value.updatedBy = user?._id || null;
+
+    const response = await updateData(companyModel, { _id: new ObjectId(value?.companyId), isDeleted: false }, value, {});
+
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Company details"), {}, {}));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("Company details"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
+  }
+};
+
+export const deleteCompanyById = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { user } = req?.headers;
+    let { error, value } = deleteCompanySchema.validate(req.params);
+
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
+    const isCompanyExist = await getFirstMatch(companyModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
+
+    if (!isCompanyExist) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Company"), {}, {}));
+
+    value.isDeleted = true;
+    value.updatedBy = user?._id || null;
+
+    const response = await updateData(companyModel, { _id: new ObjectId(value?.id) }, value, {});
+
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Company details"), {}, {}));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("Company details"), response, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
@@ -56,7 +144,7 @@ export const getAllCompany = async (req, res) => {
     let criteria: any = { isDeleted: false };
 
     if (search) {
-      criteria.$or = [{ name: { $regex: search, $options: "i" } }, { displayName: { $regex: search, $options: "i" } }, { contactName: { $regex: search, $options: "i" } }, { email: { $regex: search, $options: "i" } }, { phoneNumber: { $regex: search, $options: "i" } }, { ownerNo: { $regex: search, $options: "i" } }];
+      criteria.$or = [{ name: { $regex: search, $options: "i" } }, { displayName: { $regex: search, $options: "i" } }, { contactName: { $regex: search, $options: "i" } }, { email: { $regex: search, $options: "i" } }, { phoneNo: { $regex: search, $options: "i" } }, { ownerNo: { $regex: search, $options: "i" } }];
     }
 
     if (startDate && endDate) {
@@ -84,76 +172,9 @@ export const getAllCompany = async (req, res) => {
 
     const totalPages = Math.ceil(totalData / limit) || 1;
 
-    const stateObj = { page, limit, totalPages, totalData, hasNextPage: page < totalPages, hasPrevPage: page > 1 };
+    const stateObj = { page, limit, totalPages };
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Company"), { company_data: response, totalData, state: stateObj }, {}));
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
-  }
-};
-
-export const deleteCompanyById = async (req, res) => {
-  reqInfo(req);
-  try {
-    const { error, value } = deleteCompanySchema.validate(req.params);
-
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).status(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0]?.message, {}, {}));
-
-    const isCompanyExist = await getFirstMatch(companyModel, { _id: new ObjectId(value?.id), isDeleted: false }, {}, {});
-
-    if (!isCompanyExist) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Company"), {}, {}));
-
-    const response = await updateData(companyModel, { _id: new ObjectId(value?.id) }, { isDeleted: true }, {});
-
-    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.deleteDataError("Company details"), {}, {}));
-
-    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.deleteDataSuccess("Company details"), response, {}));
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
-  }
-};
-
-export const editCompanyById = async (req, res) => {
-  reqInfo(req);
-
-  try {
-    const user = req.headers;
-    const { error, value } = editCompanySchema.validate(req.body);
-
-    if (error) return res.status(HTTP_STATUS.BAD_GATEWAY).json(new apiResponse(HTTP_STATUS.BAD_GATEWAY, error?.details[0].message, {}, {}));
-
-    if (!isValidObjectId(value?.companyId)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidId("Company Id"), {}, {}));
-    }
-
-    let existingCompany = await getFirstMatch(companyModel, { email: value?.email, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Email"), {}, {}));
-
-    existingCompany = await getFirstMatch(companyModel, { phoneNumber: value?.phoneNumber, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Phone number"), {}, {}));
-
-    existingCompany = await getFirstMatch(companyModel, { displayName: value?.displayName, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Display name"), {}, {}));
-
-    existingCompany = await getFirstMatch(companyModel, { contactName: value?.contactName, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Contact name"), {}, {}));
-
-    existingCompany = await getFirstMatch(companyModel, { supportEmail: value?.supportEmail, isDeleted: false }, {}, {});
-    if (existingCompany) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Support email"), {}, {}));
-
-    let payload = {
-      ...value,
-      createdBy: user?._id || null,
-      updatedBy: user?._id || null,
-    };
-
-    const response = await updateData(companyModel, { _id: new ObjectId(value?.companyId), isDeleted: false }, payload, {});
-
-    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("Company details"), {}, {}));
-
-    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.updateDataSuccess("Company details"), response, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));

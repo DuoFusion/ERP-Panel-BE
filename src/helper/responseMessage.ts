@@ -49,6 +49,7 @@ export const responseMessage = {
   invalidImageUrl: "invalid Image URL",
   invalidPdfUrl: "invalid Pdf URL",
   unsupportedFileType: "Unsupported file type in URL",
+  roleInUse: "Role is assigned to users and cannot be deleted",
 
   customMessage: (message: string): any => {
     return `${message[0].toUpperCase() + message.slice(1).toLowerCase()}`;
