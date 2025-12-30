@@ -16,7 +16,4 @@ const discountSchema = new Schema<IDiscount>(
   baseSchemaOptions
 );
 
-export const discountModel = mongoose.model<IDiscount>(
-  "discount",
-  discountSchema
-);
+export const discountModel = mongoose.model<IDiscount>("discount", discountSchema);

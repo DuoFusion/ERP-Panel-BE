@@ -27,6 +27,7 @@ export * from "./supplierBill";
 export * from "./uom";
 export * from "./tax";
 export * from "./stocks";
+export * from "./stockVerification";
 export * from "./voucher";
 export * from "./announcement";
 export * from "./branch";

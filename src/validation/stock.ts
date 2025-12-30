@@ -3,27 +3,31 @@ import { objectId } from "./common";
 
 export const addStockSchema = Joi.object().keys({
   companyId: objectId().optional(),
+  branchId: objectId().optional(),
+  locationId: objectId().optional(),
   productId: objectId().required(),
   variantId: objectId().optional(),
-  batchNo: Joi.number().optional(),
-  qty: Joi.number().optional(),
-  mfgDate: Joi.string().optional(),
-  expiryDate: Joi.string().optional(),
-  sellingPrice: Joi.number().optional(),
-  mrp: Joi.number().optional(),
+  batchNo: Joi.string().optional(),
+  qty: Joi.number().min(0).default(0),
+  mfgDate: Joi.date().optional(),
+  expiryDate: Joi.date().optional(),
+  sellingPrice: Joi.number().min(0).optional(),
+  mrp: Joi.number().min(0).optional(),
 });
 
 export const editStockSchema = Joi.object().keys({
   stockId: objectId().required(),
   companyId: objectId().optional(),
-  productId: objectId().required(),
+  branchId: objectId().optional(),
+  locationId: objectId().optional(),
+  productId: objectId().optional(),
   variantId: objectId().optional(),
-  batchNo: Joi.number().optional(),
-  qty: Joi.number().optional(),
-  mfgDate: Joi.string().optional(),
-  expiryDate: Joi.string().optional(),
-  sellingPrice: Joi.number().optional(),
-  mrp: Joi.number().optional(),
+  batchNo: Joi.string().optional(),
+  qty: Joi.number().min(0).optional(),
+  mfgDate: Joi.date().optional(),
+  expiryDate: Joi.date().optional(),
+  sellingPrice: Joi.number().min(0).optional(),
+  mrp: Joi.number().min(0).optional(),
 });
 
 export const deleteStockSchema = Joi.object().keys({

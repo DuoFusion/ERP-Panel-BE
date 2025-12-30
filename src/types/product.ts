@@ -7,6 +7,7 @@ export interface IProduct extends IBase {
     name: string;
     printName?: string;
     slug: string;
+    autoGenerateItemCode?: boolean;
 
     // Classification
     categoryId: Schema.Types.ObjectId;
@@ -20,10 +21,25 @@ export interface IProduct extends IBase {
 
     // Units & Pricing
     uomId: Schema.Types.ObjectId;
+    netWeightUnit?: string;
+    masterQty?: number; // For B2B
+    minimumQty?: number;
+    
+    // Pricing Details
     mrp: number;
     sellingPrice: number;
+    sellingDiscount?: number;
+    sellingMargin?: number;
     purchasePrice?: number;
     landingCost?: number;
+    retailerDiscount?: number;
+    retailerPrice?: number;
+    retailerMargin?: number;
+    wholesalerDiscount?: number;
+    wholesalerPrice?: number;
+    wholesalerMargin?: number;
+    onlinePrice?: number;
+    openingQty?: number;
 
     // Tax
     hsnCode?: string;
@@ -37,7 +53,9 @@ export interface IProduct extends IBase {
     manageBatch: boolean;
     hasExpiry: boolean;
     expiryDays?: number;
-    expiryType?: 'MFG' | 'expiry';
+    expiryType?: 'MFG' | 'EXP';
+    mfgDate?: Date;
+    isExpiryProductSaleable?: boolean;
 
     // Details
     description?: string;
@@ -46,6 +64,8 @@ export interface IProduct extends IBase {
     nutritionInfo?: string;
     ingredients?: string;
     image?: string;
+    images?: string[]; // Multiple images
+    additionalInfo?: string;
 
     status: 'active' | 'inactive';
 }

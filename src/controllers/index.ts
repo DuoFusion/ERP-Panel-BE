@@ -8,3 +8,4 @@ export * as branchController from "./branch";
 export * as employeeController from "./employee";
 export * as productController from "./product";
 export * as stockController from "./stock";
+export * as stockVerificationController from "./stockVerification";
