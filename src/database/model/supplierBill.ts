@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { SUPPLIER_PAYMENT_STATUS } from "../../common";
+import { SUPPLIER_BILL_STATUS, SUPPLIER_PAYMENT_STATUS } from "../../common";
 import { ISupplierBill } from "../../types/supplier";
 import { baseSchemaFields, baseSchemaOptions } from "./base";
 import { purchaseItemSchema } from "./purchaseOrder";
@@ -24,16 +24,13 @@ const supplierBillSchema = new Schema<ISupplierBill>(
     balanceAmount: { type: Number, default: 0 },
     paymentStatus: {
       type: String,
-      enum: SUPPLIER_PAYMENT_STATUS,
-      default: "unpaid",
+      enum: Object.values(SUPPLIER_PAYMENT_STATUS),
+      default: SUPPLIER_PAYMENT_STATUS.UNPAID,
     },
     notes: { type: String },
-    status: { type: String, default: "active" },
+    status: { type: String, enum: Object.values(SUPPLIER_BILL_STATUS), default: SUPPLIER_BILL_STATUS.ACTIVE },
   },
   baseSchemaOptions
 );
 
-export const supplierBillModel = mongoose.model<ISupplierBill>(
-  "supplierBill",
-  supplierBillSchema
-);
+export const supplierBillModel = mongoose.model<ISupplierBill>("supplierBill", supplierBillSchema);

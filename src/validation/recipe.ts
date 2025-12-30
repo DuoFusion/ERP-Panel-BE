@@ -7,7 +7,7 @@ export const addRecipeSchema = Joi.object({
   recipeDate: Joi.date().required(),
   recipeNo: Joi.string().required(),
   recipeType: Joi.string()
-    .valid(...RECIPE_TYPE)
+    .valid(...Object.values(RECIPE_TYPE))
     .required(),
 
   rawProducts: Joi.array()
@@ -39,7 +39,7 @@ export const editRecipeSchema = Joi.object({
   id: objectId().required(),
   recipeName: Joi.string().optional(),
   recipeDate: Joi.date().optional(),
-  recipeType: Joi.string().valid(...RECIPE_TYPE).optional(),
+  recipeType: Joi.string().valid(...Object.values(RECIPE_TYPE)).optional(),
 
   rawProducts: Joi.array().items(
     Joi.object({

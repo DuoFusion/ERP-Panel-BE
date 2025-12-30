@@ -43,10 +43,10 @@ const contactSchema = new Schema<IContact>({
         accountNumber: { type: String },
     },
     panNo: { type: String },
-    type: { type: String, enum: CONTACT_TYPE, default: 'customer' },
-    customerType: { type: String, enum: CUSTOMER_TYPE },
-    supplierType: { type: String, enum: SUPPLIER_TYPE },
-    status: { type: String, enum: CONTACT_STATUS, default: 'active' },
+    type: { type: String, enum: Object.values(CONTACT_TYPE), default: CONTACT_TYPE.CUSTOMER },
+    customerType: { type: String, enum: Object.values(CUSTOMER_TYPE) },
+    supplierType: { type: String, enum: Object.values(SUPPLIER_TYPE) },
+    status: { type: String, enum: Object.values(CONTACT_STATUS), default: CONTACT_STATUS.ACTIVE },
     loyaltyPoints: { type: Number, default: 0 },
     membershipId: { type: Schema.Types.ObjectId, ref: 'membership' }
 }, baseSchemaOptions);

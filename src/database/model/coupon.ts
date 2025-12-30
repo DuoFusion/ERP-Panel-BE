@@ -8,7 +8,7 @@ const couponSchema = new Schema<ICoupon>(
     ...baseSchemaFields,
     code: { type: String, required: true, unique: true, index: true },
     description: { type: String },
-    discountType: { type: String, enum: COUPON_DISCOUNT_TYPE, required: true },
+    discountType: { type: String, enum: Object.values(COUPON_DISCOUNT_TYPE), required: true },
     discountValue: { type: Number, required: true },
     minOrderValue: { type: Number },
     maxDiscountAmount: { type: Number },
@@ -16,7 +16,7 @@ const couponSchema = new Schema<ICoupon>(
     validTo: { type: Date, required: true },
     usageLimit: { type: Number },
     usedCount: { type: Number, default: 0 },
-    status: { type: String, enum: COUPON_STATUS, default: "active" },
+    status: { type: String, enum: Object.values(COUPON_STATUS), default: COUPON_STATUS.ACTIVE },
   },
   baseSchemaOptions
 );

@@ -15,8 +15,8 @@ export const addProductSchema = Joi.object().keys({
   departmentId: objectId().optional(),
 
   productType: Joi.string()
-    .valid(...PRODUCT_TYPE)
-    .default(PRODUCT_TYPE[0])
+    .valid(...Object.values(PRODUCT_TYPE))
+    .default(PRODUCT_TYPE.FINISHED)
     .optional(),
 
   uomId: objectId().required(),
@@ -38,7 +38,7 @@ export const addProductSchema = Joi.object().keys({
   hasExpiry: Joi.boolean().default(false).optional(),
   expiryDays: Joi.number().optional(),
   expiryType: Joi.string()
-    .valid(...PRODUCT_EXPIRY_TYPE)
+    .valid(...Object.values(PRODUCT_EXPIRY_TYPE))
     .optional(),
 
   description: Joi.string().optional(),
@@ -49,8 +49,8 @@ export const addProductSchema = Joi.object().keys({
   image: Joi.string().optional(),
 
   status: Joi.string()
-    .valid(...PRODUCT_STATUS)
-    .default(PRODUCT_STATUS[0])
+    .valid(...Object.values(PRODUCT_STATUS))
+    .default(PRODUCT_STATUS.ACTIVE)
     .optional(),
 
   ...baseApiSchema,
@@ -70,7 +70,7 @@ export const editProductSchema = Joi.object().keys({
   departmentId: objectId().optional(),
 
   productType: Joi.string()
-    .valid(...PRODUCT_TYPE)
+    .valid(...Object.values(PRODUCT_TYPE))
     .optional(),
 
   uomId: objectId().optional(),
@@ -92,7 +92,7 @@ export const editProductSchema = Joi.object().keys({
   hasExpiry: Joi.boolean().optional(),
   expiryDays: Joi.number().optional(),
   expiryType: Joi.string()
-    .valid(...PRODUCT_EXPIRY_TYPE)
+    .valid(...Object.values(PRODUCT_EXPIRY_TYPE))
     .optional(),
 
   description: Joi.string().optional(),
@@ -103,7 +103,7 @@ export const editProductSchema = Joi.object().keys({
   image: Joi.string().optional(),
 
   status: Joi.string()
-    .valid(...PRODUCT_STATUS)
+    .valid(...Object.values(PRODUCT_STATUS))
     .optional(),
 
   ...baseApiSchema,

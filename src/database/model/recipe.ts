@@ -13,7 +13,7 @@ const recipeSchema = new Schema<IRecipe>(
 
     recipeType: {
       type: String,
-      enum: RECIPE_TYPE,
+      enum: Object.values(RECIPE_TYPE),
       required: true,
     },
 

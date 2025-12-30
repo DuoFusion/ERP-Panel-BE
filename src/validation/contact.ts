@@ -31,7 +31,7 @@ const addressSchema = Joi.object({
 
 export const addContactSchema = Joi.object({
   type: Joi.string()
-    .valid(...CONTACT_TYPE)
+    .valid(...Object.values(CONTACT_TYPE))
     .required(),
 
   firstName: Joi.string().when("type", {
@@ -62,7 +62,7 @@ export const addContactSchema = Joi.object({
 
   // ---------------- Customer Only ----------------
   customerType: Joi.string()
-    .valid(...CUSTOMER_TYPE)
+    .valid(...Object.values(CUSTOMER_TYPE))
     .when("type", {
       is: "customer",
       then: Joi.required(),
@@ -79,7 +79,7 @@ export const addContactSchema = Joi.object({
 
   // ---------------- Supplier Only ----------------
   supplierType: Joi.string()
-    .valid(...SUPPLIER_TYPE)
+    .valid(...Object.values(SUPPLIER_TYPE))
     .when("type", {
       is: "supplier",
       then: Joi.required(),
@@ -113,7 +113,7 @@ export const addContactSchema = Joi.object({
 export const editContactSchema = Joi.object({
   id: objectId().required(),
   type: Joi.string()
-    .valid(...CONTACT_TYPE)
+    .valid(...Object.values(CONTACT_TYPE))
     .optional(),
 
   firstName: Joi.string().optional(),
@@ -132,7 +132,7 @@ export const editContactSchema = Joi.object({
   panNo: Joi.string().optional(),
 
   customerType: Joi.string()
-    .valid(...CUSTOMER_TYPE)
+    .valid(...Object.values(CUSTOMER_TYPE))
     .when("type", {
       is: "customer",
       then: Joi.optional(),
@@ -148,7 +148,7 @@ export const editContactSchema = Joi.object({
     }),
 
   supplierType: Joi.string()
-    .valid(...SUPPLIER_TYPE)
+    .valid(...Object.values(SUPPLIER_TYPE))
     .when("type", {
       is: "supplier",
       then: Joi.optional(),

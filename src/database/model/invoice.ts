@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import {salesItemSchema } from "./salesOrder";
 import { baseSchemaFields, baseSchemaOptions } from "./base";
 import { IInvoice } from "../../types";
-import { INVOICE_PAYMENT_STATUS } from "../../common";
+import { INVOICE_PAYMENT_STATUS, INVOICE_STATUS } from "../../common";
 
 // Invoice Schema
 
@@ -22,10 +22,10 @@ const invoiceSchema = new Schema<IInvoice>({
     netAmount: { type: Number, default: 0 },
     paidAmount: { type: Number, default: 0 },
     balanceAmount: { type: Number, default: 0 },
-    paymentStatus: { type: String, enum: INVOICE_PAYMENT_STATUS, default: 'unpaid' },
+    paymentStatus: { type: String, enum: Object.values(INVOICE_PAYMENT_STATUS), default: INVOICE_PAYMENT_STATUS.UNPAID },
     salesManId: { type: Schema.Types.ObjectId, ref: 'employee' },
     notes: { type: String },
-    status: { type: String, default: 'active' }
+    status: { type: String, enum: Object.values(INVOICE_STATUS), default: INVOICE_STATUS.ACTIVE }
 }, baseSchemaOptions);
 
 

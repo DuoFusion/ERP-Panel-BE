@@ -10,7 +10,7 @@ const voucherSchema = new Schema<IVoucher>(
     date: { type: Date, required: true },
     type: {
       type: String,
-      enum: VOUCHAR_TYPE,
+      enum: Object.values(VOUCHAR_TYPE),
       required: true,
     },
 

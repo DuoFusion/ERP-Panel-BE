@@ -19,9 +19,9 @@ const productSchema = new Schema<IProduct>(
     
     slug: { type: String, index: true },
 
-    productType: { type: String, enum: PRODUCT_TYPE, default: "finished" },
+    productType: { type: String, enum: Object.values(PRODUCT_TYPE), default: PRODUCT_TYPE.FINISHED },
 
-    uomId: { type: Schema.Types.ObjectId, ref: "UOM", required: true },
+    uomId: { type: Schema.Types.ObjectId, ref: "uom", required: true },
     netWeightUnit: { type: String },
     masterQty: { type: Number, default: 0 },
     minimumQty: { type: Number, default: 0 },
@@ -65,7 +65,7 @@ const productSchema = new Schema<IProduct>(
     images: [{ type: String }],
     additionalInfo: { type: String },
 
-    status: { type: String, enum: PRODUCT_STATUS, default: PRODUCT_STATUS[0] },
+    status: { type: String, enum: Object.values(PRODUCT_STATUS), default: PRODUCT_STATUS.ACTIVE },
   },
   baseSchemaOptions
 );
