@@ -14,6 +14,9 @@ const generateStockVerificationNo = async (): Promise<string> => {
 export const addStockVerification = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
+
     const { error, value } = addStockVerificationSchema.validate(req.body);
 
     if (error) {
@@ -27,7 +30,7 @@ export const addStockVerification = async (req, res) => {
     const items = value.items || [];
     const totalProducts = items.length;
     const totalPhysicalQty = items.reduce((sum: number, item: any) => sum + (item.physicalQty || 0), 0);
-    
+
     // Calculate difference amount for each item
     items.forEach((item: any) => {
       item.differenceQty = (item.physicalQty || 0) - (item.systemQty || 0);
@@ -43,6 +46,9 @@ export const addStockVerification = async (req, res) => {
       totalPhysicalQty,
       differenceAmount,
       status: value.status || "pending",
+      companyId,
+      createdBy: user?._id || null,
+      updatedBy: user?._id || null,
     };
 
     const response = await createOne(stockVerificationModel, stockVerificationData);
@@ -61,6 +67,8 @@ export const addStockVerification = async (req, res) => {
 export const editStockVerification = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+
     const { error, value } = editStockVerificationSchema.validate(req.body);
 
     if (error) {
@@ -78,7 +86,7 @@ export const editStockVerification = async (req, res) => {
       const items = value.items;
       value.totalProducts = items.length;
       value.totalPhysicalQty = items.reduce((sum: number, item: any) => sum + (item.physicalQty || 0), 0);
-      
+
       items.forEach((item: any) => {
         item.differenceQty = (item.physicalQty || 0) - (item.systemQty || 0);
         item.differenceAmount = item.differenceQty * (item.landingCost || item.price || 0);
@@ -86,6 +94,8 @@ export const editStockVerification = async (req, res) => {
 
       value.differenceAmount = items.reduce((sum: number, item: any) => sum + (item.differenceAmount || 0), 0);
     }
+
+    value.updatedBy = user?._id || null;
 
     const response = await updateData(stockVerificationModel, { _id: value?.stockVerificationId }, value, {});
 
@@ -131,15 +141,14 @@ export const deleteStockVerification = async (req, res) => {
 export const getAllStockVerification = async (req, res) => {
   reqInfo(req);
   try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     const { page = 1, limit = 10, search, startDate, endDate, status, locationId } = req.query;
 
     let criteria: any = { isDeleted: false };
 
     if (search) {
-      criteria.$or = [
-        { stockVerificationNo: { $regex: search, $options: "si" } },
-        { remark: { $regex: search, $options: "si" } },
-      ];
+      criteria.$or = [{ stockVerificationNo: { $regex: search, $options: "si" } }, { remark: { $regex: search, $options: "si" } }];
     }
 
     if (status) {
@@ -148,6 +157,10 @@ export const getAllStockVerification = async (req, res) => {
 
     if (locationId) {
       criteria.locationId = locationId;
+    }
+
+    if (companyId) {
+      criteria.companyId = companyId;
     }
 
     if (startDate && endDate) {
@@ -168,15 +181,14 @@ export const getAllStockVerification = async (req, res) => {
       populate: [
         { path: "departmentId", select: "name" },
         { path: "categoryId", select: "name" },
+        { path: "companyId", select: "name" },
         { path: "brandId", select: "name" },
-        { path: "locationId", select: "name" },
+        { path: "branchId", select: "name" },
         { path: "createdBy", select: "name email" },
         {
           path: "items.productId",
           select: "name itemCode",
-          populate: [
-            { path: "uomId", select: "name code" },
-          ],
+          populate: [{ path: "uomId", select: "name code" }],
         },
       ],
       skip: (parseInt(page as string) - 1) * parseInt(limit as string),
@@ -197,9 +209,7 @@ export const getAllStockVerification = async (req, res) => {
       hasPrevPage: parseInt(page as string) > 1,
     };
 
-    return res.status(HTTP_STATUS.OK).json(
-      new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Stock Verification"), { stockVerification_data: response, totalData, state: stateObj }, {})
-    );
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Stock Verification"), { stockVerification_data: response, totalData, state: stateObj }, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
@@ -223,8 +233,9 @@ export const getOneStockVerification = async (req, res) => {
         populate: [
           { path: "departmentId", select: "name" },
           { path: "categoryId", select: "name" },
+          { path: "companyId", select: "name" },
           { path: "brandId", select: "name" },
-          { path: "locationId", select: "name" },
+          { path: "branchId", select: "name" },
           { path: "createdBy", select: "name email" },
           {
             path: "items.productId",
@@ -249,4 +260,3 @@ export const getOneStockVerification = async (req, res) => {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
   }
 };
-

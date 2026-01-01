@@ -12,7 +12,7 @@ export const baseSchemaFields = {
   ...baseCommonFields,
   companyId: { type: Schema.Types.ObjectId, ref: "company", index: true },
   branchId: { type: Schema.Types.ObjectId, ref: "branch", index: true },
-  locationId: { type: Schema.Types.ObjectId, ref: "location", index: true },
+  // locationId: { type: Schema.Types.ObjectId, ref: "location", index: true },
 };
 
 // export const baseSchemaOptions = {
@@ -22,7 +22,7 @@ export const baseSchemaFields = {
 //   // toObject: { virtuals: false, versionKey: false },
 // };
 
-export const baseSchemaOptions: SchemaOptions = {
+export const baseSchemaOptions: SchemaOptions<any> = {
   timestamps: true,
   versionKey: false,
 };

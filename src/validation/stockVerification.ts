@@ -46,4 +46,3 @@ export const deleteStockVerificationSchema = Joi.object().keys({
 export const getStockVerificationSchema = Joi.object().keys({
   id: objectId().required(),
 });
-
