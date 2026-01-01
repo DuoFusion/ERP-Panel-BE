@@ -110,6 +110,11 @@ export const getAllBrand = async (req, res) => {
 
     const options = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "parentBrandId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -139,7 +144,18 @@ export const getBrandById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
-    const response = await getFirstMatch(brandModel, { _id: value.id, isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      brandModel,
+      { _id: value.id, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "parentBrandId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) {
       return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Brand"), {}, {}));
@@ -175,8 +191,6 @@ export const getBrandTree = async (req, res) => {
       },
     ]);
 
-    
-
     const buildTree = (root) => {
       const map = {};
 
@@ -199,8 +213,6 @@ export const getBrandTree = async (req, res) => {
         }
       });
 
-
-
       const children = Object.values(map).filter((brand: any) => brand.parentBrandId?.toString() === root._id.toString());
 
       return {
@@ -212,7 +224,6 @@ export const getBrandTree = async (req, res) => {
     };
 
     const response = brands.map(buildTree);
-
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.getDataSuccess("Brand tree"), response, {}));
   } catch (error) {

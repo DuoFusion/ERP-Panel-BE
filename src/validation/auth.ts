@@ -3,7 +3,7 @@ import { commonContactSchema, objectId } from "./common";
 
 export const registerSchema = Joi.object().keys({
   fullName: Joi.string().required(),
-  email: Joi.string().email().required(),
+  email: Joi.string().email().lowercase().required(),
   password: Joi.string().required(),
   profileImage: Joi.string().optional().allow(""),
   role: objectId().required(),
@@ -11,6 +11,6 @@ export const registerSchema = Joi.object().keys({
 });
 
 export const loginSchema = Joi.object().keys({
-  email: Joi.string().required(),
+  email: Joi.string().lowercase().required(),
   password: Joi.string().required(),
 });

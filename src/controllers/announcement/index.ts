@@ -19,9 +19,9 @@ export const addAnnouncement = async (req, res) => {
     if (!existingCompany || (Array.isArray(existingCompany) && existingCompany.length <= 0)) {
       return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Company"), {}, {}));
     }
-    
+
     let existAnnouncement = undefined;
-    if(value?.version){
+    if (value?.version) {
       existAnnouncement = await getFirstMatch(announcementModel, { version: value?.version, isDeleted: false }, {}, {});
       if (existAnnouncement) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Version"), {}, {}));
     }
@@ -63,16 +63,16 @@ export const editAnnouncementById = async (req, res) => {
 
     let existingAnnouncement = undefined;
 
-    if(value?.version){
+    if (value?.version) {
       existingAnnouncement = await getFirstMatch(announcementModel, { version: value?.version, isDeleted: false, _id: { $ne: value?.id } }, {}, {});
       if (existingAnnouncement) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Version"), {}, {}));
     }
 
-    if(value?.link){
+    if (value?.link) {
       existingAnnouncement = await getFirstMatch(announcementModel, { link: value?.link, isDeleted: false, _id: { $ne: value?.id } }, {}, {});
       if (existingAnnouncement) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Link"), {}, {}));
     }
-      
+
     value.updatedBy = user?._id || null;
 
     const response = await updateData(announcementModel, { _id: new ObjectId(value?._id), isDeleted: false }, value, {});
@@ -140,6 +140,10 @@ export const getAllAnnouncement = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -154,7 +158,7 @@ export const getAllAnnouncement = async (req, res) => {
 
     const totalPages = Math.ceil(totalData / limit) || 1;
 
-    const stateObj = { page, limit, totalPages};
+    const stateObj = { page, limit, totalPages };
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Announcement"), { announcement_data: response, totalData, state: stateObj }, {}));
   } catch (error) {
@@ -170,7 +174,17 @@ export const getAnnouncementById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    const response = await getFirstMatch(announcementModel, { _id: value?.id, isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      announcementModel,
+      { _id: value?.id, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Announcement details"), {}, {}));
 

@@ -31,7 +31,7 @@ import { IUser } from "../../types/user";
 const userSchema = new mongoose.Schema<IUser>(
   {
     fullName: { type: String },
-    email: { type: String },
+    email: { type: String, lowercase: true, trim: true },
     phoneNo: {
       countryCode: { type: String },
       phoneNo: { type: Number },

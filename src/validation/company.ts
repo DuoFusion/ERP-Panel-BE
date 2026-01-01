@@ -9,7 +9,7 @@ export const addCompanySchema = Joi.object().keys({
   contactName: Joi.string().required(),
   ownerNo: commonContactSchema.required(),
   supportEmail: Joi.string().required(),
-  email: Joi.string().required(),
+  email: Joi.string().lowercase().required(),
   phoneNo: commonContactSchema.required(),
   customerCareNumber: Joi.string().optional(),
 
@@ -79,7 +79,7 @@ export const editCompanySchema = Joi.object().keys({
   contactName: Joi.string().optional(),
   ownerNo: commonContactSchema.optional(),
   supportEmail: Joi.string().optional(),
-  email: Joi.string().optional(),
+  email: Joi.string().lowercase().optional(),
   phoneNo: commonContactSchema.optional(),
   customerCareNumber: Joi.string().optional().allow("", null),
 

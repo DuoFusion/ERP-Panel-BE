@@ -22,7 +22,7 @@ const bankSchema = new mongoose.Schema(
     city: { type: String },
     zipCode: { type: String },
 
-    branchIds: [{ type: String }],
+    branchIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "branch", default: null }],
 
     ...baseSchemaFields,
   },

@@ -11,7 +11,7 @@ export const addRecipe = async (req, res) => {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
     let { error, value } = addRecipeSchema.validate(req.body);
-    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
     if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.getDataNotFound("Company"), {}, {}));
 
@@ -28,6 +28,35 @@ export const addRecipe = async (req, res) => {
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.addDataError, {}, {}));
 
     return res.status(HTTP_STATUS.CREATED).json(new apiResponse(HTTP_STATUS.CREATED, responseMessage.addDataSuccess("Recipe"), response, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
+  }
+};
+
+export const editRecipeById = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
+
+    let { error, value } = editRecipeSchema.validate(req.body);
+
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
+
+    if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage.getDataNotFound("Company"), {}, {}));
+
+    const existingRecipe = await getFirstMatch(recipeModel, { companyId, recipeNo: value.recipeNo, isDeleted: false, _id: { $ne: value?.recipeId } }, {}, {});
+
+    if (existingRecipe) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Recipe No"), {}, {}));
+
+    value.updatedBy = user?._id || null;
+
+    const response = await updateData(recipeModel, { _id: new ObjectId(value.recipeId), isDeleted: false }, value, {});
+
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.updateDataError("Recipe"), {}, {}));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.updateDataSuccess("Recipe"), response, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
@@ -51,27 +80,6 @@ export const deleteRecipeById = async (req, res) => {
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.deleteDataError("Recipe"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.deleteDataSuccess("Recipe"), response, {}));
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
-  }
-};
-
-export const editRecipeById = async (req, res) => {
-  reqInfo(req);
-  try {
-    const { user } = req?.headers;
-    let { error, value } = editRecipeSchema.validate(req.body);
-
-    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
-
-    value.updatedBy = user?._id || null;
-
-    const response = await updateData(recipeModel, { _id: new ObjectId(value.id), isDeleted: false }, value, {});
-
-    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.updateDataError("Recipe"), {}, {}));
-
-    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage.updateDataSuccess("Recipe"), response, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage.internalServerError, {}, error));
@@ -107,6 +115,12 @@ export const getAllRecipe = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "rawProducts.productId", select: "name" },
+        { path: "finalProducts.productId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -136,7 +150,19 @@ export const getRecipeById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
-    const response = await getFirstMatch(recipeModel, { _id: new ObjectId(value.id), isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      recipeModel,
+      { _id: new ObjectId(value.id), isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "rawProducts.productId", select: "name" },
+          { path: "finalProducts.productId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Recipe"), {}, {}));
 

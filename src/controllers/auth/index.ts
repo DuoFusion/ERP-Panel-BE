@@ -63,7 +63,18 @@ export const login = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    let response = await getFirstMatch(userModel, { email: value?.email, isDeleted: false }, {}, {});
+    let response = await getFirstMatch(
+      userModel,
+      { email: value?.email, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "role", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.invalidUserPasswordEmail, {}, {}));
     if (response.isActive === false) return res.status(HTTP_STATUS.FORBIDDEN).json(new apiResponse(HTTP_STATUS.FORBIDDEN, responseMessage?.accountBlock, {}, {}));

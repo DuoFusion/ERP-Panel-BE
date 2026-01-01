@@ -1,7 +1,7 @@
 import { apiResponse, HTTP_STATUS, USER_ROLES } from "../../common";
 import { companyModel, userModel } from "../../database";
 import { roleModel } from "../../database/model/role";
-import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
+import { checkIdExist, countData, createOne, findOneAndPopulate, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addRoleSchema, deleteRoleSchema, editRoleSchema, getRoleSchema } from "../../validation";
 
 export const addRole = async (req, res) => {
@@ -184,6 +184,10 @@ export const getAllRole = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -220,7 +224,17 @@ export const getRoleById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    const response = await getFirstMatch(roleModel, { _id: id }, {}, {});
+    const response = await getFirstMatch(
+      roleModel,
+      { _id: id },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Role"), {}, {}));
 

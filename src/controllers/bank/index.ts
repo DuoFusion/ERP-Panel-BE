@@ -135,6 +135,10 @@ export const getAllBank = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchIds", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -170,7 +174,17 @@ export const getBankById = async (req, res) => {
     const { id } = value;
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    const response = await getFirstMatch(bankModel, { _id: id, isDeleted: false }, { password: 0 }, {});
+    const response = await getFirstMatch(
+      bankModel,
+      { _id: id, isDeleted: false },
+      { password: 0 },
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchIds", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Bank"), {}, {}));
 

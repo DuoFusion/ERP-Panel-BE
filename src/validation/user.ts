@@ -30,7 +30,7 @@ const bankDetailsSchema = Joi.object({
 export const addUserSchema = Joi.object().keys({
   fullName: Joi.string().trim().required(),
   username: Joi.string().trim().required(),
-  email: Joi.string().email().optional(),
+  email: Joi.string().email().lowercase().optional(),
   phoneNo: commonContactSchema.required(),
   password: Joi.string().required(),
   role: objectId().required(),
@@ -50,7 +50,7 @@ export const editUserSchema = Joi.object().keys({
   userId: objectId().required(),
   fullName: Joi.string().trim().optional().allow("", null),
   username: Joi.string().trim().optional(),
-  email: Joi.string().email().optional(),
+  email: Joi.string().email().lowercase().optional(),
   phoneNo: commonContactSchema.optional(),
   password: Joi.string().optional(),
   designation: Joi.string().optional().allow("", null),

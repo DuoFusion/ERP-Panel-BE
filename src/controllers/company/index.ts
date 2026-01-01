@@ -158,6 +158,12 @@ export const getAllCompany = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "bankId", select: "bankName" },
+        { path: "userIds", select: "fullName" },
+        { path: "roles", select: "name" },
+        { path: "employees", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -188,7 +194,19 @@ export const getCompanyById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
-    const response = await getFirstMatch(companyModel, { _id: value?.id, isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      companyModel,
+      { _id: value?.id, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "bankId", select: "bankName" },
+          { path: "userIds", select: "fullName" },
+          { path: "roles", select: "name" },
+          { path: "employees", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Company details"), {}, {}));
 

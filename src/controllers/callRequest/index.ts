@@ -118,6 +118,10 @@ export const getAllCallRequest = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -153,7 +157,17 @@ export const getOneCallRequest = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).status(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    const response = await getFirstMatch(callRequestModel, { _id: id }, {}, {});
+    const response = await getFirstMatch(
+      callRequestModel,
+      { _id: id },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Call Request"), {}, {}));
 

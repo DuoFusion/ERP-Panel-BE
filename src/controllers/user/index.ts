@@ -1,7 +1,8 @@
+import { populate } from "dotenv";
 import { apiResponse, generateHash, HTTP_STATUS, USER_TYPES } from "../../common";
 import { branchModel, companyModel, userModel } from "../../database/model";
 import { roleModel } from "../../database/model/role";
-import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
+import { checkIdExist, countData, createOne, findOneAndPopulate, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addUserSchema, deleteUserSchema, editUserSchema, getUserSchema } from "../../validation";
 
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -183,6 +184,11 @@ export const getAllUser = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "role", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -218,7 +224,18 @@ export const getUserById = async (req, res) => {
     const { id } = value;
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    const response = await getFirstMatch(userModel, { _id: id, isDeleted: false }, { password: 0 }, {});
+    const response = await getFirstMatch(
+      userModel,
+      { _id: id, isDeleted: false },
+      { password: 0 },
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "role", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("User"), {}, {}));
 

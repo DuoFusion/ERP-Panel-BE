@@ -9,19 +9,19 @@ const ObjectId = require("mongoose").Types.ObjectId;
 export const addCategory = async (req, res) => {
   reqInfo(req);
   try {
-    const user = req.headers;
+    const { user } = req.headers;
     const companyId = user?.companyId?._id;
     const { error, value } = addCategorySchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
-    const existingCategory = await getFirstMatch(categoryModel, { code: value.code, isDeleted: false }, {}, {});
+    const existingCategory = await getFirstMatch(categoryModel, { companyId, code: value.code, isDeleted: false }, {}, {});
 
     if (existingCategory) return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Category code"), {}, {}));
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
-    if (companyId) value.companyId = companyId;
+    value.companyId = companyId;
 
     const response = await createOne(categoryModel, value);
 
@@ -59,6 +59,11 @@ export const getAllCategory = async (req, res) => {
 
     const options = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "parentCategoryId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -88,7 +93,18 @@ export const getCategoryById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
-    const response = await getFirstMatch(categoryModel, { _id: value.id, isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      categoryModel,
+      { _id: value.id, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "parentCategoryId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) {
       return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage.getDataNotFound("Category"), {}, {}));

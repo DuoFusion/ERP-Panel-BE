@@ -35,9 +35,9 @@ router.use("/role", roleRoute);
 router.use("/branch", branchRouter);
 router.use("/product", productRouter);
 router.use("/employee", employeeRouter);
+router.use("/call-request", callRequestRouter);
 router.use("/stock", stockRoute);
 router.use("/stock-verification", stockVerificationRoute);
-router.use("/call-request", callRequestRouter);
 
 router.use("/brand", brandRouter);
 router.use("/category", categoryRouter);

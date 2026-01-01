@@ -170,6 +170,19 @@ export const getAllProduct = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "categoryId", select: "name" },
+        { path: "subCategoryId", select: "name" },
+        { path: "brandId", select: "name" },
+        { path: "subBrandId", select: "name" },
+        { path: "departmentId", select: "name" },
+        { path: "uomId", select: "name" },
+        { path: "purchaseTaxId", select: "name" },
+        { path: "salesTaxId", select: "name" },
+        { path: "purchaseTaxId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -204,7 +217,26 @@ export const getOneProduct = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    const response = await getFirstMatch(productModel, { _id: value?.id, isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      productModel,
+      { _id: value?.id, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "categoryId", select: "name" },
+          { path: "subCategoryId", select: "name" },
+          { path: "brandId", select: "name" },
+          { path: "subBrandId", select: "name" },
+          { path: "departmentId", select: "name" },
+          { path: "uomId", select: "name" },
+          { path: "purchaseTaxId", select: "name" },
+          { path: "salesTaxId", select: "name" },
+          { path: "purchaseTaxId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Product"), {}, {}));
 

@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from "../../common";
 import { apiResponse } from "../../common/utils";
-import { contactModel } from "../../database";
+import { companyModel, contactModel } from "../../database";
 import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addContactSchema, deleteContactSchema, editContactSchema, getContactSchema } from "../../validation";
 
@@ -10,9 +10,13 @@ export const addContact = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req?.headers;
+    const companyId = user?.companyId?._id;
     let { error, value } = addContactSchema.validate(req.body);
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
+    if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
+    if (!(await checkIdExist(companyModel, companyId, "Company", res))) return;
 
     const phoneNo = value?.phoneNo?.phoneNo;
     const whatsappNo = value?.whatsappNo?.phoneNo;
@@ -38,6 +42,7 @@ export const addContact = async (req, res) => {
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
+    value.companyId = companyId || null;
 
     const response = await createOne(contactModel, value);
     if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.addDataError, {}, {}));
@@ -128,12 +133,10 @@ export const getAllContact = async (req, res) => {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
     let { page, limit, search, startDate, endDate, activeFilter } = req.query;
-
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
-
     if (companyId) {
       criteria.companyId = companyId;
     }
@@ -155,6 +158,11 @@ export const getAllContact = async (req, res) => {
 
     const options: any = {
       sort: { createdAt: -1 },
+      populate: [
+        { path: "companyId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "membershipId", select: "name" },
+      ],
       skip: (page - 1) * limit,
       limit,
     };
@@ -185,7 +193,18 @@ export const getContactById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0].message, {}, {}));
 
-    const response = await getFirstMatch(contactModel, { _id: value?.id, isDeleted: false }, {}, {});
+    const response = await getFirstMatch(
+      contactModel,
+      { _id: value?.id, isDeleted: false },
+      {},
+      {
+        populate: [
+          { path: "companyId", select: "name" },
+          { path: "branchId", select: "name" },
+          { path: "membershipId", select: "name" },
+        ],
+      }
+    );
 
     if (!response) return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("Contact"), {}, {}));
 
