@@ -18,6 +18,7 @@ import { recipeRouter } from "./recipe";
 import { brandRouter } from "./brand";
 import { categoryRouter } from "./category";
 import { bankRouter } from "./bank";
+import { materialRouter } from "./material";
 
 const router = Router();
 
@@ -42,11 +43,12 @@ router.use("/stock-verification", stockVerificationRoute);
 router.use("/brand", brandRouter);
 router.use("/category", categoryRouter);
 
-router.use("/recipe", recipeRouter);
 router.use("/contacts", contactRouter);
 router.use("/bank", bankRouter);
 
-// router.use("/stockVerification", stockVerificationRouter);
+router.use("/recipe", recipeRouter);
+router.use("/material", materialRouter);
+
 // router.use("/employee", employeeRouter);
 
 export { router };

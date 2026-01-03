@@ -15,4 +15,5 @@ export * as recipeController from "./recipe";
 export * as brandController from "./brand";
 export * as categoryController from "./category";
 export * as bankController from "./bank";
+export * as materialController from "./material";
 // export * as stockItemController from "./stockItem";
