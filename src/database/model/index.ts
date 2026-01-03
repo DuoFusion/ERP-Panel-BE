@@ -30,6 +30,7 @@ export * from "./stock";
 export * from "./stockVerification";
 export * from "./voucher";
 export * from "./announcement";
+export * from "./posOrder";
 export * from "./branch";
 export * from "./employee";
 export * from "./permissions";
