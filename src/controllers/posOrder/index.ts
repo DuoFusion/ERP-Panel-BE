@@ -32,15 +32,16 @@ export const addPosOrder = async (req, res) => {
     }
 
     // Validate location if provided
-    if (value.locationId && !(await checkIdExist(branchModel, value.locationId, "Location", res))) return;
+
+    if (!(await checkIdExist(branchModel, value.branchId, "Branch", res))) return;
 
     // Validate customer if provided
-    if (value.customerId && !(await checkIdExist(contactModel, value.customerId, "Customer", res))) return;
+    if (!(await checkIdExist(contactModel, value.customerId, "Customer", res))) return;
 
     // Validate products exist
     for (const item of value.items) {
       if (!(await checkIdExist(productModel, item?.productId, "Product", res))) return;
-      if (item.taxId && !(await checkIdExist(taxModel, item.taxId, "Tax", res))) return;
+      if (!(await checkIdExist(taxModel, item.taxId, "Tax", res))) return;
     }
 
     // Generate order number if not provided
@@ -121,8 +122,8 @@ export const editPosOrder = async (req, res) => {
     }
 
     // Validate location if being changed
-    if (value.locationId && value.locationId !== isExist.locationId?.toString()) {
-      if (!(await checkIdExist(branchModel, value.locationId, "Location", res))) return;
+    if (value.branchId && value.branchId !== isExist.branchId?.toString()) {
+      if (!(await checkIdExist(branchModel, value.branchId, "Location", res))) return;
     }
 
     // Validate customer if being changed
@@ -185,7 +186,6 @@ export const holdPosOrder = async (req, res) => {
   try {
     const { user } = req?.headers;
     const { error, value } = holdPosOrderSchema.validate(req.body);
-
     if (error) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
     }
@@ -193,7 +193,11 @@ export const holdPosOrder = async (req, res) => {
     const isExist = await getFirstMatch(PosOrderModel, { _id: value?.posOrderId, isDeleted: false }, {}, {});
 
     if (!isExist) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("POS Order"), {}, {}));
+      return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, responseMessage?.getDataNotFound("POS 0"), {}, {}));
+    }
+
+    if (isExist?.status === "hold") {
+      return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.posAlreadyOnHold, {}, {}));
     }
 
     const payload = {
@@ -204,9 +208,7 @@ export const holdPosOrder = async (req, res) => {
 
     const response = await updateData(PosOrderModel, { _id: value?.posOrderId }, payload, {});
 
-    if (!response) {
-      return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("POS Order"), {}, {}));
-    }
+    if (!response) return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage?.updateDataError("POS Order"), {}, {}));
 
     return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, "POS Order put on hold successfully", response, {}));
   } catch (error) {
@@ -274,7 +276,7 @@ export const convertToInvoice = async (req, res) => {
     // Option 1: Create a default "Walk-in Customer" contact
     // Option 2: Make customerId optional in invoice (but model requires it)
     // For now, we'll require customerId or use a default walk-in customer ID
-    
+
     if (!posOrder.customerId) {
       // Try to find or create a default walk-in customer
       const walkInCustomer = await getFirstMatch(contactModel, { companyName: "Walk-in Customer", companyId: posOrder.companyId, isDeleted: false }, {}, {});
@@ -366,12 +368,13 @@ export const getAllPosOrder = async (req, res) => {
   try {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
-    let { page = 1, limit = 10, search, status, paymentStatus, locationId, tableNo, startDate, endDate } = req.query;
+    let { page = 1, limit = 10, search, status, paymentStatus, branchId, tableNo, startDate, endDate } = req.query;
 
     page = Number(page);
     limit = Number(limit);
 
     let criteria: any = { isDeleted: false };
+   
     if (companyId) {
       criteria.companyId = companyId;
     }
@@ -388,8 +391,8 @@ export const getAllPosOrder = async (req, res) => {
       criteria.paymentStatus = paymentStatus;
     }
 
-    if (locationId) {
-      criteria.locationId = locationId;
+    if (branchId) {
+      criteria.branchId = branchId;
     }
 
     if (tableNo) {
@@ -407,7 +410,8 @@ export const getAllPosOrder = async (req, res) => {
     const options = {
       sort: { createdAt: -1 },
       populate: [
-        { path: "locationId", select: "name" },
+        { path: "branchId", select: "name" },
+        { path: "companyId", select: "name" },
         { path: "customerId", select: "firstName lastName companyName email phoneNo" },
         { path: "items.productId", select: "name itemCode" },
         { path: "items.taxId", select: "name percentage" },
@@ -428,7 +432,7 @@ export const getAllPosOrder = async (req, res) => {
       totalPages,
     };
 
-    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("POS Order"), { posOrder_data: response, state }, {}));
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("POS Order"), { posOrder_data: response, totalData, state }, {}));
   } catch (error) {
     console.error(error);
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
@@ -450,7 +454,9 @@ export const getOnePosOrder = async (req, res) => {
       {},
       {
         populate: [
-          { path: "locationId", select: "name address" },
+          { path: "branchId", select: "name address" },
+          { path: "companyId", select: "name" },
+
           { path: "customerId", select: "firstName lastName companyName email phoneNo addressDetails" },
           { path: "items.productId", select: "name itemCode sellingPrice mrp" },
           { path: "items.taxId", select: "name percentage type" },
@@ -490,7 +496,7 @@ export const getAllHoldOrders = async (req, res) => {
     const options = {
       sort: { holdDate: -1 },
       populate: [
-        { path: "locationId", select: "name" },
+        { path: "branchId", select: "name" },
         { path: "customerId", select: "firstName lastName companyName" },
       ],
       limit: 100,
@@ -518,12 +524,22 @@ export const quickAddProduct = async (req, res) => {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
 
-    let criteria: any = { isDeleted: false, isActive: true, name: { $regex: productName, $options: "i" } };
+    let criteria: any = { isDeleted: false, isActive: true, name: { $regex: productName, $options: "si" } };
     if (companyId) {
       criteria.companyId = companyId;
     }
 
-    const product = await getFirstMatch(productModel, criteria, {}, { populate: [{ path: "categoryId", select: "name" }, { path: "taxId", select: "name percentage" }] });
+    const product = await getFirstMatch(
+      productModel,
+      criteria,
+      {},
+      {
+        populate: [
+          { path: "categoryId", select: "name" },
+          { path: "salesTaxId", select: "name percentage" },
+        ],
+      }
+    );
 
     if (!product) {
       return res.status(HTTP_STATUS.NOT_FOUND).json(new apiResponse(HTTP_STATUS.NOT_FOUND, "Product not found", {}, {}));
@@ -548,4 +564,3 @@ export const quickAddProduct = async (req, res) => {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
   }
 };
-

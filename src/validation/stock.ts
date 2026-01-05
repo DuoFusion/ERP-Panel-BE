@@ -1,11 +1,10 @@
 import Joi from "joi";
-import { objectId } from "./common";
+import { baseApiSchema, objectId } from "./common";
 
 export const addStockSchema = Joi.object().keys({
   productId: objectId().required(),
   companyId: objectId().optional(),
   branchId: objectId().optional(),
-  locationId: objectId().optional(),
   variantId: objectId().optional(),
   batchNo: Joi.string().optional(),
   qty: Joi.number().min(0).default(0),
@@ -13,13 +12,13 @@ export const addStockSchema = Joi.object().keys({
   expiryDate: Joi.date().optional(),
   sellingPrice: Joi.number().min(0).optional(),
   mrp: Joi.number().min(0).optional(),
+  ...baseApiSchema,
 });
 
 export const editStockSchema = Joi.object().keys({
   stockId: objectId().required(),
   companyId: objectId().optional(),
   branchId: objectId().optional(),
-  locationId: objectId().optional(),
   productId: objectId().optional(),
   variantId: objectId().optional(),
   batchNo: Joi.string().optional(),
@@ -28,6 +27,7 @@ export const editStockSchema = Joi.object().keys({
   expiryDate: Joi.date().optional(),
   sellingPrice: Joi.number().min(0).optional(),
   mrp: Joi.number().min(0).optional(),
+  ...baseApiSchema,
 });
 
 export const deleteStockSchema = Joi.object().keys({

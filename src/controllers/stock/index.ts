@@ -169,7 +169,7 @@ export const deleteStock = async (req, res) => {
 export const getAllStock = async (req, res) => {
   reqInfo(req);
   try {
-    const { page = 1, limit = 10, search, categoryFilter, subCategoryFilter, brandFilter, subBrandFilter, departmentFilter, hsnCodeFilter, purchaseTaxFilter, salesTaxIdFilter, productTypeFilter, locationFilter, minStockQty, maxStockQty, expiryFilter } = req.query;
+    const { page = 1, limit = 10, search, categoryFilter, subCategoryFilter, brandFilter, subBrandFilter, departmentFilter, hsnCodeFilter, purchaseTaxFilter, salesTaxIdFilter, productTypeFilter, branchFilter, minStockQty, maxStockQty, expiryFilter } = req.query;
 
     let criteria: any = { isDeleted: false };
 
@@ -195,7 +195,7 @@ export const getAllStock = async (req, res) => {
 
     if (productTypeFilter) criteria.productType = productTypeFilter;
 
-    if (locationFilter) criteria.branchId = locationFilter;
+    if (branchFilter) criteria.branchId = branchFilter;
 
     if (expiryFilter !== undefined) criteria.hasExpiry = expiryFilter === "true";
 
@@ -224,8 +224,8 @@ export const getAllStock = async (req, res) => {
           isDeleted: false,
         };
 
-        if (locationFilter) {
-          stockCriteria.branchId = locationFilter;
+        if (branchFilter) {
+          stockCriteria.branchId = branchFilter;
         }
 
         // Aggregate stock quantities
