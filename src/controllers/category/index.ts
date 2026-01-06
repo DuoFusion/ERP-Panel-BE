@@ -139,7 +139,7 @@ export const editCategoryById = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error.details[0].message, {}, {}));
 
-    const existingCategory = await getFirstMatch(categoryModel, { code: value.code, _id: { $ne: value.id }, isDeleted: false }, {}, {});
+    const existingCategory = await getFirstMatch(categoryModel, { code: value.code, _id: { $ne: value.categoryId }, isDeleted: false }, {}, {});
 
     if (existingCategory) {
       return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage.dataAlreadyExist("Category code"), {}, {}));
@@ -147,7 +147,7 @@ export const editCategoryById = async (req, res) => {
 
     value.updatedBy = user?._id || null;
 
-    const response = await updateData(categoryModel, { _id: new ObjectId(value.id), isDeleted: false }, value, {});
+    const response = await updateData(categoryModel, { _id: new ObjectId(value.categoryId), isDeleted: false }, value, {});
 
     if (!response) {
       return res.status(HTTP_STATUS.NOT_IMPLEMENTED).json(new apiResponse(HTTP_STATUS.NOT_IMPLEMENTED, responseMessage.updateDataError("Category"), {}, {}));
