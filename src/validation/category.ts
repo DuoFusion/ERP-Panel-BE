@@ -11,7 +11,7 @@ export const addCategorySchema = Joi.object({
 });
 
 export const editCategorySchema = Joi.object({
-  id: objectId().required(),
+  categoryId: objectId().required(),
   name: Joi.string().trim().optional(),
   code: Joi.string().trim().uppercase().optional(),
   description: Joi.string().allow("").optional(),

@@ -5,6 +5,7 @@ export * from "./base";
 export * from "./category";
 export * from "./contact";
 export * from "./product";
+export * from "./productRequest";
 export * from "./stock";
 export * from "./stockVerification";
 export * from "./announcement";

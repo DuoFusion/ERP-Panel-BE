@@ -45,7 +45,7 @@ export const addProduct = async (req, res) => {
 
     value.createdBy = user?._id || null;
     value.updatedBy = user?._id || null;
-    value.companyId = companyId || null;
+    // value.companyId = companyId || null;
 
     let response = await createOne(productModel, value);
 
@@ -169,8 +169,8 @@ export const getAllProduct = async (req, res) => {
     const options: any = {
       sort: { createdAt: -1 },
       populate: [
-        { path: "companyId", select: "name" },
-        { path: "branchId", select: "name" },
+        // { path: "companyId", select: "name" },
+        // { path: "branchId", select: "name" },
         { path: "categoryId", select: "name" },
         { path: "subCategoryId", select: "name" },
         { path: "brandId", select: "name" },
@@ -269,8 +269,8 @@ export const getOneProduct = async (req, res) => {
       {},
       {
         populate: [
-          { path: "companyId", select: "name" },
-          { path: "branchId", select: "name" },
+          // { path: "companyId", select: "name" },
+          // { path: "branchId", select: "name" },
           { path: "categoryId", select: "name" },
           { path: "subCategoryId", select: "name" },
           { path: "brandId", select: "name" },

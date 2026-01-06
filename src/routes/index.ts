@@ -40,6 +40,7 @@ import { feedbackRouter } from "./feedback";
 import { loyaltyRouter } from "./loyalty";
 import { prefixRouter } from "./prefix";
 import { posOrderRouter } from "./posOrder";
+import { productRequestRouter } from "./productRequest";
 
 const router = Router();
 
@@ -56,6 +57,7 @@ router.use("/announcement", announcementRouter);
 router.use("/role", roleRoute);
 router.use("/branch", branchRouter);
 router.use("/product", productRouter);
+router.use("/product-request", productRequestRouter);
 router.use("/employee", employeeRouter);
 router.use("/call-request", callRequestRouter);
 router.use("/stock", stockRoute);

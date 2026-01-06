@@ -7,6 +7,7 @@ export * as roleController from "./role";
 export * as branchController from "./branch";
 export * as employeeController from "./employee";
 export * as productController from "./product";
+export * as productRequestController from "./productRequest";
 export * as stockController from "./stock";
 export * as stockVerificationController from "./stockVerification";
 export * as callRequestController from "./callRequest";
