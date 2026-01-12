@@ -6,12 +6,13 @@ export const addStockSchema = Joi.object().keys({
   companyId: objectId().required(),
   branchId: objectId().optional(),
   variantId: objectId().optional(),
-  batchNo: Joi.string().optional(),
   qty: Joi.number().min(0).default(0),
-  mfgDate: Joi.date().optional(),
-  expiryDate: Joi.date().optional(),
-  sellingPrice: Joi.number().min(0).optional(),
-  mrp: Joi.number().min(0).optional(),
+  purchasePrice: Joi.number().min(0).default(0),
+  landingCost: Joi.number().min(0).default(0),
+  mrp: Joi.number().min(0).default(0),
+  sellingDiscount: Joi.number().min(0).default(0),
+  sellingPrice: Joi.number().min(0).default(0),
+  sellingMargin: Joi.number().min(0).default(0),
   ...baseApiSchema,
 });
 

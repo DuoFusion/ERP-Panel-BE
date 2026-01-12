@@ -65,14 +65,6 @@ const productSchema = new Schema<IProduct>(
     
     onlinePrice: { type: Number, default: 0 },
     additionalInfo: { type: String },
-  
-  
-    // netWeightUnit: { type: String },
-    // nutritionInfo: { type: String },
-    // departmentId: { type: Schema.Types.ObjectId, ref: "department" },
-    // slug: { type: String, index: true },
-    
-    // status: { type: String, enum: Object.values(PRODUCT_STATUS), default: PRODUCT_STATUS.ACTIVE },
   },
   baseSchemaOptions
 );

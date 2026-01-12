@@ -3,7 +3,6 @@ import { PRODUCT_EXPIRY_TYPE, PRODUCT_TYPE } from "../common";
 import { baseApiSchema, objectId } from "./common";
 
 export const addProductSchema = Joi.object().keys({
-  itemCode: Joi.string().required(),
   name: Joi.string().required(),
   printName: Joi.string().optional(),
 
