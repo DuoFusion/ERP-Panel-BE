@@ -24,13 +24,11 @@ export const addProduct = async (req, res) => {
 
     if (value?.branchId && !(await checkIdExist(branchModel, value?.branchId, "Branch", res))) return;
 
-    let isExist = await getFirstMatch(productModel, { $or: [{ name: value?.name }, { itemCode: value?.itemCode }], isDeleted: false }, {}, {});
+    let isExist = await getFirstMatch(productModel, { $or: [{ name: value?.name }], isDeleted: false }, {}, {});
 
     if (isExist) {
       let errorText = "";
       if (isExist?.name === value?.name) errorText = "Product Name";
-      if (isExist?.itemCode === value?.itemCode) errorText = "Product Item Code";
-
       return res.status(HTTP_STATUS.CONFLICT).json(new apiResponse(HTTP_STATUS.CONFLICT, responseMessage?.dataAlreadyExist(errorText), {}, {}));
     }
 
@@ -53,11 +51,11 @@ export const editProduct = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req.headers;
-    
+
     const { error, value } = editProductSchema.validate(req.body);
-    
+
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-    
+
     const companyId = value?.companyId || user?.companyId?._id;
 
     if (companyId && !(await checkIdExist(companyModel, companyId, "Company", res))) return;
