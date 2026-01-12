@@ -1,4 +1,4 @@
-import { apiResponse, HTTP_STATUS } from "../../common";
+import { apiResponse, HTTP_STATUS, USER_ROLES } from "../../common";
 import { uomModel } from "../../database";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addUOMSchema, deleteUOMSchema, editUOMSchema, getUOMSchema } from "../../validation";
@@ -6,16 +6,15 @@ import { addUOMSchema, deleteUOMSchema, editUOMSchema, getUOMSchema } from "../.
 export const addUOM = async (req, res) => {
   reqInfo(req);
   try {
-    const { user } = req.headers;
-    const companyId = user?.companyId?._id;
+    let { user } = req.headers, companyId = null;
     const { error, value } = addUOMSchema.validate(req.body);
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    if(companyId){
-      if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+    if (user?.role?.name !== USER_ROLES.SUPER_ADMIN) {
+      companyId = user?.companyId?._id;
       if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
     }
 
-    // Check if UOM with same name or code already exists
     let existingUOM = await getFirstMatch(
       uomModel,
       {

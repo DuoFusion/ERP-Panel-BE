@@ -8,13 +8,13 @@ export const addTax = async (req, res) => {
   try {
     let { user } = req.headers, companyId = null;
 
-    if(user?.role == USER_ROLES.SUPER_ADMIN) {
-      companyId = user?.companyId?._id;
-      if(!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
-    }
-
     const { error, value } = addTaxSchema.validate(req.body);
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
+    if (user?.role?.name !== USER_ROLES.SUPER_ADMIN) {
+      companyId = user?.companyId?._id;
+      if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
+    }
 
     let existingTax = await getFirstMatch(
       taxModel,
