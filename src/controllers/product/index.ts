@@ -138,10 +138,6 @@ export const getAllProduct = async (req, res) => {
 
     let criteria: any = { isDeleted: false };
 
-    if (companyId) {
-      criteria.companyId = companyId;
-    }
-
     if (search) {
       criteria.$or = [{ name: { $regex: search, $options: "si" } }, { itemCode: { $regex: search, $options: "si" } }];
     }
@@ -163,13 +159,10 @@ export const getAllProduct = async (req, res) => {
     const options: any = {
       sort: { createdAt: -1 },
       populate: [
-        { path: "companyId", select: "name" },
-        { path: "branchId", select: "name" },
         { path: "categoryId", select: "name" },
         { path: "subCategoryId", select: "name" },
         { path: "brandId", select: "name" },
         { path: "subBrandId", select: "name" },
-        // { path: "departmentId", select: "name" },
         { path: "uomId", select: "name" },
         { path: "purchaseTaxId", select: "name" },
         { path: "salesTaxId", select: "name" },
