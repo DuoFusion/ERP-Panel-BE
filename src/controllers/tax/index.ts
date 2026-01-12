@@ -1,4 +1,4 @@
-import { apiResponse, HTTP_STATUS } from "../../common";
+import { apiResponse, HTTP_STATUS, USER_ROLES } from "../../common";
 import { taxModel } from "../../database";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addTaxSchema, deleteTaxSchema, editTaxSchema, getTaxSchema } from "../../validation";
@@ -6,16 +6,16 @@ import { addTaxSchema, deleteTaxSchema, editTaxSchema, getTaxSchema } from "../.
 export const addTax = async (req, res) => {
   reqInfo(req);
   try {
-    const { user } = req.headers;
-    const companyId = user?.companyId?._id;
-    const { error, value } = addTaxSchema.validate(req.body);
+    let { user } = req.headers, companyId = null;
 
-    if(companyId){
-      if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
-      if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
+    if(user?.role == USER_ROLES.SUPER_ADMIN) {
+      companyId = user?.companyId?._id;
+      if(!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
     }
 
-    // Check if Tax with same name already exists
+    const { error, value } = addTaxSchema.validate(req.body);
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
     let existingTax = await getFirstMatch(
       taxModel,
       {
