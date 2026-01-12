@@ -16,9 +16,9 @@ export const addProduct = async (req, res) => {
 
     if (userRole === USER_ROLES.SUPER_ADMIN) {
       companyId = value?.companyId;
+      if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
     }
 
-    if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
 
     if (!(await checkIdExist(companyModel, companyId, "Company", res))) return;
 
