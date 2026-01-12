@@ -14,7 +14,7 @@ export const addProduct = async (req, res) => {
 
     if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
 
-    if (userRole === USER_ROLES.SUPER_ADMIN) {
+    if (userRole !== USER_ROLES.SUPER_ADMIN) {
       companyId = value?.companyId;
       if (!companyId) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, responseMessage?.getDataNotFound("Company"), {}, {}));
     }
