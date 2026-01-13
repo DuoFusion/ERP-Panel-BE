@@ -124,7 +124,7 @@ export const getAllPrefix = async (req, res) => {
   try {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
-    let { page = 1, limit = 10, search, module, activeFilter } = req.query;
+    let { page, limit, search, module, activeFilter } = req.query;
 
     page = Number(page);
     limit = Number(limit);
@@ -144,15 +144,18 @@ export const getAllPrefix = async (req, res) => {
       criteria.module = module;
     }
 
-    const options = {
+    const options: any = {
       sort: { module: 1 },
       populate: [
         { path: "companyId", select: "name" },
         { path: "branchId", select: "name" },
       ],
-      skip: (page - 1) * limit,
-      limit,
     };
+
+    if (page && limit) {
+      options.page = (parseInt(page) + 1) * parseInt(limit);
+      options.limit = parseInt(limit);
+    }
 
     const response = await getDataWithSorting(PrefixModel, criteria, {}, options);
     const totalData = await countData(PrefixModel, criteria);

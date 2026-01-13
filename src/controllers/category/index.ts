@@ -42,7 +42,7 @@ export const getAllCategory = async (req, res) => {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
 
-    let { page = 1, limit = 10, search, startDate, endDate, activeFilter } = req.query;
+    let { page, limit, search, startDate, endDate, activeFilter } = req.query;
 
     page = Number(page);
     limit = Number(limit);
@@ -71,16 +71,19 @@ export const getAllCategory = async (req, res) => {
       }
     }
 
-    const options = {
+    const options: any = {
       sort: { createdAt: -1 },
       populate: [
         { path: "companyId", select: "name" },
         { path: "branchId", select: "name" },
         { path: "parentCategoryId", select: "name" },
       ],
-      skip: (page - 1) * limit,
-      limit,
     };
+
+    if (page && limit) {
+      options.page = (parseInt(page) + 1) * parseInt(limit);
+      options.limit = parseInt(limit);
+    }
 
     const response = await getDataWithSorting(categoryModel, criteria, {}, options);
     const totalData = await countData(categoryModel, criteria);
