@@ -46,6 +46,5 @@ app.use((_, res) => {
   });
 });
 
-
 let server = new http.Server(app);
 export default server;
