@@ -191,9 +191,9 @@ export const getProductDropdown = async (req, res) => {
 
     let criteria: any = { isDeleted: false, isActive: true };
 
-    if (companyId) {
-      criteria.companyId = companyId;
-    }
+    // if (companyId) {
+    //   criteria.companyId = companyId;
+    // }
 
     if (productType) {
       criteria.productType = productType;
