@@ -9,6 +9,7 @@ export interface ICategory extends IBase {
     description?: string;
     parentCategoryId?: Schema.Types.ObjectId;
     image?: string;
+    categoryFilter?: string;
 }
 
 const categorySchema = new Schema<ICategory>({
@@ -17,7 +18,8 @@ const categorySchema = new Schema<ICategory>({
     code: { type: String, required: true },
     description: { type: String },
     parentCategoryId: { type: Schema.Types.ObjectId, ref: 'category' },
-    image: { type: String }
+    image: { type: String },
+    categoryFilter: { type: String }
 }, baseSchemaOptions);
 
 export const categoryModel = mongoose.model<ICategory>('category', categorySchema);

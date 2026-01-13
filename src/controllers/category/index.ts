@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from "../../common";
+import { HTTP_STATUS, USER_ROLES } from "../../common";
 import { apiResponse } from "../../common/utils";
 import { categoryModel } from "../../database/model";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
@@ -189,15 +189,16 @@ export const deleteCategoryById = async (req, res) => {
 // Dropdown API - returns only active categories in { _id, name } format
 export const getCategoryDropdown = async (req, res) => {
   reqInfo(req);
+  let { user } = req?.headers, { parentCategoryFilter} =req.query,  companyId = null, criteria: any = { isDeleted: false, isActive: true };
   try {
-    const { user } = req?.headers;
-    const companyId = user?.companyId?._id;
 
-    let criteria: any = { isDeleted: false, isActive: true };
-
-    if (companyId) {
-      criteria.companyId = companyId;
+    if (user?.role?.name !== USER_ROLES.SUPER_ADMIN) {
+      companyId = user?.companyId?._id;
     }
+
+    if (companyId) criteria.companyId = new ObjectId(companyId);
+
+    if (parentCategoryFilter) criteria.parentCategoryId = new ObjectId(parentCategoryFilter);
 
     const response = await getDataWithSorting(
       categoryModel,

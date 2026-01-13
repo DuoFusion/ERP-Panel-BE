@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from "../../common";
+import { HTTP_STATUS, USER_ROLES } from "../../common";
 import { apiResponse } from "../../common/utils";
 import { brandModel } from "../../database/model";
 import { countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
@@ -189,14 +189,17 @@ export const getBrandById = async (req, res) => {
 export const getBrandDropdown = async (req, res) => {
   reqInfo(req);
   try {
-    const { user } = req?.headers;
-    const companyId = user?.companyId?._id;
+    let { user } = req?.headers, { parentBrandFilter} =req.query,  companyId = user?.companyId?._id;
 
     let criteria: any = { isDeleted: false, isActive: true };
 
-    if (companyId) {
-      criteria.companyId = companyId;
+    if (user?.role?.name !== USER_ROLES.SUPER_ADMIN) {
+      companyId = new ObjectId(user?.companyId?._id);
     }
+
+    if (parentBrandFilter) criteria.parentBrandId = new ObjectId(parentBrandFilter);
+
+    if (companyId) criteria.companyId = companyId;
 
     const response = await getDataWithSorting(
       brandModel,
