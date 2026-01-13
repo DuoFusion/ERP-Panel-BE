@@ -7,6 +7,7 @@ const router = express.Router();
 router.use(adminJwt);
 
 router.get("/all", companyController.getAllCompany);
+router.get("/dropdown", companyController.getCompanyDropdown);
 router.post("/add", companyController.addCompany);
 router.put("/edit", companyController.editCompanyById);
 router.delete("/:id", companyController.deleteCompanyById);

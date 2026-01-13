@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "f5778463-8f5f-4571-a877-81fc6d53efdc",
+		"_postman_id": "a2fc5587-7790-4156-b860-18e675077c53",
 		"name": "ERP-API-Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "47376418",
-		"_collection_link": "https://shakilhkdigiverse-7685412.postman.co/workspace/ERP-BE~aa0ce62e-22f8-4276-b0be-8e6eca9aafdc/collection/50248941-f5778463-8f5f-4571-a877-81fc6d53efdc?action=share&source=collection_link&creator=47376418"
+		"_collection_link": "https://shakilhkdigiverse-7685412.postman.co/workspace/ERP-BE~aa0ce62e-22f8-4276-b0be-8e6eca9aafdc/collection/47376418-a2fc5587-7790-4156-b860-18e675077c53?action=share&source=collection_link&creator=47376418"
 	},
 	"item": [
 		{
@@ -194,7 +194,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// {\r\n//     \"email\": \"shakil786@gmail.com\",\r\n//     \"password\": \"Admin@123\"\r\n// } /// super-Admin\r\n\r\n{\r\n    \"email\": \"shakil@gmail.com\",\r\n    \"password\": \"Admin@123\"\r\n} // Hk-Digiverse Company\r\n\r\n// {\r\n//     \"email\": \"yash@gmail.com\",\r\n//     \"password\": \"Admin@123\"\r\n// } // Duo Fusiom Company\r\n// ",
+							"raw": "{\r\n    \"email\": \"shakil786@gmail.com\",\r\n    \"password\": \"Admin@123\"\r\n} /// super-Admin\r\n\r\n// {\r\n//     \"email\": \"krish@gmail.com\",\r\n//     \"password\": \"Admin@123\"\r\n// } // Hk-Digiverse Company\r\n\r\n// {\r\n//     \"email\": \"yash@gmail.com\",\r\n//     \"password\": \"Admin@123\"\r\n// } // Duo Fusiom Company\r\n// \r\n\r\n// {\r\n    // \"email\": \"raj@gmail.com\",\r\n    // \"password\": \"Admin@123\"\r\n// } // Duo Fusiom Company",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,11 +267,6 @@
 								},
 								{
 									"key": "activeFilter",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "deleteFilter",
 									"value": "",
 									"disabled": true
 								}
@@ -483,11 +478,6 @@
 									"key": "activeFilter",
 									"value": "",
 									"disabled": true
-								},
-								{
-									"key": "deleteFilter",
-									"value": "",
-									"disabled": true
 								}
 							]
 						}
@@ -507,7 +497,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // \"companyId\": \"694a6ccf473cedf2701a6386\",\r\n    \"name\": \"Okay\",\r\n    \"isActive\": true\r\n}",
+							"raw": "{\r\n    // \"companyId\": \"694a6ccf473cedf2701a6386\",\r\n    \"name\": \"test\",\r\n    \"isActive\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -540,7 +530,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roleId\": \"694d14e52cfa0ba1d21ac019\"\r\n    // \"name\": \"hr1\",\r\n    // \"isActive\": true\r\n    // \"companyId\": \"694a6ccf473cedf2701a6386\"\r\n}",
+							"raw": "{\r\n    \"roleId\": \"6954bdc187dc5134c27e50fc\",\r\n    \"name\": \"admin\"\r\n    // \"isActive\": true\r\n    // \"companyId\": \"694a6ccf473cedf2701a6386\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -607,6 +597,285 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Product Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/product/all?page=1&limit=10&activeFilter=true",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": "0012312",
+									"disabled": true
+								},
+								{
+									"key": "startDate",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "activeFilter",
+									"value": "true"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productType\": \"finished\",\r\n    \"name\": \"Darrel Avila\",\r\n    \"printName\": \"Nelle Michael\",\r\n    \"hsnCode\": \"Aut eos lorem sed v\",\r\n    \"categoryId\": \"6964b653652bff95e0658d9a\",\r\n    \"subCategoryId\": \"6964b653652bff95e0658d9a\",\r\n    \"purchaseTaxId\": \"6964b7f820d84261d82fb8fa\",\r\n    \"isPurchaseTaxIncluding\": false,\r\n    \"brandId\": \"6964b99d652bff95e0658eaa\",\r\n    \"subBrandId\": \"6964b5f5652bff95e0658d75\",\r\n    \"salesTaxId\": \"6964b7f820d84261d82fb8fa\",\r\n    \"isSalesTaxIncluding\": false,\r\n    \"cessPercentage\": 20,\r\n    \"manageMultipleBatch\": false,\r\n    \"hasExpiry\": false,\r\n    \"expiryReferenceDate\": \"2026-01-12T11:21:28.467Z\",\r\n    \"isExpiryProductSaleable\": true,\r\n    \"ingredients\": \"Ipsum laboriosam ne\",\r\n    \"shortDescription\": \"Quia deleniti aliqua\",\r\n    \"description\": \"<p>Repudiandae&nbsp;sunt,&nbsp;au.</p>\",\r\n    \"nutrition\": [\r\n        {\r\n            \"name\": \"Willa Higgins\",\r\n            \"value\": \"Voluptatibus laborio\"\r\n        }\r\n    ],\r\n    \"netWeight\": 21,\r\n    \"masterQty\": 688,\r\n    \"purchasePrice\": 705,\r\n    \"landingCost\": 99,\r\n    \"mrp\": 35,\r\n    \"sellingDiscount\": 53,\r\n    \"sellingPrice\": 262,\r\n    \"sellingMargin\": 80,\r\n    \"retailerDiscount\": 66,\r\n    \"retailerPrice\": 82,\r\n    \"retailerMargin\": 7,\r\n    \"wholesalerDiscount\": 37,\r\n    \"wholesalerMargin\": 88,\r\n    \"wholesalerPrice\": 193,\r\n    \"minimumQty\": 247,\r\n    \"openingQty\": 109,\r\n    \"images\": [\r\n        \"http://localhost:4001/public/images/default/1765434473507_istockphoto-863365806-1024x1024.jpg\",\r\n        \"http://localhost:4001/public/images/default/1765434473515_Untitled-1.2.png\",\r\n        \"http://localhost:4001/public/images/default/1765434473522_Untitled-1.3.png\"\r\n    ],\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/product/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Product by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": \"6957913317482e04786c2670\",\r\n    \"itemCode\": \"PROD-1233\",\r\n    \"name\": \"Complete Test Product 1\",\r\n    \"printName\": \"Test Product Full\",\r\n    \"categoryId\": \"66a0c9b5e1b1c8a1a1111111\",\r\n    \"subCategoryId\": \"66a0c9b5e1b1c8a1a1111112\",\r\n    \"brandId\": \"66a0c9b5e1b1c8a1a2222222\",\r\n    \"subBrandId\": \"66a0c9b5e1b1c8a1a2222223\",\r\n    \"productType\": \"finished\",\r\n    \"uomId\": \"66a0c9b5e1b1c8a1a3333333\",\r\n    \"purchasePrice\": 100,\r\n    \"landingCost\": 105,\r\n    \"mrp\": 150,\r\n    \"sellingPrice\": 140,\r\n    \"sellingDiscount\": 5,\r\n    \"sellingMargin\": 12,\r\n    \"retailerDiscount\": 8,\r\n    \"retailerPrice\": 135,\r\n    \"retailerMargin\": 10,\r\n    \"wholesalerDiscount\": 10,\r\n    \"wholesalerPrice\": 130,\r\n    \"wholesalerMargin\": 8,\r\n    \"onlinePrice\": 145,\r\n    \"minimumQty\": 1,\r\n    \"openingQty\": 50,\r\n    \"masterQty\": 10,\r\n    \"hsnCode\": \"1234\",\r\n    \"purchaseTaxId\": \"66a0c9b5e1b1c8a1a4444444\",\r\n    \"salesTaxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n    \"isPurchaseTaxIncluding\": false,\r\n    \"isSalesTaxIncluding\": true,\r\n    \"cessPercentage\": 0,\r\n    \"manageMultipleBatch\": true,\r\n    \"isExpiryProductSaleable\": true,\r\n    \"hasExpiry\": true,\r\n    \"expiryDays\": 365,\r\n    \"calculateExpiryOn\": \"MFG\",\r\n    \"expiryReferenceDate\": \"2026-01-01\",\r\n    \"ingredients\": \"Ingredient A, Ingredient B\",\r\n    \"description\": \"This is a fully populated product for testing.\",\r\n    \"shortDescription\": \"Full payload product\",\r\n    \"netWeight\": 1000,\r\n    \"nutrition\": [\r\n        {\r\n            \"name\": \"Energy\",\r\n            \"value\": \"350 kcal\"\r\n        },\r\n        {\r\n            \"name\": \"Protein\",\r\n            \"value\": \"12 g\"\r\n        }\r\n    ],\r\n    \"images\": [\r\n        \"https://example.com/images/product-front.jpg\",\r\n        \"https://example.com/images/product-back.jpg\"\r\n    ],\r\n    \"additionalInfo\": \"This payload includes every possible field.\"\r\n    // \"branchId\": \"6940d7d3f5973ae81cfaa664\",\r\n    // \"companyId\": \"6940d7d3f5973ae81cfaa664\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/product/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/product/693ab3739d2c88d6fa895c6a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"693ab3739d2c88d6fa895c6a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Product By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/product/69576c6300f604b565c18263",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"69576c6300f604b565c18263"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Drop Down",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/product/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"dropdown"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -717,7 +986,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"companyId\": \"694f6b9a676217a91133a775\",\r\n    \"branchId\": \"694e88ac7c101593469c7c7c\",\r\n    \"locationId\": \"665f1b2c9f1a4a0012a33333\",\r\n    \"productId\": \"694ce8e1fe1e8268510ce686\",\r\n    \"variantId\": \"665f1b2c9f1a4a0012a55555\",\r\n    \"batchNo\": \"BATCH-OPEN-011\",\r\n    \"qty\": 200,\r\n    \"mfgDate\": \"2025-01-01\",\r\n    \"expiryDate\": \"2026-01-01\",\r\n    \"sellingPrice\": 120,\r\n    \"mrp\": 150\r\n}",
+							"raw": "{\r\n    \"companyId\": \"694f6b9a676217a91133a775\",\r\n    \"branchId\": \"694e88ac7c101593469c7c7c\",\r\n    \"productId\": \"695c8b431fb1737e0315b5db\",\r\n    \"variantId\": \"665f1b2c9f1a4a0012a55555\",\r\n    \"batchNo\": \"BATCH-OPEN-012\",\r\n    \"qty\": 200,\r\n    \"mfgDate\": \"2025-01-01\",\r\n    \"expiryDate\": \"2026-01-01\",\r\n    \"sellingPrice\": 120,\r\n    \"mrp\": 150\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -927,7 +1196,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"verificationDate\": \"2025-01-05T10:30:00.000Z\",\r\n    \"departmentId\": \"694d02467cb4009f97a30882\",\r\n    \"categoryId\": \"6940d7d3f5973ae81cfaa664\",\r\n    \"brandId\": \"694e88ac7c101593469c7c7c\",\r\n    \"locationId\": \"694f11ac7c101593469c7d11\",\r\n    \"remark\": \"Monthly stock Qaa verification for electronics section\",\r\n    \"status\": \"pending\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"695a11bc7c101593469c8a21\",\r\n            \"batchNo\": \"BATCH-2025-001\",\r\n            \"landingCost\": 122,\r\n            \"price\": 650,\r\n            \"mrp\": 700,\r\n            \"sellingPrice\": 680,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 100,\r\n            \"physicalQty\": 95,\r\n            \"differenceQty\": -5,\r\n            \"differenceAmount\": -2500\r\n        },\r\n        {\r\n            \"productId\": \"695a22bc7c101593469c8a35\",\r\n            \"batchNo\": \"BATCH-2025-002\",\r\n            \"landingCost\": 300,\r\n            \"price\": 420,\r\n            \"mrp\": 450,\r\n            \"sellingPrice\": 430,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 50,\r\n            \"physicalQty\": 55,\r\n            \"differenceQty\": 5,\r\n            \"differenceAmount\": 1500\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"verificationDate\": \"2025-01-05T10:30:00.000Z\",\r\n    \"departmentId\": \"694d02467cb4009f97a30882\",\r\n    \"categoryId\": \"695d02028ea61e91bd1de521\",\r\n    \"brandId\": \"694e88ac7c101593469c7c7c\",\r\n    \"remark\": \"Monthly stock Qaa verification for electronics section\",\r\n    \"status\": \"pending\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"695c8b431fb1737e0315b5db\",\r\n            \"batchNo\": \"BATCH-2025-001\",\r\n            \"landingCost\": 122,\r\n            \"price\": 650,\r\n            \"mrp\": 700,\r\n            \"sellingPrice\": 680,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 100,\r\n            \"physicalQty\": 95,\r\n            \"differenceQty\": -5,\r\n            \"differenceAmount\": -2500\r\n        },\r\n        {\r\n            \"productId\": \"695c8b431fb1737e0315b5db\",\r\n            \"batchNo\": \"BATCH-2025-002\",\r\n            \"landingCost\": 300,\r\n            \"price\": 420,\r\n            \"mrp\": 450,\r\n            \"sellingPrice\": 430,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 50,\r\n            \"physicalQty\": 55,\r\n            \"differenceQty\": 5,\r\n            \"differenceAmount\": 1500\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -960,7 +1229,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"stockVerificationId\": \"69566b6a51eddff0439d77ed\",\r\n    \"verificationDate\": \"2025-01-05T10:30:00.000Z\",\r\n    \"departmentId\": \"694d02467cb4009f97a30882\",\r\n    \"categoryId\": \"6940d7d3f5973ae81cfaa664\",\r\n    \"brandId\": \"694e88ac7c101593469c7c7c\",\r\n    \"locationId\": \"694f11ac7c101593469c7d11\",\r\n    \"remark\": \"Monthly stock Qaa verification for electronics section\",\r\n    \"status\": \"pending\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"695a11bc7c101593469c8a21\",\r\n            \"batchNo\": \"BATCH-2025-001\",\r\n            \"landingCost\": 122,\r\n            \"price\": 650,\r\n            \"mrp\": 700,\r\n            \"sellingPrice\": 680,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 100,\r\n            \"physicalQty\": 95,\r\n            \"differenceQty\": -5,\r\n            \"differenceAmount\": -2500\r\n        },\r\n        {\r\n            \"productId\": \"695a22bc7c101593469c8a35\",\r\n            \"batchNo\": \"BATCH-2025-002\",\r\n            \"landingCost\": 300,\r\n            \"price\": 420,\r\n            \"mrp\": 450,\r\n            \"sellingPrice\": 430,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 50,\r\n            \"physicalQty\": 55,\r\n            \"differenceQty\": 5,\r\n            \"differenceAmount\": 1500\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"stockVerificationId\": \"69566b6a51eddff0439d77ed\",\r\n    \"verificationDate\": \"2025-01-05T10:30:00.000Z\",\r\n    \"departmentId\": \"694d02467cb4009f97a30882\",\r\n    \"categoryId\": \"6940d7d3f5973ae81cfaa664\",\r\n    \"brandId\": \"694e88ac7c101593469c7c7c\",\r\n    \"remark\": \"Monthly stock Qaa verification for electronics section\",\r\n    \"status\": \"pending\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"695a11bc7c101593469c8a21\",\r\n            \"batchNo\": \"BATCH-2025-001\",\r\n            \"landingCost\": 122,\r\n            \"price\": 650,\r\n            \"mrp\": 700,\r\n            \"sellingPrice\": 680,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 100,\r\n            \"physicalQty\": 95,\r\n            \"differenceQty\": -5,\r\n            \"differenceAmount\": -2500\r\n        },\r\n        {\r\n            \"productId\": \"695a22bc7c101593469c8a35\",\r\n            \"batchNo\": \"BATCH-2025-002\",\r\n            \"landingCost\": 300,\r\n            \"price\": 420,\r\n            \"mrp\": 450,\r\n            \"sellingPrice\": 430,\r\n            \"unit\": \"pcs\",\r\n            \"systemQty\": 50,\r\n            \"physicalQty\": 55,\r\n            \"differenceQty\": 5,\r\n            \"differenceAmount\": 1500\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1107,7 +1376,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    // \"companyId\": \"6940d7d3f5973ae81cfaa664\",\r\n    \"companyId\": \"694f6b9a676217a91133a775\",\r\n    \"name\": \"State Bank of India\",\r\n    \"ifscCode\": \"SBIN0001234\",\r\n    \"branchName\": \"Surat Main Branch\",\r\n    \"accountHolderName\": \"Dhruvi Bakery Pvt Ltd\",\r\n    \"bankAccountNumber\": \"12345678901624\",\r\n    \"swiftCode\": \"SBININBB\",\r\n    \"openingBalance\": {\r\n        \"creditBalance\": 50000,\r\n        \"debitBalance\": 0\r\n    },\r\n    \"isUpiAvailable\": true,\r\n    \"addressLine1\": \"Shop No 12, Ring Road\",\r\n    \"addressLine2\": \"Near Textile Market\",\r\n    \"country\": \"India\",\r\n    \"state\": \"Gujarat\",\r\n    \"city\": \"Surat\",\r\n    \"zipCode\": 395002,\r\n    \"branchIds\": [\r\n        \"694e88ac7c101593469c7c7c\",\r\n        \"694e88ac7c101593469c7c7c\"\r\n    ]\r\n}",
+							"raw": "{\r\n    // \"companyId\": \"6940d7d3f5973ae81cfaa664\",\r\n    \"companyId\": \"694f6b9a676217a91133a775\",\r\n    \"name\": \"State Bank of India\",\r\n    \"ifscCode\": \"SBIN0001234\",\r\n    \"branchName\": \"Surat Main Branch\",\r\n    \"accountHolderName\": \"Dhruvi Bakery Pvt Ltd\",\r\n    \"bankAccountNumber\": \"576644565465654\",\r\n    \"swiftCode\": \"SBININBB\",\r\n    \"openingBalance\": {\r\n        \"creditBalance\": 50000,\r\n        \"debitBalance\": 0\r\n    },\r\n    \"isUpiAvailable\": true,\r\n    \"addressLine1\": \"Shop No 12, Ring Road\",\r\n    \"addressLine2\": \"Near Textile Market\",\r\n    \"country\": \"India\",\r\n    \"state\": \"Gujarat\",\r\n    \"city\": \"Surat\",\r\n    \"zipCode\": 395002,\r\n    \"branchIds\": [\r\n        \"694e88ac7c101593469c7c7c\",\r\n        \"694e88ac7c101593469c7c7c\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1207,6 +1476,63 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Drop Down",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/bank/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"bank",
+								"dropdown"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -1391,10 +1717,10 @@
 			]
 		},
 		{
-			"name": "Product",
+			"name": "Material",
 			"item": [
 				{
-					"name": "Product Get All",
+					"name": "material Get All",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1405,12 +1731,192 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/product/all",
+							"raw": "{{BASE_URL}}/material/all",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"product",
+								"material",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "hr",
+									"disabled": true
+								},
+								{
+									"key": "startDate",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "activeFilter",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "deleteFilter",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add material",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"materialNo\": \"MAT-16\",\r\n    \"materialDate\": \"2026-01-03\",\r\n    \"description\": \"Material inward and consumption entry\",\r\n    \"materialTaken\": [\r\n        {\r\n            \"productId\": \"6958db2c4d8e2e4671c02014\",\r\n            \"qty\": 5,\r\n            \"mrp\": 120,\r\n            \"unitCost\": 100,\r\n            \"landingPrice\": 110,\r\n            \"salesRate\": 140,\r\n            \"taxRate\": 5,\r\n            \"totalAmount\": 500\r\n        },\r\n        {\r\n            \"productId\": \"6958db2c4d8e2e4671c02014\",\r\n            \"qty\": 2,\r\n            \"mrp\": 200,\r\n            \"unitCost\": 180,\r\n            \"landingPrice\": 190,\r\n            \"salesRate\": 230,\r\n            \"taxRate\": 12,\r\n            \"totalAmount\": 360\r\n        }\r\n    ],\r\n    \"materialTakenTotalAmount\": 860,\r\n    \"goodsReceived\": [\r\n        {\r\n            \"productId\": \"6958db2c4d8e2e4671c02014\",\r\n            \"qty\": 10,\r\n            \"mrp\": 90,\r\n            \"batch\": \"BATCH-01\",\r\n            \"unitCost\": 80,\r\n            \"landingPrice\": 85,\r\n            \"salesRate\": 110,\r\n            \"taxRate\": 5,\r\n            \"totalAmount\": 800\r\n        }\r\n    ],\r\n    \"goodsReceivedTotalAmount\": 800\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/material/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"material",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "material Edit by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"materialId\": \"6958e54de7e2d5b9a26c2d4a\",\r\n    \"materialNo\": \"MAT-16\",\r\n    \"materialDate\": \"01\",\r\n    \"description\": \"Material inward and consumption entry\",\r\n    \"materialTaken\": [\r\n        {\r\n            \"productId\": \"6958db2c4d8e2e4671c02014\",\r\n            \"qty\": 5,\r\n            \"mrp\": 120,\r\n            \"unitCost\": 100,\r\n            \"landingPrice\": 110,\r\n            \"salesRate\": 140,\r\n            \"taxRate\": 5,\r\n            \"totalAmount\": 500\r\n        },\r\n        {\r\n            \"productId\": \"6958db2c4d8e2e4671c02014\",\r\n            \"qty\": 2,\r\n            \"mrp\": 200,\r\n            \"unitCost\": 180,\r\n            \"landingPrice\": 190,\r\n            \"salesRate\": 230,\r\n            \"taxRate\": 12,\r\n            \"totalAmount\": 360\r\n        }\r\n    ],\r\n    \"materialTakenTotalAmount\": 860,\r\n    \"goodsReceived\": [\r\n        {\r\n            \"productId\": \"6958db2c4d8e2e4671c02014\",\r\n            \"qty\": 10,\r\n            \"mrp\": 90,\r\n            \"batch\": \"BATCH-01\",\r\n            \"unitCost\": 80,\r\n            \"landingPrice\": 85,\r\n            \"salesRate\": 110,\r\n            \"taxRate\": 5,\r\n            \"totalAmount\": 800\r\n        }\r\n    ],\r\n    \"goodsReceivedTotalAmount\": 800\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/material/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"material",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "material by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/material/6958db2c4d8e2e4671c02014",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"material",
+								"6958db2c4d8e2e4671c02014"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "material By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/material/6958db2c4d8e2e4671c02014",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"material",
+								"6958db2c4d8e2e4671c02014"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Request",
+			"item": [
+				{
+					"name": "Product Request Get All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/product-request/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product-request",
 								"all"
 							],
 							"query": [
@@ -1455,7 +1961,7 @@
 					"response": []
 				},
 				{
-					"name": "Add Product",
+					"name": "Add Product Request",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1467,7 +1973,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itemCode\": \"PROD-1233f\",\r\n    \"name\": \"Complete Test Product 1\",\r\n    \"printName\": \"Test Product Full\",\r\n    \"categoryId\": \"66a0c9b5e1b1c8a1a1111111\",\r\n    \"subCategoryId\": \"66a0c9b5e1b1c8a1a1111112\",\r\n    \"brandId\": \"66a0c9b5e1b1c8a1a2222222\",\r\n    \"subBrandId\": \"66a0c9b5e1b1c8a1a2222223\",\r\n    \"productType\": \"finished\",\r\n    \"uomId\": \"66a0c9b5e1b1c8a1a3333333\",\r\n    \r\n    \"purchasePrice\": 100,\r\n    \"landingCost\": 105,\r\n    \"mrp\": 150,\r\n    \"sellingPrice\": 140,\r\n    \"sellingDiscount\": 5,\r\n    \"sellingMargin\": 12,\r\n    \"retailerDiscount\": 8,\r\n    \"retailerPrice\": 135,\r\n    \"retailerMargin\": 10,\r\n    \"wholesalerDiscount\": 10,\r\n    \"wholesalerPrice\": 130,\r\n    \"wholesalerMargin\": 8,\r\n    \"onlinePrice\": 145,\r\n    \"minimumQty\": 1,\r\n    \"openingQty\": 50,\r\n    \"masterQty\": 10,\r\n\r\n    \"hsnCode\": \"1234\",\r\n    \"purchaseTaxId\": \"66a0c9b5e1b1c8a1a4444444\",\r\n    \"salesTaxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n    \"isPurchaseTaxIncluding\": false,\r\n    \"isSalesTaxIncluding\": true,\r\n    \"cessPercentage\": 0,\r\n    \"manageMultipleBatch\": true,\r\n    \"isExpiryProductSaleable\": true,\r\n\r\n    \"hasExpiry\": true,\r\n    \"expiryDays\": 365,\r\n    \"calculateExpiryOn\": \"MFG\",\r\n    \"expiryReferenceDate\": \"2026-01-01\",\r\n\r\n    \"ingredients\": \"Ingredient A, Ingredient B\",\r\n    \"description\": \"This is a fully populated product for testing.\",\r\n    \"shortDescription\": \"Full payload product\",\r\n \r\n    \"netWeight\": 1000,\r\n    \"nutrition\": [\r\n        {\r\n            \"name\": \"Energy\",\r\n            \"value\": \"350 kcal\"\r\n        },\r\n        {\r\n            \"name\": \"Protein\",\r\n            \"value\": \"12 g\"\r\n        }\r\n    ],\r\n    \r\n    \"images\": [\r\n        \"https://example.com/images/product-front.jpg\",\r\n        \"https://example.com/images/product-back.jpg\"\r\n    ],\r\n    \"additionalInfo\": \"This payload includes every possible field.\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Premium Green 1\",\r\n    \"printName\": \"Green Tea - Premium\",\r\n    \"category\": \"dfg\",\r\n    \"subCategory\": \"dfg\",\r\n    \"brand\": \"dfg\",\r\n    \"subBrand\": \"dfg\",\r\n    \"productType\": \"finished\",\r\n    \"hasExpiry\": true,\r\n    \"description\": \"High-quality premium green tea leaves.\",\r\n    \"images\": [\r\n        \"https://example.com/images/green-tea-front.jpg\",\r\n        \"https://example.com/images/green-tea-back.jpg\"\r\n    ],\r\n    \"isActive\": true,\r\n    \"status\": \"accepted\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1475,12 +1981,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/product/add",
+							"raw": "{{BASE_URL}}/product-request/add",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"product",
+								"product-request",
 								"add"
 							]
 						}
@@ -1488,7 +1994,7 @@
 					"response": []
 				},
 				{
-					"name": "Edit Product by id",
+					"name": "Edit Product Request by id",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -1500,7 +2006,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"productId\": \"6957913317482e04786c2670\",\r\n    \"itemCode\": \"PROD-1233\",\r\n    \"name\": \"Complete Test Product 1\",\r\n    \"printName\": \"Test Product Full\",\r\n    \"categoryId\": \"66a0c9b5e1b1c8a1a1111111\",\r\n    \"subCategoryId\": \"66a0c9b5e1b1c8a1a1111112\",\r\n    \"brandId\": \"66a0c9b5e1b1c8a1a2222222\",\r\n    \"subBrandId\": \"66a0c9b5e1b1c8a1a2222223\",\r\n    \"productType\": \"finished\",\r\n    \"uomId\": \"66a0c9b5e1b1c8a1a3333333\",\r\n    \"purchasePrice\": 100,\r\n    \"landingCost\": 105,\r\n    \"mrp\": 150,\r\n    \"sellingPrice\": 140,\r\n    \"sellingDiscount\": 5,\r\n    \"sellingMargin\": 12,\r\n    \"retailerDiscount\": 8,\r\n    \"retailerPrice\": 135,\r\n    \"retailerMargin\": 10,\r\n    \"wholesalerDiscount\": 10,\r\n    \"wholesalerPrice\": 130,\r\n    \"wholesalerMargin\": 8,\r\n    \"onlinePrice\": 145,\r\n    \"minimumQty\": 1,\r\n    \"openingQty\": 50,\r\n    \"masterQty\": 10,\r\n    \"hsnCode\": \"1234\",\r\n    \"purchaseTaxId\": \"66a0c9b5e1b1c8a1a4444444\",\r\n    \"salesTaxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n    \"isPurchaseTaxIncluding\": false,\r\n    \"isSalesTaxIncluding\": true,\r\n    \"cessPercentage\": 0,\r\n    \"manageMultipleBatch\": true,\r\n    \"isExpiryProductSaleable\": true,\r\n    \"hasExpiry\": true,\r\n    \"expiryDays\": 365,\r\n    \"calculateExpiryOn\": \"MFG\",\r\n    \"expiryReferenceDate\": \"2026-01-01\",\r\n    \"ingredients\": \"Ingredient A, Ingredient B\",\r\n    \"description\": \"This is a fully populated product for testing.\",\r\n    \"shortDescription\": \"Full payload product\",\r\n    \"netWeight\": 1000,\r\n    \"nutrition\": [\r\n        {\r\n            \"name\": \"Energy\",\r\n            \"value\": \"350 kcal\"\r\n        },\r\n        {\r\n            \"name\": \"Protein\",\r\n            \"value\": \"12 g\"\r\n        }\r\n    ],\r\n    \"images\": [\r\n        \"https://example.com/images/product-front.jpg\",\r\n        \"https://example.com/images/product-back.jpg\"\r\n    ],\r\n    \"additionalInfo\": \"This payload includes every possible field.\"\r\n    // \"branchId\": \"6940d7d3f5973ae81cfaa664\",\r\n    // \"companyId\": \"6940d7d3f5973ae81cfaa664\"\r\n}",
+							"raw": "{\r\n    \"productRequestId\": \"695cf6866e349e6e49fbb48d\",\r\n    \"name\": \"Premium Green Tea\",\r\n    \"printName\": \"Green Tea - Premium\",\r\n    \"category\": \"apple\",\r\n    \"subCategory\": \"iphone 13\",\r\n    \"brand\": \"apple 2\",\r\n    \"subBrand\": \"iphone 12\",\r\n    \"productType\": \"finished\",\r\n    \"hasExpiry\": true,\r\n    \"description\": \"High-quality premium green tea leaves.\",\r\n    \"images\": [\r\n        \"https://example.com/images/green-tea-front.jpg\",\r\n        \"https://example.com/images/green-tea-back.jpg\"\r\n    ],\r\n    \"isActive\": true,\r\n    \"status\": \"accepted\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1508,12 +2014,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/product/edit",
+							"raw": "{{BASE_URL}}/product-request/edit",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"product",
+								"product-request",
 								"edit"
 							]
 						}
@@ -1521,7 +2027,7 @@
 					"response": []
 				},
 				{
-					"name": "delete product by id",
+					"name": "delete product Request by id",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -1532,20 +2038,20 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/product/693ab3739d2c88d6fa895c6a",
+							"raw": "{{BASE_URL}}/product-request/695cf6866e349e6e49fbb48d",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"product",
-								"693ab3739d2c88d6fa895c6a"
+								"product-request",
+								"695cf6866e349e6e49fbb48d"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get Product By ID",
+					"name": "get Product Request By ID",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1556,13 +2062,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/product/69576c6300f604b565c18263",
+							"raw": "{{BASE_URL}}/product-request/695cf6866e349e6e49fbb48d",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"product",
-								"69576c6300f604b565c18263"
+								"product-request",
+								"695cf6866e349e6e49fbb48d"
 							]
 						}
 					},
@@ -1951,6 +2457,45 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -2146,6 +2691,63 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Drop Down",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/branch/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"branch",
+								"dropdown"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -2635,11 +3237,6 @@
 									"key": "activeFilter",
 									"value": "",
 									"disabled": true
-								},
-								{
-									"key": "deleteFilter",
-									"value": "",
-									"disabled": true
 								}
 							]
 						}
@@ -2750,6 +3347,69 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Drop Down",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/brand/dropdown?parentBrandFilter=694f5af01395be9791e8f14e",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"brand",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "parentBrandFilter",
+									"value": "694f5af01395be9791e8f14e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -2830,10 +3490,16 @@
 					"name": "Edit categoy by id",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"6943ce942830ff6d3b8c54d5\",\r\n  \"name\": \"Fully Automatic Washing Machines\",\r\n  \"description\": \"Top & front load machines\"\r\n}\r\n",
+							"raw": "{\r\n  \"categoryId\": \"695d02028ea61e91bd1de521\",\r\n  \"isActive\" : true\r\n//   \"name\": \"Fully Automatic Washing Machines\",\r\n//   \"description\": \"Top & front load machines\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3021,6 +3687,101 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get All Sub Category Tree",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/category/sub-category/tree?categoryFilter=6943ce942830ff6d3b8c54d5",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"category",
+								"sub-category",
+								"tree"
+							],
+							"query": [
+								{
+									"key": "categoryFilter",
+									"value": "6943ce942830ff6d3b8c54d5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Drop Down",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/category/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"category",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "parentCategoryFilter",
+									"value": "69564e573609f898c4fdc875",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -3039,12 +3800,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/all",
+							"raw": "{{BASE_URL}}/pos-order/all",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"all"
 							],
 							"query": [
@@ -3110,12 +3871,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/hold",
+							"raw": "{{BASE_URL}}/pos-order/hold",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"hold"
 							],
 							"query": [
@@ -3142,7 +3903,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"orderNo\": \"POS000001\",\r\n    \"date\": \"2025-01-15\",\r\n    \"locationId\": \"694e88ac7c101593469c7c7c\",\r\n    \"tableNo\": \"Table 1\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"69576c6300f604b565c18263\",\r\n            \"productName\": \"Hello this is demo product\",\r\n            \"qty\": 2,\r\n            \"price\": 500,\r\n            \"discountPercent\": 0,\r\n            \"discountAmount\": 0,\r\n            \"taxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 180,\r\n            \"taxableAmount\": 1000,\r\n            \"totalAmount\": 1180\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 0,\r\n    \"taxAmount\": 180,\r\n    \"roundOff\": 0,\r\n    \"netAmount\": 1180,\r\n    \"paidAmount\": 1180,\r\n    \"balanceAmount\": 0,\r\n    \"paymentMethod\": \"cash\",\r\n    \"paymentStatus\": \"paid\",\r\n    \"status\": \"completed\",\r\n    \"notes\": \"POS order notes\"\r\n}",
+							"raw": "{\r\n    \"orderNo\": \"POS000001\",\r\n    \"date\": \"2025-01-15\",\r\n    \"branchId\": \"694e88ac7c101593469c7c7c\",\r\n    \"tableNo\": \"Table 1\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"69576c6300f604b565c18263\",\r\n            \"productName\": \"Hello this is demo product\",\r\n            \"qty\": 2,\r\n            \"price\": 500,\r\n            \"discountPercent\": 0,\r\n            \"discountAmount\": 0,\r\n            // \"taxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 180,\r\n            \"taxableAmount\": 1000,\r\n            \"totalAmount\": 1180\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 0,\r\n    \"taxAmount\": 180,\r\n    \"roundOff\": 0,\r\n    \"netAmount\": 1180,\r\n    \"paidAmount\": 1180,\r\n    \"balanceAmount\": 0,\r\n    \"paymentMethod\": \"cash\",\r\n    \"paymentStatus\": \"paid\",\r\n    \"status\": \"completed\",\r\n    \"notes\": \"POS order notes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3150,12 +3911,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/add",
+							"raw": "{{BASE_URL}}/pos-order/add",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"add"
 							]
 						}
@@ -3175,7 +3936,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"productName\": \"Hello this is demo product\"\r\n}",
+							"raw": "{\r\n    \"productName\": \"Complete Test Product\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3183,12 +3944,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/quick-add-product",
+							"raw": "{{BASE_URL}}/pos-order/quick-add-product",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"quick-add-product"
 							]
 						}
@@ -3208,7 +3969,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"posOrderId\": \"695a11bc7c101593469c8a21\",\r\n    \"orderNo\": \"POS000001\",\r\n    \"date\": \"2025-01-15\",\r\n    \"locationId\": \"694e88ac7c101593469c7c7c\",\r\n    \"tableNo\": \"Table 1\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"69576c6300f604b565c18263\",\r\n            \"productName\": \"Hello this is demo product\",\r\n            \"qty\": 3,\r\n            \"price\": 500,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 75,\r\n            \"taxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 256.5,\r\n            \"taxableAmount\": 1425,\r\n            \"totalAmount\": 1681.5\r\n        }\r\n    ],\r\n    \"grossAmount\": 1500,\r\n    \"discountAmount\": 75,\r\n    \"taxAmount\": 256.5,\r\n    \"roundOff\": 0,\r\n    \"netAmount\": 1681.5,\r\n    \"paidAmount\": 1681.5,\r\n    \"balanceAmount\": 0,\r\n    \"paymentMethod\": \"card\",\r\n    \"paymentStatus\": \"paid\",\r\n    \"status\": \"completed\",\r\n    \"notes\": \"Updated POS order notes\"\r\n}",
+							"raw": "{\r\n    \"posOrderId\": \"6958fa696535820f12652eab\",\r\n    \"orderNo\": \"POS000001\",\r\n    \"date\": \"2025-01-15\",\r\n    \"branchId\": \"694e88ac7c101593469c7c7c\",\r\n    \"tableNo\": \"Table 1\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"69576c6300f604b565c18263\",\r\n            \"productName\": \"Hello this is demo product\",\r\n            \"qty\": 2,\r\n            \"price\": 500,\r\n            \"discountPercent\": 0,\r\n            \"discountAmount\": 0,\r\n            // \"taxId\": \"66a0c9b5e1b1c8a1a5555555\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 180,\r\n            \"taxableAmount\": 1000,\r\n            \"totalAmount\": 1180\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 0,\r\n    \"taxAmount\": 180,\r\n    \"roundOff\": 0,\r\n    \"netAmount\": 1180,\r\n    \"paidAmount\": 1180,\r\n    \"balanceAmount\": 0,\r\n    \"paymentMethod\": \"cash\",\r\n    \"paymentStatus\": \"paid\",\r\n    \"status\": \"completed\",\r\n    \"notes\": \"POS order notes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3216,12 +3977,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/edit",
+							"raw": "{{BASE_URL}}/pos-order/edit",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"edit"
 							]
 						}
@@ -3241,7 +4002,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"posOrderId\": \"695a11bc7c101593469c8a21\"\r\n}",
+							"raw": "{\r\n    \"posOrderId\": \"6958fa696535820f12652eab\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3249,12 +4010,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/hold",
+							"raw": "{{BASE_URL}}/pos-order/hold",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"hold"
 							]
 						}
@@ -3274,7 +4035,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"posOrderId\": \"695a11bc7c101593469c8a21\"\r\n}",
+							"raw": "{\r\n    \"posOrderId\": \"6958fa696535820f12652eab\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3282,12 +4043,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/release",
+							"raw": "{{BASE_URL}}/pos-order/release",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"release"
 							]
 						}
@@ -3307,7 +4068,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"posOrderId\": \"695a11bc7c101593469c8a21\"\r\n}",
+							"raw": "{\r\n    \"posOrderId\": \"6958fa696535820f12652eab\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3315,12 +4076,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/convert-to-invoice",
+							"raw": "{{BASE_URL}}/pos-order/convert-to-invoice",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
+								"pos-order",
 								"convert-to-invoice"
 							]
 						}
@@ -3339,13 +4100,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/695a11bc7c101593469c8a21",
+							"raw": "{{BASE_URL}}/pos-order/6958fb0c6535820f12652ed1",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
-								"695a11bc7c101593469c8a21"
+								"pos-order",
+								"6958fb0c6535820f12652ed1"
 							]
 						}
 					},
@@ -3363,86 +4124,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/posorder/695a11bc7c101593469c8a21",
+							"raw": "{{BASE_URL}}/pos-order/6958fa696535820f12652eab",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"posorder",
-								"695a11bc7c101593469c8a21"
+								"pos-order",
+								"6958fa696535820f12652eab"
 							]
 						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Employee",
-			"item": [
-				{
-					"name": "Employee Get All",
-					"request": {
-						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/employee/all", "host": ["{{BASE_URL}}"], "path": ["employee", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
-					},
-					"response": []
-				},
-				{
-					"name": "Employee Dropdown",
-					"request": {
-						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/employee/dropdown", "host": ["{{BASE_URL}}"], "path": ["employee", "dropdown"]}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Employee",
-					"request": {
-						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@example.com\",\r\n    \"phoneNo\": {\"countryCode\": \"+91\", \"phoneNo\": \"1234567890\"},\r\n    \"designation\": \"Manager\",\r\n    \"departmentId\": \"694d02467cb4009f97a30882\",\r\n    \"isActive\": true\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/employee/add", "host": ["{{BASE_URL}}"], "path": ["employee", "add"]}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit Employee",
-					"request": {
-						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"employeeId\": \"695a11bc7c101593469c8a21\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe Updated\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/employee/edit", "host": ["{{BASE_URL}}"], "path": ["employee", "edit"]}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Employee",
-					"request": {
-						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/employee/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["employee", "695a11bc7c101593469c8a21"]}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Employee By ID",
-					"request": {
-						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/employee/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["employee", "695a11bc7c101593469c8a21"]}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Employee Permissions",
-					"request": {
-						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"permissions\": {\r\n        \"dashboard\": {\"add\": true, \"update\": false, \"deleted\": false, \"view\": true, \"all\": false},\r\n        \"sales\": {\"add\": true, \"update\": true, \"deleted\": false, \"view\": true, \"all\": false}\r\n    }\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/employee/695a11bc7c101593469c8a21/permission", "host": ["{{BASE_URL}}"], "path": ["employee", "695a11bc7c101593469c8a21", "permission"]}
 					},
 					"response": []
 				}
@@ -3455,8 +4145,50 @@
 					"name": "Purchase Order Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/purchaseorder/all", "host": ["{{BASE_URL}}"], "path": ["purchaseorder", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}, {"key": "supplierId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/purchase-order/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase-order",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "supplierId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3464,8 +4196,40 @@
 					"name": "Purchase Order Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/purchaseorder/dropdown", "host": ["{{BASE_URL}}"], "path": ["purchaseorder", "dropdown"], "query": [{"key": "supplierId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/purchase-order/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase-order",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "supplierId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3473,9 +4237,32 @@
 					"name": "Add Purchase Order",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"supplierId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 10, \"price\": 100, \"totalAmount\": 1000}],\r\n    \"grossAmount\": 1000,\r\n    \"netAmount\": 1000,\r\n    \"status\": \"pending\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/purchaseorder/add", "host": ["{{BASE_URL}}"], "path": ["purchaseorder", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"documentNo\": \"PO-000123\",\r\n  \"date\": \"2026-01-05\",\r\n  \"supplyDate\": \"2026-01-10\",\r\n  \"supplierId\": \"64f1a9c2e4b0f1a123456789\",\r\n  \"supplierName\": \"ABC Traders\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"693919cce784c7908a1472a7\",\r\n      \"productName\": \"Product A\",\r\n      \"batchNo\": \"BATCH-001\",\r\n      \"qty\": 10,\r\n      \"receivedQty\": 5,\r\n      \"uom\": \"pcs\",\r\n      \"price\": 100,\r\n      \"discountPercent\": 5,\r\n      \"discountAmount\": 50,\r\n      \"taxId\": \"64f1bb22e4b0f1a123456702\",\r\n      \"taxPercent\": 18,\r\n      \"taxAmount\": 171,\r\n      \"taxableAmount\": 950,\r\n      \"totalAmount\": 1121\r\n    }\r\n  ],\r\n  \"grossAmount\": 1000,\r\n  \"discountAmount\": 50,\r\n  \"taxAmount\": 171,\r\n  \"roundOff\": -1,\r\n  \"netAmount\": 1120,\r\n  \"notes\": \"Urgent delivery\",\r\n  \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/purchase-order/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase-order",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3483,9 +4270,32 @@
 					"name": "Edit Purchase Order",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"purchaseOrderId\": \"695a11bc7c101593469c8a21\",\r\n    \"status\": \"received\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/purchaseorder/edit", "host": ["{{BASE_URL}}"], "path": ["purchaseorder", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"purchaseOrderId\": \"695b483e6d68e536f50a24c9\",\r\n    \"documentNo\": \"PO-000123\",\r\n    \"date\": \"2026-01-05\",\r\n    \"supplyDate\": \"2026-01-10\",\r\n    \"supplierId\": \"64f1a9c2e4b0f1a123456789\",\r\n    \"supplierName\": \"ABC Traders\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-001\",\r\n            \"qty\": 10,\r\n            \"receivedQty\": 5,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            \"taxId\": \"64f1bb22e4b0f1a123456702\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"notes\": \"Urgent delivery\",\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/purchase-order/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase-order",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3493,8 +4303,23 @@
 					"name": "Delete Purchase Order",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/purchaseorder/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["purchaseorder", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/purchase-order/695b4bc67ad92171a3896862",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase-order",
+								"695b4bc67ad92171a3896862"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3502,8 +4327,23 @@
 					"name": "Get Purchase Order By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/purchaseorder/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["purchaseorder", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/purchase-order/695b4bc97ad92171a389686b",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase-order",
+								"695b4bc97ad92171a389686b"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3516,8 +4356,55 @@
 					"name": "Supplier Bill Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/supplierbill/all", "host": ["{{BASE_URL}}"], "path": ["supplierbill", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}, {"key": "supplierId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}, {"key": "paymentStatus", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/supplier-bill/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"supplier-bill",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "supplierId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "paymentStatus",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3525,8 +4412,45 @@
 					"name": "Supplier Bill Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/supplierbill/dropdown", "host": ["{{BASE_URL}}"], "path": ["supplierbill", "dropdown"], "query": [{"key": "supplierId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}, {"key": "paymentStatus", "value": "", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/supplier-bill/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"supplier-bill",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "supplierId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "paymentStatus",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3534,9 +4458,32 @@
 					"name": "Add Supplier Bill",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"supplierId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 10, \"price\": 100, \"totalAmount\": 1000}],\r\n    \"grossAmount\": 1000,\r\n    \"netAmount\": 1000,\r\n    \"paymentStatus\": \"unpaid\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/supplierbill/add", "host": ["{{BASE_URL}}"], "path": ["supplierbill", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"documentNo\": \"SB-000101\",\r\n  \"date\": \"2026-01-06\",\r\n  \"dueDate\": \"2026-01-20\",\r\n  \"supplierId\": \"64f1a9c2e4b0f1a123456789\",\r\n  \"supplierName\": \"ABC Traders\",\r\n  \"purchaseOrderId\": \"64f2bb11e4b0f1a123456700\",\r\n  \"materialInwardId\": \"64f2cc22e4b0f1a123456701\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"693919cce784c7908a1472a7\",\r\n      \"productName\": \"Product A\",\r\n      \"batchNo\": \"BATCH-101\",\r\n      \"qty\": 10,\r\n      \"receivedQty\": 10,\r\n      \"uom\": \"pcs\",\r\n      \"price\": 100,\r\n      \"discountPercent\": 5,\r\n      \"discountAmount\": 50,\r\n      \"taxId\": \"64f3bb22e4b0f1a123456703\",\r\n      \"taxPercent\": 18,\r\n      \"taxAmount\": 171,\r\n      \"taxableAmount\": 950,\r\n      \"totalAmount\": 1121\r\n    }\r\n  ],\r\n  \"grossAmount\": 1000,\r\n  \"discountAmount\": 50,\r\n  \"taxAmount\": 171,\r\n  \"roundOff\": -1,\r\n  \"netAmount\": 1120,\r\n  \"paidAmount\": 500,\r\n  \"balanceAmount\": 620,\r\n  \"paymentStatus\": \"partial\",\r\n  \"notes\": \"Half payment done, balance pending\",\r\n  \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/supplier-bill/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"supplier-bill",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3544,9 +4491,32 @@
 					"name": "Edit Supplier Bill",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"supplierBillId\": \"695a11bc7c101593469c8a21\",\r\n    \"paymentStatus\": \"paid\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/supplierbill/edit", "host": ["{{BASE_URL}}"], "path": ["supplierbill", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"supplierBillId\": \"695b58e185b35f5d0a76b65d\",\r\n    \"documentNo\": \"SB-000101\",\r\n    \"date\": \"2026-01-06\",\r\n    \"dueDate\": \"2026-01-20\",\r\n    \"supplierId\": \"64f1a9c2e4b0f1a123456789\",\r\n    \"supplierName\": \"ABC Traders\",\r\n    \"purchaseOrderId\": \"64f2bb11e4b0f1a123456700\",\r\n    \"materialInwardId\": \"64f2cc22e4b0f1a123456701\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-101\",\r\n            \"qty\": 10,\r\n            \"receivedQty\": 10,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            \"taxId\": \"64f3bb22e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"paidAmount\": 500,\r\n    \"balanceAmount\": 620,\r\n    \"paymentStatus\": \"partial\",\r\n    \"notes\": \"Half payment done, balance pending\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/supplier-bill/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"supplier-bill",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3554,8 +4524,23 @@
 					"name": "Delete Supplier Bill",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/supplierbill/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["supplierbill", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/supplier-bill/695b58e185b35f5d0a76b65d",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"supplier-bill",
+								"695b58e185b35f5d0a76b65d"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3563,8 +4548,23 @@
 					"name": "Get Supplier Bill By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/supplierbill/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["supplierbill", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/supplier-bill/695b58de85b35f5d0a76b654",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"supplier-bill",
+								"695b58de85b35f5d0a76b654"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3577,8 +4577,40 @@
 					"name": "Debit Note Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/debitnote/all", "host": ["{{BASE_URL}}"], "path": ["debitnote", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/debit-note/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"debit-note",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3586,9 +4618,32 @@
 					"name": "Add Debit Note",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"supplierId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"supplierBillId\": \"695a11bc7c101593469c8a21\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 1, \"price\": 100, \"totalAmount\": 100}],\r\n    \"netAmount\": 100,\r\n    \"reason\": \"Defective goods\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/debitnote/add", "host": ["{{BASE_URL}}"], "path": ["debitnote", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"documentNo\": \"DN-000012\",\r\n  \"date\": \"2026-01-06\",\r\n  \"supplierId\": \"64f1a9c2e4b0f1a123456789\",\r\n  \"supplierName\": \"ABC Traders\",\r\n  \"supplierBillId\": \"64f5dd33e4b0f1a123456710\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"693919cce784c7908a1472a7\",\r\n      \"productName\": \"Product A\",\r\n      \"batchNo\": \"BATCH-101\",\r\n      \"qty\": 2,\r\n      \"receivedQty\": 2,\r\n      \"uom\": \"pcs\",\r\n      \"price\": 100,\r\n      \"discountPercent\": 5,\r\n      \"discountAmount\": 10,\r\n    //   \"taxId\": \"64f3bb22e4b0f1a123456703\",\r\n      \"taxPercent\": 18,\r\n      \"taxAmount\": 34.2,\r\n      \"taxableAmount\": 190,\r\n      \"totalAmount\": 224.2\r\n    }\r\n  ],\r\n  \"grossAmount\": 200,\r\n  \"discountAmount\": 10,\r\n  \"taxAmount\": 34.2,\r\n  \"roundOff\": -0.2,\r\n  \"netAmount\": 224,\r\n  \"reason\": \"Damaged items returned\",\r\n  \"status\": \"active\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/debit-note/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"debit-note",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3596,9 +4651,32 @@
 					"name": "Edit Debit Note",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"debitNoteId\": \"695a11bc7c101593469c8a21\",\r\n    \"reason\": \"Updated reason\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/debitnote/edit", "host": ["{{BASE_URL}}"], "path": ["debitnote", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"debitNoteId\": \"695b80994833883eb5bfc832\",\r\n    \"documentNo\": \"DN-000012\",\r\n    \"date\": \"2026-01-06\",\r\n    \"supplierId\": \"64f1a9c2e4b0f1a123456789\",\r\n    \"supplierName\": \"ABC Traders\",\r\n    \"supplierBillId\": \"64f5dd33e4b0f1a123456710\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-101\",\r\n            \"qty\": 2,\r\n            \"receivedQty\": 2,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 10,\r\n            //   \"taxId\": \"64f3bb22e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 34.2,\r\n            \"taxableAmount\": 190,\r\n            \"totalAmount\": 224.2\r\n        }\r\n    ],\r\n    \"grossAmount\": 200,\r\n    \"discountAmount\": 10,\r\n    \"taxAmount\": 34.2,\r\n    \"roundOff\": -0.2,\r\n    \"netAmount\": 224,\r\n    \"reason\": \"Damaged items returned\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/debit-note/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"debit-note",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3606,8 +4684,23 @@
 					"name": "Delete Debit Note",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/debitnote/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["debitnote", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/debit-note/695b80994833883eb5bfc832",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"debit-note",
+								"695b80994833883eb5bfc832"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3615,8 +4708,23 @@
 					"name": "Get Debit Note By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/debitnote/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["debitnote", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/debit-note/695b80994833883eb5bfc832",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"debit-note",
+								"695b80994833883eb5bfc832"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3629,8 +4737,40 @@
 					"name": "Estimate Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/estimate/all", "host": ["{{BASE_URL}}"], "path": ["estimate", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/estimate/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"estimate",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3638,9 +4778,32 @@
 					"name": "Add Estimate",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 5, \"price\": 200, \"totalAmount\": 1000}],\r\n    \"grossAmount\": 1000,\r\n    \"netAmount\": 1000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/estimate/add", "host": ["{{BASE_URL}}"], "path": ["estimate", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentNo\": \"EST-000045\",\r\n    \"date\": \"2026-01-06\",\r\n    \"dueDate\": \"2026-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"John Enterprises\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-EST-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 1,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            // \"taxId\": \"64f7cc33e4b0f1a123456702\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"notes\": \"Valid for 7 days\",\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/estimate/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"estimate",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3648,9 +4811,32 @@
 					"name": "Edit Estimate",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"estimateId\": \"695a11bc7c101593469c8a21\",\r\n    \"status\": \"completed\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/estimate/edit", "host": ["{{BASE_URL}}"], "path": ["estimate", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"estimateId\": \"695b8ea57a056e80e135a20a\",\r\n    \"documentNo\": \"EST-000045\",\r\n    \"date\": \"2026-01-06\",\r\n    \"dueDate\": \"2026-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"John Enterprises\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-EST-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 1,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            // \"taxId\": \"64f7cc33e4b0f1a123456702\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"notes\": \"Valid for 7 days\",\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/estimate/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"estimate",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3658,8 +4844,23 @@
 					"name": "Delete Estimate",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/estimate/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["estimate", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/estimate/695b8eaa7a056e80e135a23c",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"estimate",
+								"695b8eaa7a056e80e135a23c"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3667,8 +4868,23 @@
 					"name": "Get Estimate By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/estimate/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["estimate", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/estimate/695b8ea87a056e80e135a232",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"estimate",
+								"695b8ea87a056e80e135a232"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3681,8 +4897,50 @@
 					"name": "Sales Order Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/salesorder/all", "host": ["{{BASE_URL}}"], "path": ["salesorder", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}, {"key": "customerId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/sales-order/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sales-order",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "customerId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3690,8 +4948,40 @@
 					"name": "Sales Order Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/salesorder/dropdown", "host": ["{{BASE_URL}}"], "path": ["salesorder", "dropdown"], "query": [{"key": "customerId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/sales-order/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sales-order",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "customerId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3699,9 +4989,32 @@
 					"name": "Add Sales Order",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 5, \"price\": 200, \"totalAmount\": 1000}],\r\n    \"grossAmount\": 1000,\r\n    \"netAmount\": 1000,\r\n    \"status\": \"pending\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/salesorder/add", "host": ["{{BASE_URL}}"], "path": ["salesorder", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"documentNo\": \"SO-000089\",\r\n  \"date\": \"2026-01-06\",\r\n  \"dueDate\": \"2026-01-18\",\r\n  \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n  \"customerName\": \"XYZ Retailers\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"693919cce784c7908a1472a7\",\r\n      \"productName\": \"Product A\",\r\n      \"batchNo\": \"BATCH-SO-01\",\r\n      \"qty\": 10,\r\n      \"freeQty\": 2,\r\n      \"uom\": \"pcs\",\r\n      \"price\": 100,\r\n      \"discountPercent\": 5,\r\n      \"discountAmount\": 50,\r\n    //   \"taxId\": \"64f8cc33e4b0f1a123456702\",\r\n      \"taxPercent\": 18,\r\n      \"taxAmount\": 171,\r\n      \"taxableAmount\": 950,\r\n      \"totalAmount\": 1121\r\n    }\r\n  ],\r\n  \"grossAmount\": 1000,\r\n  \"discountAmount\": 50,\r\n  \"taxAmount\": 171,\r\n  \"roundOff\": -1,\r\n  \"netAmount\": 1120,\r\n  \"notes\": \"Deliver within 7 working days\",\r\n  \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/sales-order/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sales-order",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3709,9 +5022,32 @@
 					"name": "Edit Sales Order",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"salesOrderId\": \"695a11bc7c101593469c8a21\",\r\n    \"status\": \"completed\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/salesorder/edit", "host": ["{{BASE_URL}}"], "path": ["salesorder", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"salesOrderId\": \"695b9456c2dd68ee05f66ed3\",\r\n    \"documentNo\": \"SO-000089\",\r\n    \"date\": \"2026-01-06\",\r\n    \"dueDate\": \"2026-01-18\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-SO-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 2,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            //   \"taxId\": \"64f8cc33e4b0f1a123456702\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"notes\": \"Deliver within 7 working days\",\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/sales-order/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sales-order",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3719,8 +5055,23 @@
 					"name": "Delete Sales Order",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/salesorder/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["salesorder", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/sales-order/695b9456c2dd68ee05f66ed3",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sales-order",
+								"695b9456c2dd68ee05f66ed3"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3728,8 +5079,23 @@
 					"name": "Get Sales Order By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/salesorder/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["salesorder", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/sales-order/695b9456c2dd68ee05f66ed3",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sales-order",
+								"695b9456c2dd68ee05f66ed3"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3742,8 +5108,55 @@
 					"name": "Invoice Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/invoice/all", "host": ["{{BASE_URL}}"], "path": ["invoice", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}, {"key": "customerId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}, {"key": "paymentStatus", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/invoice/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"invoice",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "customerId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "paymentStatus",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3751,8 +5164,45 @@
 					"name": "Invoice Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/invoice/dropdown", "host": ["{{BASE_URL}}"], "path": ["invoice", "dropdown"], "query": [{"key": "customerId", "value": "", "disabled": true}, {"key": "status", "value": "", "disabled": true}, {"key": "paymentStatus", "value": "", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/invoice/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"invoice",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "customerId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "paymentStatus",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3760,9 +5210,32 @@
 					"name": "Add Invoice",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 5, \"price\": 200, \"totalAmount\": 1000}],\r\n    \"grossAmount\": 1000,\r\n    \"netAmount\": 1000,\r\n    \"paymentStatus\": \"unpaid\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/invoice/add", "host": ["{{BASE_URL}}"], "path": ["invoice", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentNo\": \"INV-000234\",\r\n    \"date\": \"2026-01-06\",\r\n    \"dueDate\": \"2026-01-20\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"salesOrderId\": \"695b93cf77e2b35a3ece24ed\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-INV-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 1,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            // \"taxId\": \"64f9dd44e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"paidAmount\": 500,\r\n    \"balanceAmount\": 620,\r\n    \"paymentStatus\": \"partial\",\r\n    // \"salesManId\": \"64f9ee55e4b0f1a123456704\",\r\n    \"notes\": \"Advance received, balance due\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/invoice/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"invoice",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3770,9 +5243,32 @@
 					"name": "Edit Invoice",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"invoiceId\": \"695a11bc7c101593469c8a21\",\r\n    \"paymentStatus\": \"paid\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/invoice/edit", "host": ["{{BASE_URL}}"], "path": ["invoice", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invoiceId\": \"695b9a54188894926a32b10b\",\r\n    \"documentNo\": \"INV-000234\",\r\n    \"date\": \"2026-01-06\",\r\n    \"dueDate\": \"2026-01-20\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"salesOrderId\": \"695b93cf77e2b35a3ece24ed\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-INV-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 1,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            // \"taxId\": \"64f9dd44e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"grossAmount\": 1000,\r\n    \"discountAmount\": 50,\r\n    \"taxAmount\": 171,\r\n    \"roundOff\": -1,\r\n    \"netAmount\": 1120,\r\n    \"paidAmount\": 500,\r\n    \"balanceAmount\": 620,\r\n    \"paymentStatus\": \"partial\",\r\n    // \"salesManId\": \"64f9ee55e4b0f1a123456704\",\r\n    \"notes\": \"Advance received, balance due\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/invoice/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"invoice",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3780,8 +5276,23 @@
 					"name": "Delete Invoice",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/invoice/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["invoice", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/invoice/695b9a54188894926a32b10b",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"invoice",
+								"695b9a54188894926a32b10b"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3789,8 +5300,23 @@
 					"name": "Get Invoice By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/invoice/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["invoice", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/invoice/695b9a54188894926a32b10b",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"invoice",
+								"695b9a54188894926a32b10b"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3803,8 +5329,40 @@
 					"name": "Delivery Challan Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/deliverychallan/all", "host": ["{{BASE_URL}}"], "path": ["deliverychallan", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/delivery-challan/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"delivery-challan",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3812,9 +5370,32 @@
 					"name": "Add Delivery Challan",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 5, \"price\": 200, \"totalAmount\": 1000}],\r\n    \"netAmount\": 1000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/deliverychallan/add", "host": ["{{BASE_URL}}"], "path": ["deliverychallan", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentNo\": \"DC-000078\",\r\n    \"date\": \"2026-01-06\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"invoiceId\": \"69590bb502cc0c228fea608e\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-DC-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 1,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            // \"taxId\": \"64fad445e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"notes\": \"Deliver before evening\",\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/delivery-challan/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"delivery-challan",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3822,9 +5403,32 @@
 					"name": "Edit Delivery Challan",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"deliveryChallanId\": \"695a11bc7c101593469c8a21\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/deliverychallan/edit", "host": ["{{BASE_URL}}"], "path": ["deliverychallan", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deliveryChallanId\": \"695ba30dd8e70c8ac8db781c\",\r\n    \"documentNo\": \"DC-000078\",\r\n    \"date\": \"2026-01-06\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"invoiceId\": \"69590bb502cc0c228fea608e\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-DC-01\",\r\n            \"qty\": 10,\r\n            \"freeQty\": 1,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 50,\r\n            // \"taxId\": \"64fad445e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 171,\r\n            \"taxableAmount\": 950,\r\n            \"totalAmount\": 1121\r\n        }\r\n    ],\r\n    \"notes\": \"Deliver before evening\",\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/delivery-challan/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"delivery-challan",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3832,8 +5436,23 @@
 					"name": "Delete Delivery Challan",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/deliverychallan/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["deliverychallan", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/delivery-challan/695ba30dd8e70c8ac8db781c",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"delivery-challan",
+								"695ba30dd8e70c8ac8db781c"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3841,8 +5460,23 @@
 					"name": "Get Delivery Challan By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/deliverychallan/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["deliverychallan", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/delivery-challan/695ba30dd8e70c8ac8db781c",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"delivery-challan",
+								"695ba30dd8e70c8ac8db781c"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3855,8 +5489,40 @@
 					"name": "Credit Note Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/creditnote/all", "host": ["{{BASE_URL}}"], "path": ["creditnote", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/credit-note/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"credit-note",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3864,19 +5530,32 @@
 					"name": "Add Credit Note",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"invoiceId\": \"695a11bc7c101593469c8a21\",\r\n    \"items\": [{\"productId\": \"69576c6300f604b565c18263\", \"productName\": \"Product Name\", \"qty\": 1, \"price\": 100, \"totalAmount\": 100}],\r\n    \"netAmount\": 100,\r\n    \"reason\": \"Returned goods\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/creditnote/add", "host": ["{{BASE_URL}}"], "path": ["creditnote", "add"]}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit Credit Note",
-					"request": {
-						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"creditNoteId\": \"695a11bc7c101593469c8a21\",\r\n    \"reason\": \"Updated reason\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/creditnote/edit", "host": ["{{BASE_URL}}"], "path": ["creditnote", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentNo\": \"CN-000034\",\r\n    \"date\": \"2026-01-06\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"invoiceId\": \"69590bb502cc0c228fea608e\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-CN-01\",\r\n            \"qty\": 2,\r\n            \"freeQty\": 0,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 10,\r\n            // \"taxId\": \"64fb445e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 34.2,\r\n            \"taxableAmount\": 190,\r\n            \"totalAmount\": 224.2\r\n        }\r\n    ],\r\n    \"grossAmount\": 200,\r\n    \"discountAmount\": 10,\r\n    \"taxAmount\": 34.2,\r\n    \"roundOff\": -0.2,\r\n    \"netAmount\": 224,\r\n    \"reason\": \"Returned damaged items\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/credit-note/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"credit-note",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3884,8 +5563,56 @@
 					"name": "Delete Credit Note",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/creditnote/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["creditnote", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/credit-note/695bab05e3c3f9a13515f58b",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"credit-note",
+								"695bab05e3c3f9a13515f58b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Credit Note",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"creditNoteId\": \"695bab05e3c3f9a13515f58b\",\r\n    \"documentNo\": \"CN-000034\",\r\n    \"date\": \"2026-01-06\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"customerName\": \"XYZ Retailers\",\r\n    \"invoiceId\": \"69590bb502cc0c228fea608e\",\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"693919cce784c7908a1472a7\",\r\n            \"productName\": \"Product A\",\r\n            \"batchNo\": \"BATCH-CN-01\",\r\n            \"qty\": 2,\r\n            \"freeQty\": 0,\r\n            \"uom\": \"pcs\",\r\n            \"price\": 100,\r\n            \"discountPercent\": 5,\r\n            \"discountAmount\": 10,\r\n            // \"taxId\": \"64fb445e4b0f1a123456703\",\r\n            \"taxPercent\": 18,\r\n            \"taxAmount\": 34.2,\r\n            \"taxableAmount\": 190,\r\n            \"totalAmount\": 224.2\r\n        }\r\n    ],\r\n    \"grossAmount\": 200,\r\n    \"discountAmount\": 10,\r\n    \"taxAmount\": 34.2,\r\n    \"roundOff\": -0.2,\r\n    \"netAmount\": 224,\r\n    \"reason\": \"Returned damaged items\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/credit-note/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"credit-note",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3893,8 +5620,23 @@
 					"name": "Get Credit Note By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/creditnote/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["creditnote", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/credit-note/695bab05e3c3f9a13515f58b",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"credit-note",
+								"695bab05e3c3f9a13515f58b"
+							]
+						}
 					},
 					"response": []
 				}
@@ -3907,8 +5649,45 @@
 					"name": "Voucher Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/voucher/all", "host": ["{{BASE_URL}}"], "path": ["voucher", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}, {"key": "voucherType", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "voucherType",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3916,9 +5695,32 @@
 					"name": "Add Voucher",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"type\": \"payment\",\r\n    \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"bankAccountId\": \"69524514c205cbdb960e2e13\",\r\n    \"amount\": 5000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/voucher/add", "host": ["{{BASE_URL}}"], "path": ["voucher", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Payment Voucher\r\n// {\r\n//     \"voucherNo\": \"PV-000021\",\r\n//     \"date\": \"2026-01-06\",\r\n//     \"type\": \"payment\",\r\n//     \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n//     \"bankAccountId\": \"695bb7d68b23d2d37de2f571\",\r\n//     \"amount\": 5000,\r\n//     \"notes\": \"Supplier payment via bank\"\r\n// }\r\n\r\n// Receipt Voucher\r\n// {\r\n//   \"voucherNo\": \"RV-000014\",\r\n//   \"date\": \"2026-01-06\",\r\n//   \"type\": \"receipt\",\r\n//   \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n//   \"bankAccountId\": \"695bb7d68b23d2d37de2f571\",\r\n//   \"amount\": 7500,\r\n//   \"notes\": \"Customer payment received\"\r\n// }\r\n\r\n\r\n// Journal Voucher\r\n{\r\n  \"voucherNo\": \"JV-000009\",\r\n  \"date\": \"2026-01-06\",\r\n  \"type\": \"journal\",\r\n  \"entries\": [\r\n    {\r\n      \"accountId\": \"695bb7d68b23d2d37de2f571\",\r\n      \"debit\": 3000,\r\n      \"credit\": 0\r\n    },\r\n    {\r\n      \"accountId\": \"695bb7d68b23d2d37de2f571\",\r\n      \"debit\": 0,\r\n      \"credit\": 3000\r\n    }\r\n  ],\r\n  \"notes\": \"Salary adjustment entry\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3926,9 +5728,32 @@
 					"name": "Edit Voucher",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"voucherId\": \"695a11bc7c101593469c8a21\",\r\n    \"amount\": 6000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/voucher/edit", "host": ["{{BASE_URL}}"], "path": ["voucher", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"voucherId\": \"695bb7e28b23d2d37de2f57a\",\r\n    \"voucherNo\": \"JV-000009\",\r\n    \"date\": \"2026-01-06\",\r\n    \"type\": \"journal\",\r\n    \"entries\": [\r\n        {\r\n            \"accountId\": \"695bb7d68b23d2d37de2f571\",\r\n            \"debit\": 3000,\r\n            \"credit\": 0\r\n        },\r\n        {\r\n            \"accountId\": \"695bb7d68b23d2d37de2f571\",\r\n            \"debit\": 0,\r\n            \"credit\": 3000\r\n        }\r\n    ],\r\n    \"notes\": \"Salary adjustment entry\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3936,8 +5761,23 @@
 					"name": "Delete Voucher",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/voucher/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["voucher", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/695bb7e28b23d2d37de2f57a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"695bb7e28b23d2d37de2f57a"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3945,8 +5785,23 @@
 					"name": "Get Voucher By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/voucher/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["voucher", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/695bb6bc1c8546e5c013d68e",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"695bb6bc1c8546e5c013d68e"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3954,8 +5809,36 @@
 					"name": "Payment Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/payment/all", "host": ["{{BASE_URL}}"], "path": ["payment", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/payment/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"payment",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3963,9 +5846,33 @@
 					"name": "Add Payment",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"bankAccountId\": \"69524514c205cbdb960e2e13\",\r\n    \"amount\": 5000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/payment/add", "host": ["{{BASE_URL}}"], "path": ["payment", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"voucherNo\": \"PV-000021\",\r\n    \"date\": \"2026-01-06\",\r\n    \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"bankAccountId\": \"695bb7d68b23d2d37de2f571\",\r\n    \"amount\": 5000,\r\n    \"notes\": \"Supplier payment via bank\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/payment/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"payment",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3973,8 +5880,36 @@
 					"name": "Receipt Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/receipt/all", "host": ["{{BASE_URL}}"], "path": ["receipt", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/receipt/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"receipt",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -3982,9 +5917,33 @@
 					"name": "Add Receipt",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"bankAccountId\": \"69524514c205cbdb960e2e13\",\r\n    \"amount\": 5000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/receipt/add", "host": ["{{BASE_URL}}"], "path": ["receipt", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"voucherNo\": \"RV-000014\",\r\n    \"date\": \"2026-01-06\",\r\n    \"partyId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"bankAccountId\": \"695bb7d68b23d2d37de2f571\",\r\n    \"amount\": 7500,\r\n    \"notes\": \"Customer payment received\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/receipt/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"receipt",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3992,8 +5951,36 @@
 					"name": "Expense Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/expense/all", "host": ["{{BASE_URL}}"], "path": ["expense", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/expense/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"expense",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4001,9 +5988,33 @@
 					"name": "Add Expense",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"date\": \"2025-01-15\",\r\n    \"bankAccountId\": \"69524514c205cbdb960e2e13\",\r\n    \"amount\": 2000,\r\n    \"notes\": \"Office expenses\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/expense/add", "host": ["{{BASE_URL}}"], "path": ["expense", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"voucherNo\": \"JV-000009\",\r\n    \"date\": \"2026-01-06\",\r\n    \"entries\": [\r\n        {\r\n            \"accountId\": \"695bb7d68b23d2d37de2f571\",\r\n            \"debit\": 3000,\r\n            \"credit\": 0\r\n        },\r\n        {\r\n            \"accountId\": \"695bb7d68b23d2d37de2f571\",\r\n            \"debit\": 0,\r\n            \"credit\": 3000\r\n        }\r\n    ],\r\n    \"notes\": \"Salary adjustment entry\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/voucher/expense/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"voucher",
+								"expense",
+								"add"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4016,8 +6027,45 @@
 					"name": "Account Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/account/all", "host": ["{{BASE_URL}}"], "path": ["account", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}, {"key": "search", "value": "", "disabled": true}, {"key": "accountType", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "accountType",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4025,8 +6073,40 @@
 					"name": "Account Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/account/dropdown", "host": ["{{BASE_URL}}"], "path": ["account", "dropdown"], "query": [{"key": "accountType", "value": "", "disabled": true}, {"key": "accountGroupId", "value": "", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account",
+								"dropdown"
+							],
+							"query": [
+								{
+									"key": "accountType",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "accountGroupId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4034,9 +6114,32 @@
 					"name": "Add Account",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"name\": \"Cash Account\",\r\n    \"accountType\": \"asset\",\r\n    \"accountGroupId\": \"695a11bc7c101593469c8a21\",\r\n    \"openingBalance\": 10000\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/account/add", "host": ["{{BASE_URL}}"], "path": ["account", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Cash Account3\",\r\n    \"groupId\": \"6510aa12e4b0f1a123456789\",\r\n    \"openingBalance\": 10000,\r\n    \"currentBalance\": 10000,\r\n    \"type\": \"bank\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/account/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4044,9 +6147,32 @@
 					"name": "Edit Account",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"accountId\": \"695a11bc7c101593469c8a21\",\r\n    \"name\": \"Updated Account Name\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/account/edit", "host": ["{{BASE_URL}}"], "path": ["account", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountId\": \"695bc3e68aac95aa7cb27c4a\",\r\n    \"name\": \"Cash Account3\",\r\n    \"groupId\": \"6510aa12e4b0f1a123456789\",\r\n    \"openingBalance\": 10000,\r\n    \"currentBalance\": 10000,\r\n    \"type\": \"bank\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/account/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4054,8 +6180,23 @@
 					"name": "Delete Account",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/account/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["account", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account/695bc3e68aac95aa7cb27c4a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account",
+								"695bc3e68aac95aa7cb27c4a"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4063,8 +6204,23 @@
 					"name": "Get Account By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/account/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["account", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account/695bc3e68aac95aa7cb27c4a",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account",
+								"695bc3e68aac95aa7cb27c4a"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4074,11 +6230,50 @@
 			"name": "Account Group",
 			"item": [
 				{
+					"name": "Get Account Group By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/695bd6e32cc5b8f8d7883ea3",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"695bd6e32cc5b8f8d7883ea3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Account Group Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/accountgroup/all", "host": ["{{BASE_URL}}"], "path": ["accountgroup", "all"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"all"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4086,8 +6281,23 @@
 					"name": "Account Group Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/accountgroup/dropdown", "host": ["{{BASE_URL}}"], "path": ["accountgroup", "dropdown"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"dropdown"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4095,9 +6305,123 @@
 					"name": "Account Group List (JSON)",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/accountgroup/list/json", "host": ["{{BASE_URL}}"], "path": ["accountgroup", "list", "json"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/list/json",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"list",
+								"json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Account Group",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountGroupId\": \"695bd5bb2da509e6e4dd44e9\",\r\n    \"name\": \"Cash in Hand\",\r\n    \"parentGroupId\": \"6530aa12e4b0f1a123456789\",\r\n    \"nature\": \"assets\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Account Group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/695bd6e32cc5b8f8d7883ea3",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"695bd6e32cc5b8f8d7883ea3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Account Group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Cash in Hand1\",\r\n  \"parentGroupId\": \"6530aa12e4b0f1a123456789\",\r\n  \"nature\": \"assets\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/account-group/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"account-group",
+								"add"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4110,8 +6434,23 @@
 					"name": "Payment Term Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/paymentterm/all", "host": ["{{BASE_URL}}"], "path": ["paymentterm", "all"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/payment-term/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"payment-term",
+								"all"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4119,8 +6458,137 @@
 					"name": "Payment Term Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/paymentterm/dropdown", "host": ["{{BASE_URL}}"], "path": ["paymentterm", "dropdown"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/payment-term/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"payment-term",
+								"dropdown"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment Term  By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/payment-term/695e299fae1ac0ad70ee1619",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"payment-term",
+								"695e299fae1ac0ad70ee1619"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Payment Term",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Cash in Hand3\",\r\n  \"day\": \"3234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/payment-term/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"payment-term",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Payment Term",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/payment-term/695e299fae1ac0ad70ee1619",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"payment-term",
+								"695e299fae1ac0ad70ee1619"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit payment term",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"paymentTermId\": \"695e299fae1ac0ad70ee1619\",\r\n    \"name\": \"Cash in Hand3\",\r\n    \"day\": \"3234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/payment-term/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"payment-term",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4133,8 +6601,23 @@
 					"name": "Get All Countries",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/location/country", "host": ["{{BASE_URL}}"], "path": ["location", "country"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/location/country",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"location",
+								"country"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4142,8 +6625,24 @@
 					"name": "Get States By Country",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/location/state/IN", "host": ["{{BASE_URL}}"], "path": ["location", "state", "IN"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/location/state/IN",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"location",
+								"state",
+								"IN"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4151,8 +6650,24 @@
 					"name": "Get Cities By State",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/location/city/MH", "host": ["{{BASE_URL}}"], "path": ["location", "city", "MH"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/location/city/MH",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"location",
+								"city",
+								"MH"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4162,11 +6677,132 @@
 			"name": "UOM",
 			"item": [
 				{
+					"name": "Add Uom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"PIECES\",\r\n    \"code\": \"PIE\",\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/uom/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"uom",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit UOM",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uomId\": \"6964afee85fe44bb61c99104\",\r\n    \"name\": \"PIECES\",\r\n    \"code\": \"PIE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/uom/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"uom",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete UOM By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/uom/6964afee85fe44bb61c99104",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"uom",
+								"6964afee85fe44bb61c99104"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "UOM Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/uom/all", "host": ["{{BASE_URL}}"], "path": ["uom", "all"]}
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/uom/all?page=1&limit=1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"uom",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get UOM By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/uom/6964b0cc5a746162d67af0de",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"uom",
+								"6964b0cc5a746162d67af0de"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4174,10 +6810,58 @@
 					"name": "UOM Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/uom/dropdown", "host": ["{{BASE_URL}}"], "path": ["uom", "dropdown"]}
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/uom/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"uom",
+								"dropdown"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -4185,11 +6869,122 @@
 			"name": "Tax",
 			"item": [
 				{
+					"name": "Add Tax",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"GST1\",\r\n    \"percentage\": 28.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tax/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tax",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Tax",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taxId\": \"6964afee85fe44bb61c99104\",\r\n    \"name\": \"PIECES\",\r\n    \"code\": \"PIE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tax/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tax",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tax By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/tax/6964afee85fe44bb61c99104",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tax",
+								"6964afee85fe44bb61c99104"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Tax Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/tax/all", "host": ["{{BASE_URL}}"], "path": ["tax", "all"]}
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tax/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tax",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tax By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/tax/6964b8176bfce325ede7f9e3",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tax",
+								"6964b8176bfce325ede7f9e3"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4197,10 +6992,64 @@
 					"name": "Tax Dropdown",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/tax/dropdown", "host": ["{{BASE_URL}}"], "path": ["tax", "dropdown"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/tax/dropdown",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tax",
+								"dropdown"
+							]
+						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Bearer {{Token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -4211,8 +7060,35 @@
 					"name": "Coupon Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/coupon/all", "host": ["{{BASE_URL}}"], "path": ["coupon", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/coupon/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"coupon",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4220,9 +7096,32 @@
 					"name": "Add Coupon",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"code\": \"SAVE10\",\r\n    \"discountType\": \"percentage\",\r\n    \"discountValue\": 10,\r\n    \"validFrom\": \"2025-01-01\",\r\n    \"validTo\": \"2025-12-31\",\r\n    \"maxUses\": 100\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/coupon/add", "host": ["{{BASE_URL}}"], "path": ["coupon", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"NEWYEAR2115\",\r\n    \"description\": \"25% off on New Year sale\",\r\n    \"discountType\": \"percentage\",\r\n    \"discountValue\": 25,\r\n    \"minOrderValue\": 500,\r\n    \"maxDiscountAmount\": 300,\r\n    \"validFrom\": \"2026-01-01\",\r\n    \"validTo\": \"2026-01-31\",\r\n    \"usageLimit\": 100,\r\n    \"usedCount\": 0,\r\n    \"status\": \"inactive\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/coupon/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"coupon",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4230,9 +7129,32 @@
 					"name": "Edit Coupon",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"couponId\": \"695a11bc7c101593469c8a21\",\r\n    \"discountValue\": 15\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/coupon/edit", "host": ["{{BASE_URL}}"], "path": ["coupon", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"couponId\": \"695bc7086b6b51b5484e9336\",\r\n    \"code\": \"NEWYEAR2115\",\r\n    \"description\": \"25% off on New Year sale\",\r\n    \"discountType\": \"percentage\",\r\n    \"discountValue\": 25,\r\n    \"minOrderValue\": 500,\r\n    \"maxDiscountAmount\": 300,\r\n    \"validFrom\": \"2026-01-01\",\r\n    \"validTo\": \"2026-01-31\",\r\n    \"usageLimit\": 100,\r\n    \"usedCount\": 0,\r\n    \"status\": \"inactive\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/coupon/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"coupon",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4240,8 +7162,23 @@
 					"name": "Delete Coupon",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/coupon/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["coupon", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/coupon/695bc7086b6b51b5484e9336",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"coupon",
+								"695bc7086b6b51b5484e9336"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4249,8 +7186,23 @@
 					"name": "Get Coupon By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/coupon/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["coupon", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/coupon/695bc7086b6b51b5484e9336",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"coupon",
+								"695bc7086b6b51b5484e9336"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4263,8 +7215,35 @@
 					"name": "Discount Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/discount/all", "host": ["{{BASE_URL}}"], "path": ["discount", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/discount/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"discount",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4272,9 +7251,32 @@
 					"name": "Add Discount",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"name\": \"Bulk Discount\",\r\n    \"discountType\": \"percentage\",\r\n    \"discountValue\": 5,\r\n    \"minQty\": 10\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/discount/add", "host": ["{{BASE_URL}}"], "path": ["discount", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Year Sale23\",\r\n    \"validFrom\": \"2026-01-01\",\r\n    \"validTo\": \"2026-01-15\",\r\n    \"discountType\": \"percentage\",\r\n    \"discountValue\": 20,\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/discount/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"discount",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4282,9 +7284,32 @@
 					"name": "Edit Discount",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"discountId\": \"695a11bc7c101593469c8a21\",\r\n    \"discountValue\": 7\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/discount/edit", "host": ["{{BASE_URL}}"], "path": ["discount", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"discountId\": \"695bc9bfb74c6edb001d0bb4\",\r\n    \"title\": \"New Year Sale3\",\r\n    \"validFrom\": \"2026-01-01\",\r\n    \"validTo\": \"2026-01-15\",\r\n    \"discountType\": \"percentage\",\r\n    \"discountValue\": 20,\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/discount/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"discount",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4292,8 +7317,23 @@
 					"name": "Delete Discount",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/discount/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["discount", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/discount/695a11bc7c101593469c8a21",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"discount",
+								"695a11bc7c101593469c8a21"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4301,8 +7341,23 @@
 					"name": "Get Discount By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/discount/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["discount", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/discount/695a11bc7c101593469c8a21",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"discount",
+								"695a11bc7c101593469c8a21"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4315,8 +7370,35 @@
 					"name": "Feedback Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/feedback/all", "host": ["{{BASE_URL}}"], "path": ["feedback", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/feedback/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"feedback",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4324,9 +7406,32 @@
 					"name": "Add Feedback",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"rating\": 5,\r\n    \"comment\": \"Great service!\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/feedback/add", "host": ["{{BASE_URL}}"], "path": ["feedback", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invoiceId\": \"69590bb502cc0c228fea608e\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"rating\": 5,\r\n    \"comment\": \"Great service and fast delivery!\",\r\n    \"isRecommended\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/feedback/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"feedback",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4334,9 +7439,32 @@
 					"name": "Edit Feedback",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"feedbackId\": \"695a11bc7c101593469c8a21\",\r\n    \"comment\": \"Updated comment\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/feedback/edit", "host": ["{{BASE_URL}}"], "path": ["feedback", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"feedbackId\": \"695bcb5499579b1103bf73ea\",\r\n    \"invoiceId\": \"69590bb502cc0c228fea608e\",\r\n    \"customerId\": \"6954b8457f13f4fa10bd6417\",\r\n    \"rating\": 5,\r\n    \"comment\": \"Great service and fast delivery!\",\r\n    \"isRecommended\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/feedback/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"feedback",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4344,8 +7472,23 @@
 					"name": "Delete Feedback",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/feedback/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["feedback", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/feedback/695bcb5499579b1103bf73ea",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"feedback",
+								"695bcb5499579b1103bf73ea"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4353,8 +7496,23 @@
 					"name": "Get Feedback By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/feedback/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["feedback", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/feedback/695bcaf899579b1103bf73e1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"feedback",
+								"695bcaf899579b1103bf73e1"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4367,8 +7525,35 @@
 					"name": "Loyalty Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/loyalty/all", "host": ["{{BASE_URL}}"], "path": ["loyalty", "all"], "query": [{"key": "page", "value": "1", "disabled": true}, {"key": "limit", "value": "10", "disabled": true}]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/loyalty/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"loyalty",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -4376,9 +7561,32 @@
 					"name": "Add Loyalty",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"name\": \"Customer Loyalty Program\",\r\n    \"pointsPerPurchase\": 10,\r\n    \"validFrom\": \"2025-01-01\",\r\n    \"validTo\": \"2025-12-31\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/loyalty/add", "host": ["{{BASE_URL}}"], "path": ["loyalty", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gold Loyalty Program12\",\r\n    \"type\": \"points\",\r\n    \"earningRatio\": 1,\r\n    \"redemptionRatio\": 0.5,\r\n    \"minRedemptionPoints\": 100,\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/loyalty/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"loyalty",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4386,9 +7594,32 @@
 					"name": "Edit Loyalty",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"loyaltyId\": \"695a11bc7c101593469c8a21\",\r\n    \"pointsPerPurchase\": 15\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/loyalty/edit", "host": ["{{BASE_URL}}"], "path": ["loyalty", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"loyaltyId\": \"695bccb501c123b9c791e4e1\",\r\n    \"name\": \"Gold Loyalty Program12\",\r\n    \"type\": \"points\",\r\n    \"earningRatio\": 1,\r\n    \"redemptionRatio\": 0.5,\r\n    \"minRedemptionPoints\": 100,\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/loyalty/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"loyalty",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4396,8 +7627,23 @@
 					"name": "Delete Loyalty",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/loyalty/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["loyalty", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/loyalty/695bcc5301c123b9c791e4be",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"loyalty",
+								"695bcc5301c123b9c791e4be"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4405,8 +7651,23 @@
 					"name": "Get Loyalty By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/loyalty/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["loyalty", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/loyalty/695bccb501c123b9c791e4e1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"loyalty",
+								"695bccb501c123b9c791e4e1"
+							]
+						}
 					},
 					"response": []
 				}
@@ -4419,8 +7680,23 @@
 					"name": "Prefix Get All",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/prefix/all", "host": ["{{BASE_URL}}"], "path": ["prefix", "all"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/prefix/all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"prefix",
+								"all"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4428,8 +7704,24 @@
 					"name": "Get Prefix By Module",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/prefix/module/invoice", "host": ["{{BASE_URL}}"], "path": ["prefix", "module", "invoice"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/prefix/module/INVOICE1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"prefix",
+								"module",
+								"INVOICE1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4437,9 +7729,32 @@
 					"name": "Add Prefix",
 					"request": {
 						"method": "POST",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"module\": \"invoice\",\r\n    \"prefix\": \"INV\",\r\n    \"startingNumber\": 1\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/prefix/add", "host": ["{{BASE_URL}}"], "path": ["prefix", "add"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"module\": \"INVOICE12\",\r\n    \"prefix\": \"INV\",\r\n    \"startNumber\": 1,\r\n    \"currentNumber\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/prefix/add",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"prefix",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4447,9 +7762,32 @@
 					"name": "Edit Prefix",
 					"request": {
 						"method": "PUT",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"body": {"mode": "raw", "raw": "{\r\n    \"prefixId\": \"695a11bc7c101593469c8a21\",\r\n    \"prefix\": \"INV-\"\r\n}", "options": {"raw": {"language": "json"}}},
-						"url": {"raw": "{{BASE_URL}}/prefix/edit", "host": ["{{BASE_URL}}"], "path": ["prefix", "edit"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prefixId\": \"695bce0ae0d764912bf0d995\",\r\n    \"module\": \"INVOICE12\",\r\n    \"prefix\": \"INV\",\r\n    \"startNumber\": 1,\r\n    \"currentNumber\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/prefix/edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"prefix",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4457,8 +7795,23 @@
 					"name": "Delete Prefix",
 					"request": {
 						"method": "DELETE",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/prefix/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["prefix", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/prefix/695bce0ae0d764912bf0d995",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"prefix",
+								"695bce0ae0d764912bf0d995"
+							]
+						}
 					},
 					"response": []
 				},
@@ -4466,12 +7819,85 @@
 					"name": "Get Prefix By ID",
 					"request": {
 						"method": "GET",
-						"header": [{"key": "Authorization", "value": "{{Token}}", "type": "text"}],
-						"url": {"raw": "{{BASE_URL}}/prefix/695a11bc7c101593469c8a21", "host": ["{{BASE_URL}}"], "path": ["prefix", "695a11bc7c101593469c8a21"]}
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/prefix/695bce01e0d764912bf0d987",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"prefix",
+								"695bce01e0d764912bf0d987"
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "b2161482-e34a-42a4-b954-5526d707a8a4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.trustpays24.com/v1/payIn/generate-payin?code=mike&user_id=test&ot=y&amount=500&merchant_order_id=TRA175231860052232d37512924489214&returnUrl=https://gamexch.com/&notifyUrl=https://api.paycorrect.fun/trustpay/payin/callback",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trustpays24",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payIn",
+						"generate-payin"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "mike"
+						},
+						{
+							"key": "user_id",
+							"value": "test"
+						},
+						{
+							"key": "ot",
+							"value": "y"
+						},
+						{
+							"key": "amount",
+							"value": "500"
+						},
+						{
+							"key": "merchant_order_id",
+							"value": "TRA175231860052232d37512924489214"
+						},
+						{
+							"key": "returnUrl",
+							"value": "https://gamexch.com/"
+						},
+						{
+							"key": "notifyUrl",
+							"value": "https://api.paycorrect.fun/trustpay/payin/callback"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

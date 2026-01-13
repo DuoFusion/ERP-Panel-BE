@@ -216,3 +216,41 @@ export const getCompanyById = async (req, res) => {
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).status(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, {}));
   }
 };
+
+// Dropdown API - returns only active companies in { _id, name } format
+export const getCompanyDropdown = async (req, res) => {
+  reqInfo(req);
+  try {
+    const { search } = req.query;
+
+    let criteria: any = { isDeleted: false, isActive: true };
+
+    if (search) {
+      criteria.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { displayName: { $regex: search, $options: "i" } },
+        { contactName: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const response = await getDataWithSorting(
+      companyModel,
+      criteria,
+      { _id: 1, name: 1, displayName: 1 },
+      {
+        sort: { name: 1 },
+      }
+    );
+
+    const dropdownData = response.map((item) => ({
+      _id: item._id,
+      name: item.displayName || item.name,
+      displayName: item.displayName,
+    }));
+
+    return res.status(HTTP_STATUS.OK).json(new apiResponse(HTTP_STATUS.OK, responseMessage?.getDataSuccess("Company"), dropdownData, {}));
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json(new apiResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, responseMessage?.internalServerError, {}, error));
+  }
+};

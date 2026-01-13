@@ -201,7 +201,7 @@ export const getBankDropdown = async (req, res) => {
     const { user } = req?.headers;
     const companyId = user?.companyId?._id;
     const { search } = req.query;
-
+    
     let criteria: any = { isDeleted: false, isActive: true };
     if (companyId) {
       criteria.companyId = companyId;
