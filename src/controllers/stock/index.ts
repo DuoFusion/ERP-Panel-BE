@@ -1,4 +1,4 @@
-import { apiResponse, HTTP_STATUS } from "../../common";
+import { apiResponse, HTTP_STATUS, USER_ROLES } from "../../common";
 import { branchModel, companyModel, productModel, stockModel } from "../../database";
 import { checkIdExist, countData, createOne, getDataWithSorting, getFirstMatch, reqInfo, responseMessage, updateData } from "../../helper";
 import { addStockSchema, deleteStockSchema, editStockSchema } from "../../validation/stock";
@@ -7,20 +7,18 @@ export const addStock = async (req, res) => {
   reqInfo(req);
   try {
     const { user } = req.headers;
-
     const { error, value } = addStockSchema.validate(req.body);
 
-    if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+    if (error) return res.status(HTTP_STATUS.BAD_REQUEST).json(new apiResponse(HTTP_STATUS.BAD_REQUEST, error?.details[0]?.message, {}, {}));
+
+    if(user?.role?.name !== USER_ROLES.SUPER_ADMIN) {
+      value.companyId = user?.companyId?._id;
     }
 
-    // Verify that the product exists
-    if (!(await checkIdExist(companyModel, value?.companyId, "Company", res))) return;
-    if (!(await checkIdExist(branchModel, value?.branchId, "Branch", res))) return;
-    if (!(await checkIdExist(productModel, value?.productId, "Product", res))) return;
-    // if (!(await checkIdExist(productModel, value?.variantId, "Variant", res))) return;
+    if (value?.companyId && !(await checkIdExist(companyModel, value?.companyId, "Company", res))) return;
+    if (value?.branchId && !(await checkIdExist(branchModel, value?.branchId, "Branch", res))) return;
+    if (value?.productId && !(await checkIdExist(productModel, value?.productId, "Product", res))) return;
 
-    // Check if stock record already exists for this product, batch, and combination
     const existingStockCriteria: any = {
       productId: value?.productId,
       isDeleted: false,
